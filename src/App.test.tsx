@@ -1,4 +1,4 @@
-import { createMemoryHistory } from 'history'
+import { createMemoryHistory } from 'history';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import configureStore from 'redux-mock-store';

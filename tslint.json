@@ -3,7 +3,8 @@
   "rules": {
     "member-access": false,
     "interface-name": false,
-    "jsx-boolean-value": false
+    "jsx-boolean-value": false,
+    "semicolon": true
   },
   "linterOptions": {
     "exclude": [
