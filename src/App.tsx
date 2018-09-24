@@ -1,9 +1,21 @@
+import { ConnectedRouter } from 'connected-react-router'
 import * as React from 'react';
+import { Provider } from 'react-redux';
+import { Routes } from './routes';
 
-export class App extends React.PureComponent {
+interface AppProps {
+  history: any;
+  store: any;
+}
+
+export class App extends React.PureComponent<AppProps> {
   public render() {
     return (
-      <div className="App">This is App</div>
+      <Provider store={this.props.store}>
+        <ConnectedRouter history={this.props.history}>
+          <Routes />
+        </ConnectedRouter>
+      </Provider>
     );
   }
 }
