@@ -1,5 +1,3 @@
 import { combineEpics } from 'redux-observable';
-
-export const rootEpic = combineEpics(
-  // TODO: Add epics here
-);
+import { exercisesEpics } from '../modules/exercises';
+export const rootEpic = combineEpics(exercisesEpics);

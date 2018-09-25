@@ -1,0 +1,5 @@
+/build
+/public
+/monitor
+/node_modules
+*.json

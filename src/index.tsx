@@ -5,5 +5,5 @@ import { history, store } from './store';
 
 ReactDOM.render(
   <App store={store} history={history} />,
-  document.getElementById('root')
+  document.getElementById('root'),
 );

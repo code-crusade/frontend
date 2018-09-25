@@ -1,10 +1,10 @@
 import { createMemoryHistory } from 'history';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import configureStore from 'redux-mock-store';
+import reduxMockStore from 'redux-mock-store';
 import { App } from './App';
 
-const mockStore = configureStore();
+const mockStore = reduxMockStore();
 const history = createMemoryHistory();
 
 it('renders without crashing', () => {
