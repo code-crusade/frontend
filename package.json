@@ -17,22 +17,47 @@
     "react-scripts-ts": "2.17.0",
     "redux": "^4.0.0",
     "redux-observable": "^1.0.0",
-    "rxjs": "^6.3.2"
+    "rxjs": "^6.3.2",
+    "typesafe-actions": "^2.0.4",
+    "traverson": "latest"
   },
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "tslint-check": "tslint-config-prettier-check ./tslint.json",
+    "lint": "tslint --fix --project ."
   },
   "devDependencies": {
+    "@types/history": "^4.7.0",
     "@types/jest": "^23.3.2",
-    "@types/node": "^10.10.1",
+    "@types/lodash": "^4.14.116",
+    "@types/node": "^10.11.0",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
     "@types/react-redux": "^6.0.9",
-    "prettier": "1.14.3",
+    "@types/react-router": "^4.0.31",
+    "@types/redux-mock-store": "^1.0.0",
+    "@types/traverson": "^2.0.28",
+    "husky": "^1.0.0-rc.15",
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3",
     "redux-devtools-extension": "^2.13.5",
+    "redux-mock-store": "^1.5.3",
+    "rxjs-tslint-rules": "^4.8.0",
+    "tslint": "^5.11.0",
+    "tslint-blueprint": "^0.1.0",
+    "tslint-config-airbnb": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "tslint-plugin-prettier": "^2.0.0",
+    "tslint-sonarts": "^1.8.0",
     "typescript": "^3.0.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
