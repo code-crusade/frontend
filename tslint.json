@@ -17,7 +17,8 @@
     "no-console": false,
     "interface-over-type-literal": false,
     "import-name": false,
-    "object-shorthand-properties-first": false
+    "object-shorthand-properties-first": false,
+    "no-commented-code": false
   },
   "rulesDirectory": [
     "node_modules/tslint-eslint-rules/dist/rules",
