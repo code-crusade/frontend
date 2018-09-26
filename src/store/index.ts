@@ -5,7 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { createEpicMiddleware } from 'redux-observable';
 import * as services from '../services';
 import { rootEpic } from './root-epic';
-import rootReducer from './root-reducer';
+import { rootReducer } from './root-reducer';
 
 export const history = createBrowserHistory();
 const epicMiddleware = createEpicMiddleware({

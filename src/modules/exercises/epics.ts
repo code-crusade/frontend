@@ -40,4 +40,7 @@ const exercisesAddFlow: Epic<RootAction, RootAction, RootState, Services> = (
     ),
   );
 
-export default combineEpics(exercisesBrowseFlow, exercisesAddFlow);
+export const exercisesEpics = combineEpics(
+  exercisesBrowseFlow,
+  exercisesAddFlow,
+);

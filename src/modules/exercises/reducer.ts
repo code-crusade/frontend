@@ -11,7 +11,10 @@ export type ExercisesState = Readonly<{
   error: Error | null;
 }>;
 
-export default combineReducers<ExercisesState, ExercisesAction>({
+export const exercisesReducer = combineReducers<
+  ExercisesState,
+  ExercisesAction
+>({
   error: (state = null, action) => {
     switch (action.type) {
       case getType(exercises.exercisesBrowse.request):
@@ -30,7 +33,6 @@ export default combineReducers<ExercisesState, ExercisesAction>({
         return state;
     }
   },
-  // TODO: Add error and loading states to the reducer
   items: (state = [], action) => {
     switch (action.type) {
       case getType(exercises.exercisesBrowse.success):
