@@ -4,7 +4,7 @@ import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
 import { Services } from '../../services';
 import { RootState } from '../../store/root-reducer';
-import { RootAction } from '../../types/types';
+import { RootAction } from '../../types/actions';
 import { exercisesAdd, exercisesBrowse } from './actions';
 
 // REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state updated.
