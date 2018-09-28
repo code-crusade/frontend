@@ -1,24 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 import { App } from './App';
-import { store } from './store';
+import { history, store } from './store';
 
-interface RootProps {
-  store: any;
-}
-
-class Root extends React.PureComponent<RootProps> {
-  render() {
-    return(
-      <Provider store={this.props.store}>
-        <App />
-      </Provider>
-    );
-  }
-}
+// Import styling
+import 'normalize.css/normalize.css';
+import '@blueprintjs/core/lib/css/blueprint.css'; // tslint:disable-line
+import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 
 ReactDOM.render(
-  <Root store={store} />,
-  document.getElementById('root')
+  <App store={store} history={history} />,
+  document.getElementById('root'),
 );
