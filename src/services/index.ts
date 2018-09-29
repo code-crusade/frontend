@@ -1,6 +1,7 @@
 import * as Api from './api';
+import { history } from './historyService';
 
-export { Api };
+export { Api, history };
 
 // PS: If you're wondering what the Services type is in the epics signature and
 // how to declare it in your application to easily inject statically typed API
@@ -8,4 +9,4 @@ export { Api };
 // in clean architecture, please create an issue for it and perhaps I'll find
 // some time in the future to write an article about it.
 // (https://github.com/piotrwitek/typesafe-actions)
-export type Services = { Api: typeof Api };
+export type Services = { Api: typeof Api; history: typeof history };

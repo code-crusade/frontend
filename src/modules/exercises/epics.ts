@@ -17,7 +17,7 @@ const exercisesBrowseFlow: Epic<RootAction, RootAction, RootState, Services> = (
     filter(isActionOf(exercisesBrowse.request)),
     switchMap((action) =>
       Api.exercises.browse({}).pipe(
-        map(({ response }) => response.data._embedded.exercices),
+        map(({ response }) => response.data._embedded.exercises),
         map(exercisesBrowse.success),
         catchError((err) => of(exercisesBrowse.failure(err))),
       ),
@@ -33,7 +33,7 @@ const exercisesAddFlow: Epic<RootAction, RootAction, RootState, Services> = (
     filter(isActionOf(exercisesAdd.request)),
     switchMap((action) =>
       from(Api.exercises.add(action.payload)).pipe(
-        map(({ response }) => response.data._embedded.exercice),
+        map(({ response }) => response.data._embedded.exercise),
         map(exercisesAdd.success),
         catchError((err) => of(exercisesBrowse.failure(err))),
       ),
