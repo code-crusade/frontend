@@ -5,7 +5,7 @@ import { isActionOf } from 'typesafe-actions';
 import { Services } from '../../services';
 import { RootState } from '../../store/root-reducer';
 import { RootAction } from '../../types/actions';
-import { exercisesAdd, exercisesBrowse } from './actions';
+import { exercisesAdd, exercisesBrowse, exercisesRead } from './actions';
 
 // REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state updated.
 const exercisesBrowseFlow: Epic<RootAction, RootAction, RootState, Services> = (
@@ -20,6 +20,23 @@ const exercisesBrowseFlow: Epic<RootAction, RootAction, RootState, Services> = (
         map(({ response }) => response.data._embedded.exercises),
         map(exercisesBrowse.success),
         catchError((err) => of(exercisesBrowse.failure(err))),
+      ),
+    ),
+  );
+
+// REMEMBER: When an Epic receives an action, it has already been run through your reducers and the state updated.
+const exercisesReadFlow: Epic<RootAction, RootAction, RootState, Services> = (
+  action$,
+  store,
+  { Api },
+) =>
+  action$.pipe(
+    filter(isActionOf(exercisesRead.request)),
+    switchMap((action) =>
+      Api.exercises.read(action.payload).pipe(
+        map(({ response }) => response.data._embedded.exercises),
+        map(exercisesRead.success),
+        catchError((err) => of(exercisesRead.failure(err))),
       ),
     ),
   );
@@ -42,5 +59,6 @@ const exercisesAddFlow: Epic<RootAction, RootAction, RootState, Services> = (
 
 export const exercisesEpics = combineEpics(
   exercisesBrowseFlow,
+  exercisesReadFlow,
   exercisesAddFlow,
 );

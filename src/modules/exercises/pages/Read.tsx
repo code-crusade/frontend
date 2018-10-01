@@ -3,8 +3,13 @@ import IModelContentChangedEvent = monacoEditor.editor.IModelContentChangedEvent
 import IStandaloneCodeEditor = monacoEditor.editor.IStandaloneCodeEditor;
 import * as React from 'react';
 import { ExercisesRead } from '../components/ExercisesRead';
+import { InjectedProps, withExercise } from '../hocs/withExercise';
 
-export class ExercisesReadPage extends React.Component {
+interface ReadState {
+  code: string;
+}
+
+export class Read extends React.Component<InjectedProps, ReadState> {
   static editorDidMount(
     codeEditor: IStandaloneCodeEditor,
     monaco: typeof monacoEditor,
@@ -24,12 +29,18 @@ export class ExercisesReadPage extends React.Component {
   render() {
     return (
       <ExercisesRead
-        code={this.state.code}
-        options={{
+        exercises={this.props.exercises}
+        loading={this.props.loading}
+        error={this.props.error}
+        editorCode={this.state.code}
+        editorOptions={{
           selectOnLineNumbers: true,
         }}
-        onChange={this.onChange}
+        editorDidMount={Read.editorDidMount}
+        editorOnChange={this.onChange}
       />
     );
   }
 }
+
+export const ExercisesReadPage = withExercise(Read);

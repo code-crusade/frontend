@@ -2,7 +2,13 @@
 
 export type Exercise = {
   id: string;
-  title: string;
-  description: string;
+  title: {
+    fr: string;
+    en: string;
+  };
+  description: {
+    fr: string;
+    en: string;
+  };
   unitTests: any;
 };

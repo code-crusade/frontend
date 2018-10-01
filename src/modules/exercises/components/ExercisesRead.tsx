@@ -1,20 +1,28 @@
 import * as React from 'react';
-import MonacoEditor, { ChangeHandler } from 'react-monaco-editor';
+import MonacoEditor, {
+  ChangeHandler,
+  EditorDidMount,
+} from 'react-monaco-editor';
+import { InjectedProps } from '../hocs/withExercises';
 
 export type EditorProps = {
-  code: string;
-  options: object;
-  onChange: ChangeHandler;
+  editorCode: string;
+  editorDidMount: EditorDidMount;
+  editorOptions: object;
+  editorOnChange: ChangeHandler;
 };
 
-export const ExercisesRead: React.SFC<EditorProps> = (props) => (
+export const ExercisesRead: React.SFC<EditorProps & InjectedProps> = (
+  props,
+) => (
   <MonacoEditor
     width="800"
     height="600"
     language="javascript"
     theme="vs-dark"
-    value={props.code}
-    options={props.options}
-    onChange={props.onChange}
+    value={props.editorCode}
+    options={props.editorOptions}
+    onChange={props.editorOnChange}
+    editorDidMount={props.editorDidMount}
   />
 );

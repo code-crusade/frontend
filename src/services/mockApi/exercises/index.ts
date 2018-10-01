@@ -1,5 +1,7 @@
+import { of } from 'rxjs';
 import { Method, xhr } from '../../../helpers';
 import { Exercise } from '../../../modules/exercises/models';
+import { testExercises } from '../../../test/data/exercises';
 
 export const browse = ({
   page = 0,
@@ -10,11 +12,19 @@ export const browse = ({
   size?: number;
   sort?: string;
 }) => {
-  return xhr(Method.GET, '/exercises');
+  return of({
+    response: {
+      data: { _embedded: { exercises: Object.values(testExercises.items) } },
+    },
+  });
 };
 
 export const read = (id: string) => {
-  return xhr(Method.GET, `/exercises/${id}`);
+  return of({
+    response: {
+      data: { _embedded: { exercises: testExercises.resources[id] } },
+    },
+  });
 };
 
 export const add = (exercise: Exercise) => {
