@@ -1,21 +1,19 @@
 import { Button, HTMLTable } from '@blueprintjs/core';
-import { push } from 'connected-react-router';
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Exercise } from '../models';
 
-const StyledComponent = styled.div`
+const Container = styled.div`
   display: grid;
   justify-items: center;
 `;
 
 interface ExercicesBrowseProps {
   exercices: Exercise[];
-  onExerciceClick(exerciceId: string): any;
 }
 
-export class ExercicesBrowsePageBase extends React.PureComponent<
+export class ExercicesBrowsePage extends React.PureComponent<
   ExercicesBrowseProps
 > {
   // TODO: Temporary, remove when we know where to get fake data
@@ -36,13 +34,10 @@ export class ExercicesBrowsePageBase extends React.PureComponent<
     ],
   };
 
-  readonly onExerciceClick = (event: any, id: string) =>
-    this.props.onExerciceClick(id);
-
   render() {
     const { exercices } = this.props;
     return (
-      <StyledComponent>
+      <Container>
         <h1>Exercices</h1>
         <HTMLTable>
           <thead>
@@ -59,33 +54,20 @@ export class ExercicesBrowsePageBase extends React.PureComponent<
                   <td>{ex.title}</td>
                   <td>{ex.description}</td>
                   <td>
-                    <Button
-                      rightIcon="arrow-right"
-                      intent="success"
-                      text="Commencer"
-                      onClick={(event: any) =>
-                        this.onExerciceClick(event, ex.id)
-                      }
-                    />
+                    <Link to={`/exercises/${ex.id}`}>
+                      <Button
+                        rightIcon="arrow-right"
+                        intent="success"
+                        text="Commencer"
+                      />
+                    </Link>
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </HTMLTable>
-      </StyledComponent>
+      </Container>
     );
   }
 }
-
-function mapDispatchToProps(dispatch: any) {
-  return {
-    onExerciceClick: (exerciceId: string) =>
-      dispatch(push(`/exercises/${exerciceId}`)),
-  };
-}
-
-export const ExercicesBrowsePage = connect(
-  null,
-  mapDispatchToProps,
-)(ExercicesBrowsePageBase);
