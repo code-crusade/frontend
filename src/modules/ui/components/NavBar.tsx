@@ -29,6 +29,13 @@ export const Navbar: React.SFC<AppNavbarProps> = (props) => (
     <NavbarGroup align={Alignment.LEFT}>
       <NavbarHeading>Code Crusade</NavbarHeading>
       <NavbarDivider />
+      <Link to="/">
+        <Button
+          className={Classes.MINIMAL}
+          icon={IconNames.HOME}
+          text="Accueil"
+        />
+      </Link>
       <Link to="/exercises">
         <Button
           className={Classes.MINIMAL}
