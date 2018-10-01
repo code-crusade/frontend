@@ -9,7 +9,7 @@ import { InjectedProps, withExercises } from '../hocs/withExercises';
 
 const Container = styled.div`
   display: grid;
-  justify-items: center;
+  justify-items: start;
 `;
 
 export class Browse extends React.PureComponent<InjectedProps> {

@@ -3,9 +3,9 @@ import * as React from 'react';
 export class DashboardBrowsePage extends React.PureComponent {
   render() {
     return (
-      <div>
-        <h1>Hi from the Dashboard</h1>
-      </div>
+      <React.Fragment>
+        <h1>Dashboard</h1>
+      </React.Fragment>
     );
   }
 }
