@@ -5,19 +5,19 @@ import { RootState } from '../../../store/root-reducer';
 import { exercisesRead } from '../actions';
 import { Exercise } from '../models';
 import {
-  getExercises,
+  getExerciseById,
   getExercisesError,
   getExercisesLoading,
 } from '../selectors';
 
 // These props will be subtracted from original component type
-export interface InjectedProps extends RouteComponentProps<{ id: string }> {
+export interface InjectedProps {
   loading: boolean;
   error: Error;
-  exercises: Exercise[];
+  exercise: Exercise;
 }
 
-interface SubstractedProps {
+interface SubstractedProps extends RouteComponentProps<{ id: string }> {
   readExercise: (id: string) => void;
 }
 
@@ -37,16 +37,19 @@ export const withExercise = <WrappedProps extends InjectedProps>(
     }
 
     public render() {
-      const { readExercise, ...props } = this.props as InjectedProps &
+      const { readExercise, history, ...props } = this.props as InjectedProps &
         SubstractedProps;
 
       return <WrappedComponent {...props} />;
     }
   }
 
-  const mapStateToProps = (state: RootState) => ({
+  const mapStateToProps = (
+    state: RootState,
+    { match: { params } }: RouteComponentProps<{ id: string }>,
+  ) => ({
     errors: getExercisesError(state.exercises),
-    exercises: getExercises(state.exercises),
+    exercise: getExerciseById(state.exercises, params.id),
     loading: getExercisesLoading(state.exercises),
   });
 

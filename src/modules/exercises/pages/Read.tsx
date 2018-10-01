@@ -27,9 +27,10 @@ export class Read extends React.Component<InjectedProps, ReadState> {
   };
 
   render() {
+    console.log(this.props);
     return (
       <ExercisesRead
-        exercises={this.props.exercises}
+        exercise={this.props.exercise}
         loading={this.props.loading}
         error={this.props.error}
         editorCode={this.state.code}

@@ -13,7 +13,7 @@ import {
 export interface InjectedProps {
   loading: boolean;
   error: Error;
-  exercises: Exercise[];
+  exercises: { [key: string]: Exercise };
 }
 
 interface SubstractedProps {

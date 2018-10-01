@@ -6,7 +6,7 @@ import { Exercise } from './models';
 export type ExercisesAction = ActionType<typeof exercises>;
 
 export type ExercisesState = Readonly<{
-  items: Exercise[];
+  items: { [key: string]: Exercise };
   loading: boolean;
   error: Error | null;
 }>;
@@ -33,14 +33,23 @@ export const exercisesReducer = combineReducers<
         return state;
     }
   },
-  items: (state = [], action) => {
+  items: (state = {}, action) => {
     switch (action.type) {
       case getType(exercises.exercisesBrowse.success):
-        return [...state, ...action.payload];
+        return {
+          ...state,
+          ...action.payload.reduce(
+            (carry, item) => ({
+              ...carry,
+              [item.id]: item,
+            }),
+            {},
+          ),
+        };
 
       case getType(exercises.exercisesRead.success):
       case getType(exercises.exercisesAdd.success):
-        return [...state, action.payload];
+        return { ...state, [action.payload.id]: action.payload };
 
       default:
         return state;
