@@ -4,6 +4,7 @@ import { withLoggedInUser } from '../../../hocs/withLoggedInUser';
 
 const Container = styled.div`
   display: grid;
+  padding: 1em;
 `;
 
 interface IPropsAppLayout {
