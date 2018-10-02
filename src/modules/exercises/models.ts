@@ -12,3 +12,10 @@ export type Exercise = {
   };
   unitTests: any;
 };
+
+export type ExerciseSubmission = {
+  id: string;
+  exerciseId: string;
+  userId: string;
+  code: string;
+};

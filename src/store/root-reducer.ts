@@ -1,8 +1,12 @@
 import { combineReducers } from 'redux';
 import { StateType } from 'typesafe-actions';
-import { exercisesReducer } from '../modules/exercises';
+import {
+  exercisesReducer,
+  exerciseSubmissionsReducer,
+} from '../modules/exercises';
 
 export const rootReducer = combineReducers({
+  exerciseSubmissions: exerciseSubmissionsReducer,
   exercises: exercisesReducer,
 });
 

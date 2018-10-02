@@ -1,5 +1,5 @@
 import { createAsyncAction } from 'typesafe-actions';
-import { Exercise } from './models';
+import { Exercise, ExerciseSubmission } from './models';
 
 export const exercisesBrowse = createAsyncAction(
   'EXERCISES_BROWSE_REQUEST',
@@ -18,3 +18,27 @@ export const exercisesAdd = createAsyncAction(
   'EXERCISES_ADD_SUCCESS',
   'EXERCISES_ADD_FAILURE',
 )<Exercise, Exercise, Error>();
+
+export const exerciseSubmissionsBrowse = createAsyncAction(
+  'EXERCISE_SUBMISSIONS_BROWSE_REQUEST',
+  'EXERCISE_SUBMISSIONS_BROWSE_SUCCESS',
+  'EXERCISE_SUBMISSIONS_BROWSE_FAILURE',
+)<void, ExerciseSubmission[], Error>();
+
+export const exerciseSubmissionsRead = createAsyncAction(
+  'EXERCISE_SUBMISSIONS_READ_REQUEST',
+  'EXERCISE_SUBMISSIONS_READ_SUCCESS',
+  'EXERCISE_SUBMISSIONS_READ_FAILURE',
+)<string, ExerciseSubmission, Error>();
+
+export const exerciseSubmissionsEdit = createAsyncAction(
+  'EXERCISE_SUBMISSIONS_EDIT_REQUEST',
+  'EXERCISE_SUBMISSIONS_EDIT_SUCCESS',
+  'EXERCISE_SUBMISSIONS_EDIT_FAILURE',
+)<ExerciseSubmission, ExerciseSubmission, Error>();
+
+export const exerciseSubmissionsAdd = createAsyncAction(
+  'EXERCISE_SUBMISSIONS_ADD_REQUEST',
+  'EXERCISE_SUBMISSIONS_ADD_SUCCESS',
+  'EXERCISE_SUBMISSIONS_ADD_FAILURE',
+)<ExerciseSubmission, ExerciseSubmission, Error>();

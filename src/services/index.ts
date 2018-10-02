@@ -13,6 +13,6 @@ export { history };
 // some time in the future to write an article about it.
 // (https://github.com/piotrwitek/typesafe-actions)
 export type Services = {
-  Api: typeof _Api;
+  Api: typeof MockApi;
   history: typeof history;
 };

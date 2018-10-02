@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { ActionType, getType } from 'typesafe-actions';
-import * as exercises from './actions';
-import { Exercise } from './models';
+import * as exercises from '../actions';
+import { Exercise } from '../models';
 
 export type ExercisesAction = ActionType<typeof exercises>;
 

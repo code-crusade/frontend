@@ -15,6 +15,7 @@ import { History } from 'history';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
+import styled from 'styled-components';
 import { omitProps } from '../../../hocs/omitProps';
 
 export type AppNavbarProps = {
@@ -24,8 +25,13 @@ export type AppNavbarProps = {
   isLoggedIn: boolean;
 };
 
+const StyledNavbar = styled(BluePrintNavBar)`
+  grid-row: 1 / span 1
+  grid-column: 1 / end
+`;
+
 export const Navbar: React.SFC<AppNavbarProps> = (props) => (
-  <BluePrintNavBar>
+  <StyledNavbar>
     <NavbarGroup align={Alignment.LEFT}>
       <NavbarHeading>Code Crusade</NavbarHeading>
       <NavbarDivider />
@@ -76,7 +82,7 @@ export const Navbar: React.SFC<AppNavbarProps> = (props) => (
         <Button className={Classes.MINIMAL} icon="cog" />
       </Popover>
     </NavbarGroup>
-  </BluePrintNavBar>
+  </StyledNavbar>
 );
 
 export const AppNavbar = compose<any, any>(

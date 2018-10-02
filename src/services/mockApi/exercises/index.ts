@@ -1,7 +1,7 @@
 import { of, throwError } from 'rxjs';
 import { Method, xhr } from '../../../helpers';
 import { Exercise } from '../../../modules/exercises/models';
-import { testExercises } from '../../../test/data/exercises';
+import { testExercises } from '../../../test/data';
 
 export const browse = ({
   page = 0,

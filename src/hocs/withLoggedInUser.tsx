@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-export interface WithLoggedInUserProps {
-  user?: { id: string };
+export interface WithLoggedInUserInjectedProps {
+  user: { id: string };
   isLoggedIn: boolean;
 }
 

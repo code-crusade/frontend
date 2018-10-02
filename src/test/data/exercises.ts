@@ -2,7 +2,7 @@ import * as faker from 'faker';
 import { Exercise } from '../../modules/exercises/models';
 import { Omit } from '../../types/types';
 
-export const ids: { [key: string]: string } = {
+const ids: { [key: string]: string } = {
   A: '96aa97d6-1ed6-4454-b563-b8cd0ef65a2c',
   B: '2342b24e-e852-48fa-892f-95ddbb0b97a3',
 };
@@ -45,6 +45,7 @@ const items: { [key: string]: Exercise } = Object.values(resources).reduce(
 );
 
 export const testExercises = {
+  ids,
   items,
   resources,
 };
