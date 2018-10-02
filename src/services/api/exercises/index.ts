@@ -13,6 +13,10 @@ export const browse = ({
   return xhr(Method.GET, '/exercises');
 };
 
+export const read = (id: string) => {
+  return xhr(Method.GET, `/exercises/${id}`);
+};
+
 export const add = (exercise: Exercise) => {
   return xhr(Method.POST, '/exercises', exercise);
 };

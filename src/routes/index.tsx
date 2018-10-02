@@ -1,15 +1,11 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router';
-import { Home } from '../modules/home';
+import { DashboardBrowsePage } from '../modules/dashboard/pages/Browse';
+import { ExercisesRoutes } from '../modules/exercises/Routes';
 
-export class Routes extends React.PureComponent {
-  render() {
-    return (
-      <React.Fragment>
-        <Switch>
-          <Route exact path="/" component={Home} />
-        </Switch>
-      </React.Fragment>
-    );
-  }
-}
+export const Routes = () => (
+  <Switch>
+    <Route exact path="/" component={DashboardBrowsePage} />
+    <Route path="/exercises" component={ExercisesRoutes} />
+  </Switch>
+);
