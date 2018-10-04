@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { withLoggedInUser } from '../../../hocs/withLoggedInUser';
+import { withLoggedInUser } from '../../auth/hocs/withLoggedInUser';
 
 const Container = styled.div`
   display: grid;

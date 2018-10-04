@@ -6,5 +6,9 @@
 import { LocationChangeAction, RouterAction } from 'connected-react-router';
 type ConnectedReactRouterAction = RouterAction | LocationChangeAction;
 import { ExercisesAction } from '../modules/exercises';
+import { UsersAction } from '../modules/users';
 
-export type RootAction = ConnectedReactRouterAction | ExercisesAction;
+export type RootAction =
+  | ConnectedReactRouterAction
+  | ExercisesAction
+  | UsersAction;

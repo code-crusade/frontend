@@ -1,4 +1,4 @@
-import { Button, H1, H3, IResizeEntry } from '@blueprintjs/core';
+import { Button, H1, H3, HTMLSelect, IResizeEntry } from '@blueprintjs/core';
 import * as React from 'react';
 import MonacoEditor, {
   ChangeHandler,
@@ -7,6 +7,7 @@ import MonacoEditor, {
 import styled from 'styled-components';
 import { Err404 } from '../../../components/Err404';
 import { Loading } from '../../../components/Loading';
+import { SupportedLanguages } from '../../../config/enums';
 import { WithExerciseInjectedProps } from '../hocs/withExercise';
 
 export type EditorProps = {
@@ -16,6 +17,8 @@ export type EditorProps = {
   editorOnChange: ChangeHandler;
   editorOnResize: (entries: IResizeEntry[]) => void;
   onSubmit: (event: React.MouseEvent<HTMLElement>) => void;
+  selectedLanguage: SupportedLanguages;
+  onLanguageChange: React.ChangeEventHandler<HTMLSelectElement>;
 };
 
 const Container = styled.div`
@@ -27,7 +30,7 @@ const Container = styled.div`
 
 const EditorContainer = styled.div`
   grid-column: 3 / end
-  grid-row: 1 / end
+  grid-row: 2 / end
 `;
 
 const ExerciseContainer = styled.div`
@@ -35,6 +38,13 @@ const ExerciseContainer = styled.div`
   grid-row: 1 / end
   padding: 1em
 `;
+
+const languagesOptions = [
+  { label: 'C++', value: SupportedLanguages.Cpp },
+  { label: 'C#', value: SupportedLanguages.CSharp },
+  { label: 'Java', value: SupportedLanguages.Java },
+  { label: 'Python', value: SupportedLanguages.Python },
+];
 
 export const ExercisesRead: React.SFC<
   EditorProps & WithExerciseInjectedProps
@@ -53,9 +63,15 @@ export const ExercisesRead: React.SFC<
         <H3>{props.exercise.description.fr}</H3>
         <Button onClick={props.onSubmit}>Soumettre</Button>
       </ExerciseContainer>
+      <HTMLSelect
+        large
+        options={languagesOptions}
+        value={props.selectedLanguage}
+        onChange={props.onLanguageChange}
+      />
       <EditorContainer>
         <MonacoEditor
-          language="javascript"
+          language={props.selectedLanguage}
           theme="vs-dark"
           value={props.editorCode}
           options={props.editorOptions}

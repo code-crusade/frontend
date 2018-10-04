@@ -29,7 +29,7 @@ function configureStore(initialState?: {}) {
     enhancer,
   );
 
-  epicMiddleware.run(rootEpic as any);
+  epicMiddleware.run(rootEpic);
 
   return newStore;
 }

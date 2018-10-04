@@ -49,9 +49,9 @@ export const withExerciseSubmissions = <
     }
   }
 
-  const mapStateToProps = (state: RootState) => ({
+  const mapStateToProps = (state: RootState, ownProps: any) => ({
     errors: getExerciseSubmissionsError(state.exerciseSubmissions),
-    exerciseSubmissions: getExerciseSubmissions(state.exerciseSubmissions),
+    exerciseSubmissions: getExerciseSubmissions(state),
     loading: getExerciseSubmissionsLoading(state.exerciseSubmissions),
   });
 
