@@ -1,4 +1,4 @@
-import { Button, H1, H3 } from '@blueprintjs/core';
+import { Button, H1, H3, IResizeEntry } from '@blueprintjs/core';
 import * as React from 'react';
 import MonacoEditor, {
   ChangeHandler,
@@ -14,17 +14,26 @@ export type EditorProps = {
   editorDidMount: EditorDidMount;
   editorOptions: object;
   editorOnChange: ChangeHandler;
+  editorOnResize: (entries: IResizeEntry[]) => void;
   onSubmit: (event: React.MouseEvent<HTMLElement>) => void;
 };
 
+const Container = styled.div`
+  display: grid;
+  grid-row: 2 / end;
+  grid-template-columns: 10% 20% auto auto 20% 10%;
+  grid-template-rows: 50px 25% 100px auto;
+`;
+
 const EditorContainer = styled.div`
   grid-column: 3 / end
-  grid-row: 2 / end
+  grid-row: 1 / end
 `;
 
 const ExerciseContainer = styled.div`
   grid-column: 1 / 3
-  grid-row: 2 / end
+  grid-row: 1 / end
+  padding: 1em
 `;
 
 export const ExercisesRead: React.SFC<
@@ -38,11 +47,11 @@ export const ExercisesRead: React.SFC<
     return <Err404 />;
   }
   return (
-    <React.Fragment>
+    <Container>
       <ExerciseContainer>
-        <H1>{props.exercise.title.en}</H1>
-        <H3>{props.exercise.description.en}</H3>
-        <Button onClick={props.onSubmit}>Submit code</Button>
+        <H1>{props.exercise.title.fr}</H1>
+        <H3>{props.exercise.description.fr}</H3>
+        <Button onClick={props.onSubmit}>Soumettre</Button>
       </ExerciseContainer>
       <EditorContainer>
         <MonacoEditor
@@ -54,6 +63,6 @@ export const ExercisesRead: React.SFC<
           editorDidMount={props.editorDidMount}
         />
       </EditorContainer>
-    </React.Fragment>
+    </Container>
   );
 };

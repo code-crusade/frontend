@@ -1,5 +1,6 @@
 import { ConnectedRouter } from 'connected-react-router';
 import * as React from 'react';
+import { hot } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import styled from 'styled-components';
 import { AppLayout } from './modules/ui/components/Layout';
@@ -16,7 +17,8 @@ const FullHeight = styled.div`
   height: 100vh;
 `;
 
-export class App extends React.PureComponent<AppProps> {
+// tslint:disable-next-line
+class _App extends React.PureComponent<AppProps> {
   public render() {
     return (
       <Provider store={this.props.store}>
@@ -32,3 +34,5 @@ export class App extends React.PureComponent<AppProps> {
     );
   }
 }
+
+export const App = hot(module)(_App);

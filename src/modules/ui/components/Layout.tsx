@@ -4,10 +4,10 @@ import { withLoggedInUser } from '../../../hocs/withLoggedInUser';
 
 const Container = styled.div`
   display: grid;
-  padding: 1em;
-  grid-template-columns: 10% 20% auto auto 20% 10%;
-  grid-template-rows: 50px 25% 100px auto;
+  grid-template-columns: 100%;
+  grid-template-rows: 50px auto;
   height: 100%;
+  justify-items: center;
 `;
 
 interface IPropsAppLayout {

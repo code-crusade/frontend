@@ -1,3 +1,4 @@
+import { IResizeEntry } from '@blueprintjs/core';
 import { get } from 'lodash';
 import * as monacoEditor from 'monaco-editor';
 import IModelContentChangedEvent = monacoEditor.editor.IModelContentChangedEvent;
@@ -32,16 +33,7 @@ interface ReadProps extends InjectedProps {
 }
 
 export class Read extends React.Component<ReadProps, ReadState> {
-  static editorDidMount(
-    codeEditor: IStandaloneCodeEditor,
-    monaco: typeof monacoEditor,
-  ) {
-    console.log('editorDidMount', codeEditor);
-    codeEditor.focus();
-  }
-  state = {
-    code: '// type your code...',
-  };
+  editor: IStandaloneCodeEditor | null = null;
 
   constructor(props: ReadProps) {
     super(props);
@@ -51,8 +43,17 @@ export class Read extends React.Component<ReadProps, ReadState> {
     };
   }
 
-  onChange = (newValue: string, e: IModelContentChangedEvent) => {
-    console.log('onChange', newValue, e);
+  editorDidMount = (
+    editor: IStandaloneCodeEditor,
+    monaco: typeof monacoEditor,
+  ) => {
+    console.log('editorDidMount', editor);
+    this.editor = editor;
+    editor.focus();
+  };
+
+  handleChange = (newValue: string, e: IModelContentChangedEvent) => {
+    console.log('handleChange', newValue, e);
     this.setState({ code: newValue });
   };
 
@@ -65,6 +66,27 @@ export class Read extends React.Component<ReadProps, ReadState> {
     });
   };
 
+  handleEditorResize = (entries: IResizeEntry[]) => {
+    console.log(
+      entries.map((e) => `${e.contentRect.width} x ${e.contentRect.height}`),
+    );
+    if (this.editor) {
+      this.editor.layout();
+    }
+  };
+
+  handleResize = () => {
+    return (this.editor as any).layout();
+  };
+
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+  }
+
   render() {
     return (
       <ExercisesRead
@@ -75,9 +97,10 @@ export class Read extends React.Component<ReadProps, ReadState> {
         editorOptions={{
           selectOnLineNumbers: true,
         }}
-        editorDidMount={Read.editorDidMount}
-        editorOnChange={this.onChange}
+        editorDidMount={this.editorDidMount}
+        editorOnChange={this.handleChange}
         onSubmit={this.handleSubmit}
+        editorOnResize={this.handleEditorResize}
       />
     );
   }

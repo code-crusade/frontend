@@ -26,8 +26,8 @@ export type AppNavbarProps = {
 };
 
 const StyledNavbar = styled(BluePrintNavBar)`
-  grid-row: 1 / span 1
-  grid-column: 1 / end
+  grid-row: 1
+  grid-column: 1
 `;
 
 export const Navbar: React.SFC<AppNavbarProps> = (props) => (

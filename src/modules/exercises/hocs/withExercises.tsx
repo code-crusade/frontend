@@ -10,7 +10,7 @@ import {
 } from '../selectors';
 
 // These props will be subtracted from original component type
-export interface InjectedProps {
+export interface WithExercisesInjectedProps {
   loading: boolean;
   error: Error;
   exercises: { [key: string]: Exercise };
@@ -20,11 +20,11 @@ interface SubstractedProps {
   browseExercises: () => void;
 }
 
-export const withExercises = <WrappedProps extends InjectedProps>(
+export const withExercises = <WrappedProps extends WithExercisesInjectedProps>(
   WrappedComponent: React.ComponentType<WrappedProps>,
 ) => {
   class WithExercises extends React.Component<
-    SubstractedProps & InjectedProps
+    SubstractedProps & WithExercisesInjectedProps
   > {
     // Enhance component name for debugging and ReactDevTools
     public static displayName = `withExercises(${WrappedComponent.name})`;
@@ -38,8 +38,8 @@ export const withExercises = <WrappedProps extends InjectedProps>(
     }
 
     public render() {
-      const { browseExercises, ...props } = this.props as InjectedProps &
-        SubstractedProps;
+      const { browseExercises, ...props } = this
+        .props as WithExercisesInjectedProps & SubstractedProps;
 
       return <WrappedComponent {...props} />;
     }
