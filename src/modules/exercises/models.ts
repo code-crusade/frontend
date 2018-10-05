@@ -14,12 +14,7 @@ export type Exercise = {
   };
   unitTests: any;
   // This could eventually be generated from an AST
-  templates: {
-    [SupportedLanguages.Java]: string;
-    [SupportedLanguages.Python]: string;
-    [SupportedLanguages.CSharp]: string;
-    [SupportedLanguages.Cpp]: string;
-  };
+  templates: { [lang in SupportedLanguages]: string };
 };
 
 export type ExerciseSubmission = {

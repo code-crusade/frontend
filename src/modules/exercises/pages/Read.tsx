@@ -147,25 +147,32 @@ export class Read extends React.Component<ReadProps, ReadState> {
   }
 }
 
+const mapStateToProps = (
+  state: RootState,
+  ownProps: WithExerciseInjectedProps,
+) => {
+  if (!ownProps.exercise) {
+    return {};
+  }
+  return {
+    mostRecentSubmission: getMostRecentSubmissionOfUser(
+      state,
+      ownProps.exercise.id,
+    ),
+  };
+};
+
+const mapDispatchToProps = {
+  addSubmission: (values: ExerciseSubmission) =>
+    exerciseSubmissionsAdd.request(values),
+};
+
 export const ExercisesReadPage = compose(
   withLoggedInUser,
   withExercise,
   withExerciseSubmissions, // This will not scale as we'll have 100s, but it's ok for now
   connect(
-    (state: RootState, ownProps: WithExerciseInjectedProps) => {
-      if (!ownProps.exercise) {
-        return {};
-      }
-      return {
-        mostRecentSubmission: getMostRecentSubmissionOfUser(
-          state,
-          ownProps.exercise.id,
-        ),
-      };
-    },
-    {
-      addSubmission: (values: ExerciseSubmission) =>
-        exerciseSubmissionsAdd.request(values),
-    },
+    mapStateToProps,
+    mapDispatchToProps,
   ),
 )(Read);

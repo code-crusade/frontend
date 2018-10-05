@@ -49,7 +49,6 @@ const languagesOptions = [
 export const ExercisesRead: React.SFC<
   EditorProps & WithExerciseInjectedProps
 > = (props) => {
-  console.log(props);
   if (props.loading) {
     return <Loading />;
   }
