@@ -1,6 +1,6 @@
 export enum SupportedLanguages {
   Cpp = 'cpp',
-  CSharp = 'csharp',
   Java = 'java',
+  Javascript = 'javascript',
   Python = 'python',
 }
