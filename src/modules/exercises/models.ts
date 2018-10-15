@@ -1,14 +1,18 @@
 // NOTE: All changes here must also be made in https://github.com/code-crusade/backend/blob/poc/src/main/java/com/etsmtl/codecrusade/entities/Exercise.java
 
-import { SupportedLanguages } from '../../config/enums';
-import { SupportedTypes } from '../../types/types';
+import {
+  Difficulties,
+  FunctionReturnTypes,
+  SupportedLanguages,
+} from '../../config/enums';
+import { IntlString } from '../../types/types';
 
 export type Template = {
   className: string;
   functionName: string;
   functionReturnValue: any;
-  functionReturnType: SupportedTypes;
-  args: Array<{ name: string; type: SupportedTypes }>;
+  functionReturnType: FunctionReturnTypes;
+  args: Array<{ name: string; type: FunctionReturnTypes }>;
   languageSpecs?: {
     [lang in SupportedLanguages]: {
       prependedCode: string;
@@ -19,14 +23,9 @@ export type Template = {
 
 export type Exercise = {
   id: string;
-  title: {
-    fr: string;
-    en: string;
-  };
-  description: {
-    fr: string;
-    en: string;
-  };
+  title: IntlString;
+  description: IntlString;
+  difficulty: Difficulties;
   unitTests: any;
   template: Template;
 };

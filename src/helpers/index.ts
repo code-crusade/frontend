@@ -1,9 +1,8 @@
 import { camelCase, capitalize, snakeCase } from 'lodash';
 import { ajax } from 'rxjs/ajax';
 import { URL_API } from '../config';
-import { SupportedLanguages } from '../config/enums';
+import { FunctionReturnTypes, SupportedLanguages } from '../config/enums';
 import { Template } from '../modules/exercises/models';
-import { SupportedTypes } from '../types/types';
 
 export enum Method {
   POST = 'POST',
@@ -30,18 +29,30 @@ export const generateCodeFromTemplate = (
   template: Template,
   targetLang: SupportedLanguages,
 ) => {
+  if (!template.functionName) {
+    return 'Error: Function name is missing';
+  }
+  if (!template.functionReturnValue) {
+    return 'Error: Function return value is missing';
+  }
   const argsAsString = template.args.reduce((carry, arg, i) => {
+    if (arg.name === '') {
+      return carry;
+    }
     let type = convertToLangType(arg.type, targetLang);
     type = type ? `${type} ` : '';
     return `${carry}${type}${arg.name}${
       i < template.args.length - 1 ? ', ' : ''
     }`;
   }, '');
+
   const functionReturnType = convertToLangType(
     template.functionReturnType,
     targetLang,
   );
+
   let code = '';
+
   if (targetLang === SupportedLanguages.Python) {
     code += `def ${template.functionName}(${argsAsString}):\n`;
     code += `    return ${template.functionReturnValue.toString()}\n`;
@@ -55,7 +66,8 @@ export const generateCodeFromTemplate = (
     code += `}\n`;
   }
   if (targetLang === SupportedLanguages.Java) {
-    code += `public class ${template.className} {\n`;
+    code += `public class ${template.className ||
+      capitalize(template.functionName)} {\n`;
     code += `    public static ${convertToLangType(
       template.functionReturnType,
       targetLang,
@@ -74,7 +86,7 @@ export const generateCodeFromTemplate = (
 };
 
 const convertToLangType = (
-  val: SupportedTypes,
+  val: FunctionReturnTypes,
   targetLang: SupportedLanguages,
 ) => {
   console.log(targetLang, val);
@@ -98,6 +110,8 @@ const convertToLangType = (
     switch (val) {
       case 'string':
         return 'std::string';
+      case 'string[]':
+        return 'std::string[]';
       default:
         return val;
     }

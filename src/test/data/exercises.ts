@@ -1,5 +1,7 @@
 // tslint:disable:prefer-template
 import * as faker from 'faker';
+import * as uuid from 'uuid/v4';
+import { Difficulties, FunctionReturnTypes } from '../../config/enums';
 import { Exercise } from '../../modules/exercises/models';
 import { Omit } from '../../types/types';
 
@@ -14,6 +16,7 @@ const partialResources: {
 
 Object.keys(ids).forEach((key) => {
   partialResources[key] = {
+    difficulty: Difficulties.MEDIUM,
     description: { fr: faker.lorem.paragraph(), en: faker.lorem.paragraph() },
     id: ids[key],
     unitTests: [faker.commerce.product(), faker.commerce.color()],
@@ -31,8 +34,8 @@ const resources: { [key: string]: Exercise } = {
       className: 'LengthOfLongestSubstring',
       functionName: 'lengthOfLongestSubstring',
       functionReturnValue: 4,
-      functionReturnType: 'int',
-      args: [{ name: 's', type: 'string' }],
+      functionReturnType: FunctionReturnTypes.INT,
+      args: [{ name: 's', type: FunctionReturnTypes.STRING }],
     },
   },
   B: {
@@ -45,10 +48,10 @@ const resources: { [key: string]: Exercise } = {
       className: 'FindMedianSortedArrays',
       functionName: 'findMedianSortedArrays',
       functionReturnValue: 2.6,
-      functionReturnType: 'float',
+      functionReturnType: FunctionReturnTypes.FLOAT,
       args: [
-        { name: 'nums1', type: 'int[]' },
-        { name: 'nums2', type: 'int[]' },
+        { name: 'nums1', type: FunctionReturnTypes['INT[]'] },
+        { name: 'nums2', type: FunctionReturnTypes['INT[]'] },
       ],
     },
   },
@@ -62,7 +65,17 @@ const items: { [key: string]: Exercise } = Object.values(resources).reduce(
   {},
 );
 
+const add = (formValues: Omit<Exercise, 'id'>) => {
+  const id = uuid();
+  const newItem = { ...formValues, id };
+
+  items[id] = newItem;
+
+  return newItem;
+};
+
 export const testExercises = {
+  add,
   ids,
   items,
   resources,
