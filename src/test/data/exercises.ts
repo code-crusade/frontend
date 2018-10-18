@@ -1,6 +1,5 @@
 // tslint:disable:prefer-template
 import * as faker from 'faker';
-import { SupportedLanguages } from '../../config/enums';
 import { Exercise } from '../../modules/exercises/models';
 import { Omit } from '../../types/types';
 
@@ -10,7 +9,7 @@ const ids: { [key: string]: string } = {
 };
 
 const partialResources: {
-  [key: string]: Omit<Exercise, 'title' | 'templates'>;
+  [key: string]: Omit<Exercise, 'title' | 'template'>;
 } = {};
 
 Object.keys(ids).forEach((key) => {
@@ -28,16 +27,12 @@ const resources: { [key: string]: Exercise } = {
       en: 'Longest Substring Without Repeating Characters',
       fr: 'Sous-chaîne la plus longue sans caractères répétés',
     },
-    templates: {
-      [SupportedLanguages.Python]: 'def maxSequence(arr):\n' + '   return 4\n',
-      [SupportedLanguages.Java]:
-        'public class Max {\n' +
-        '  public static int sequence(int[] arr) {\n' +
-        '    return 4;\n' +
-        '  }\n' +
-        '}\n',
-      [SupportedLanguages.Cpp]: '',
-      [SupportedLanguages.CSharp]: '',
+    template: {
+      className: 'LengthOfLongestSubstring',
+      functionName: 'lengthOfLongestSubstring',
+      functionReturnValue: 4,
+      functionReturnType: 'int',
+      args: [{ name: 's', type: 'string' }],
     },
   },
   B: {
@@ -46,16 +41,15 @@ const resources: { [key: string]: Exercise } = {
       en: 'Median of Two Sorted Arrays',
       fr: 'Médiane de deux tableaux triés',
     },
-    templates: {
-      [SupportedLanguages.Python]: 'def maxSequence(arr):\n' + '   return 4\n',
-      [SupportedLanguages.Java]:
-        'public class Max {\n' +
-        '  public static int sequence(int[] arr) {\n' +
-        '    return 4;\n' +
-        '  }\n' +
-        '}\n',
-      [SupportedLanguages.Cpp]: '',
-      [SupportedLanguages.CSharp]: '',
+    template: {
+      className: 'FindMedianSortedArrays',
+      functionName: 'findMedianSortedArrays',
+      functionReturnValue: 2.6,
+      functionReturnType: 'float',
+      args: [
+        { name: 'nums1', type: 'int[]' },
+        { name: 'nums2', type: 'int[]' },
+      ],
     },
   },
 };
