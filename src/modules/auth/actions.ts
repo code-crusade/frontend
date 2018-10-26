@@ -1,10 +1,11 @@
 import { createAsyncAction } from 'typesafe-actions';
+import { User } from '../users/models';
 
 export const authLogIn = createAsyncAction(
   'AUTH_LOG_IN_REQUEST',
   'AUTH_LOG_IN_SUCCESS',
   'AUTH_LOG_IN_FAILURE',
-)<any, any, Error>();
+)<User, User, Error>();
 
 export const authLogOut = createAsyncAction(
   'AUTH_LOG_OUT_REQUEST',
