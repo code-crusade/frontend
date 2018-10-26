@@ -41,8 +41,8 @@ const ExerciseContainer = styled.div`
 
 const languagesOptions = [
   { label: 'C++', value: SupportedLanguages.Cpp },
-  { label: 'C#', value: SupportedLanguages.CSharp },
   { label: 'Java', value: SupportedLanguages.Java },
+  { label: 'Javascript', value: SupportedLanguages.Javascript },
   { label: 'Python', value: SupportedLanguages.Python },
 ];
 

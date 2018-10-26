@@ -4,6 +4,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { SupportedLanguages } from '../../../config/enums';
+import { generateCodeFromTemplate } from '../../../helpers';
 import IModelContentChangedEvent = monacoEditor.editor.IModelContentChangedEvent;
 import IStandaloneCodeEditor = monacoEditor.editor.IStandaloneCodeEditor;
 import { RootState } from '../../../store/root-reducer';
@@ -43,17 +44,19 @@ export class Read extends React.Component<ReadProps, ReadState> {
     super(props);
 
     let code = '';
-    console.log(props);
 
     if (props.mostRecentSubmission) {
       code = props.mostRecentSubmission.code;
     } else if (props.exercise) {
-      code = props.exercise.templates[SupportedLanguages.Java];
+      code = generateCodeFromTemplate(
+        props.exercise.template,
+        SupportedLanguages.Javascript,
+      );
     }
 
     this.state = {
       code,
-      selectedLanguage: SupportedLanguages.Java,
+      selectedLanguage: SupportedLanguages.Javascript,
     };
   }
 
@@ -67,7 +70,10 @@ export class Read extends React.Component<ReadProps, ReadState> {
     }
     if (this.props.exercise && !prevProps.exercise) {
       this.setState({
-        code: this.props.exercise.templates[SupportedLanguages.Java],
+        code: generateCodeFromTemplate(
+          this.props.exercise.template,
+          SupportedLanguages.Javascript,
+        ),
       });
     }
   }
@@ -76,7 +82,6 @@ export class Read extends React.Component<ReadProps, ReadState> {
     editor: IStandaloneCodeEditor,
     monaco: typeof monacoEditor,
   ) => {
-    console.log('editorDidMount', editor);
     this.editor = editor;
     editor.focus();
   };
@@ -89,9 +94,8 @@ export class Read extends React.Component<ReadProps, ReadState> {
   handleLanguageChange = (event: React.FormEvent<HTMLSelectElement>) => {
     this.setState({
       selectedLanguage: event.currentTarget.value as SupportedLanguages,
-      code: this.props.exercise.templates[
-        event.currentTarget.value as SupportedLanguages
-      ],
+      code: generateCodeFromTemplate(this.props.exercise.template, event
+        .currentTarget.value as SupportedLanguages),
     });
   };
 

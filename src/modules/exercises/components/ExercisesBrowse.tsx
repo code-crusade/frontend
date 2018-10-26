@@ -1,15 +1,21 @@
-import { Button, HTMLTable } from '@blueprintjs/core';
+import { Button, HTMLTable, Intent, Tag } from '@blueprintjs/core';
 import { isEmpty } from 'lodash';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Err404 } from '../../../components/Err404';
 import { Loading } from '../../../components/Loading';
+import { Difficulties } from '../../../config/enums';
 import { WithExercisesInjectedProps } from '../hocs/withExercises';
 
 const Container = styled.div`
   padding: 1em;
   max-width: 960px;
+`;
+
+const RightAlignedTh = styled.th`
+  display: grid;
+  justify-content: right;
 `;
 
 export const ExercisesBrowse: React.SFC<WithExercisesInjectedProps> = (
@@ -24,13 +30,18 @@ export const ExercisesBrowse: React.SFC<WithExercisesInjectedProps> = (
   }
   return (
     <Container>
-      <h1>Exercices</h1>
+      <h1>Exercises</h1>
       <HTMLTable>
         <thead>
           <tr>
             <th>Titre</th>
             <th>Description</th>
-            <th />
+            <th>Difficulté</th>
+            <RightAlignedTh>
+              <Link to={`/exercises/add`}>
+                <Button rightIcon="add" text="Ajouter" />
+              </Link>
+            </RightAlignedTh>
           </tr>
         </thead>
         <tbody>
@@ -38,6 +49,18 @@ export const ExercisesBrowse: React.SFC<WithExercisesInjectedProps> = (
             <tr key={key}>
               <td>{props.exercises[key].title.fr}</td>
               <td>{props.exercises[key].description.fr}</td>
+              <td>
+                {(() => {
+                  switch (props.exercises[key].difficulty) {
+                    case Difficulties.EASY:
+                      return <Tag intent={Intent.SUCCESS}>Facile</Tag>;
+                    case Difficulties.MEDIUM:
+                      return <Tag intent={Intent.WARNING}>Moyen</Tag>;
+                    case Difficulties.HARD:
+                      return <Tag intent={Intent.DANGER}>Difficile</Tag>;
+                  }
+                })()}
+              </td>
               <td>
                 <Link to={`/exercises/${key}`}>
                   <Button

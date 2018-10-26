@@ -5,7 +5,7 @@ import {
   WithExercisesInjectedProps,
 } from '../hocs/withExercises';
 
-export class Browse extends React.PureComponent<WithExercisesInjectedProps> {
+export class Browse extends React.Component<WithExercisesInjectedProps> {
   render() {
     const { exercises, loading, error } = this.props;
 
@@ -15,4 +15,4 @@ export class Browse extends React.PureComponent<WithExercisesInjectedProps> {
   }
 }
 
-export const ExercicesBrowsePage = withExercises(Browse);
+export const ExercisesBrowsePage = withExercises(Browse);

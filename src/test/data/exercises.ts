@@ -1,6 +1,11 @@
 // tslint:disable:prefer-template
 import * as faker from 'faker';
-import { SupportedLanguages } from '../../config/enums';
+import * as uuid from 'uuid/v4';
+import {
+  Difficulties,
+  FunctionReturnTypes,
+  SupportedLanguages,
+} from '../../config/enums';
 import { Exercise } from '../../modules/exercises/models';
 import { Omit } from '../../types/types';
 
@@ -10,11 +15,12 @@ const ids: { [key: string]: string } = {
 };
 
 const partialResources: {
-  [key: string]: Omit<Exercise, 'title' | 'templates'>;
+  [key: string]: Omit<Exercise, 'title' | 'template'>;
 } = {};
 
 Object.keys(ids).forEach((key) => {
   partialResources[key] = {
+    difficulty: Difficulties.MEDIUM,
     description: { fr: faker.lorem.paragraph(), en: faker.lorem.paragraph() },
     id: ids[key],
     unitTests: [faker.commerce.product(), faker.commerce.color()],
@@ -28,16 +34,20 @@ const resources: { [key: string]: Exercise } = {
       en: 'Longest Substring Without Repeating Characters',
       fr: 'Sous-chaîne la plus longue sans caractères répétés',
     },
-    templates: {
-      [SupportedLanguages.Python]: 'def maxSequence(arr):\n' + '   return 4\n',
-      [SupportedLanguages.Java]:
-        'public class Max {\n' +
-        '  public static int sequence(int[] arr) {\n' +
-        '    return 4;\n' +
-        '  }\n' +
-        '}\n',
-      [SupportedLanguages.Cpp]: '',
-      [SupportedLanguages.CSharp]: '',
+    template: {
+      className: 'LengthOfLongestSubstring',
+      functionName: 'lengthOfLongestSubstring',
+      functionReturnValue: 4,
+      functionReturnType: FunctionReturnTypes.INT,
+      args: [{ name: 's', type: FunctionReturnTypes.STRING }],
+      appendedCode: Object.values(SupportedLanguages).reduce(
+        (carry, lang) => ({ ...carry, [lang]: '' }),
+        {},
+      ),
+      prependedCode: Object.values(SupportedLanguages).reduce(
+        (carry, lang) => ({ ...carry, [lang]: '' }),
+        {},
+      ),
     },
   },
   B: {
@@ -46,16 +56,23 @@ const resources: { [key: string]: Exercise } = {
       en: 'Median of Two Sorted Arrays',
       fr: 'Médiane de deux tableaux triés',
     },
-    templates: {
-      [SupportedLanguages.Python]: 'def maxSequence(arr):\n' + '   return 4\n',
-      [SupportedLanguages.Java]:
-        'public class Max {\n' +
-        '  public static int sequence(int[] arr) {\n' +
-        '    return 4;\n' +
-        '  }\n' +
-        '}\n',
-      [SupportedLanguages.Cpp]: '',
-      [SupportedLanguages.CSharp]: '',
+    template: {
+      className: 'FindMedianSortedArrays',
+      functionName: 'findMedianSortedArrays',
+      functionReturnValue: 2.6,
+      functionReturnType: FunctionReturnTypes.FLOAT,
+      args: [
+        { name: 'nums1', type: FunctionReturnTypes['INT[]'] },
+        { name: 'nums2', type: FunctionReturnTypes['INT[]'] },
+      ],
+      appendedCode: Object.values(SupportedLanguages).reduce(
+        (carry, lang) => ({ ...carry, [lang]: '' }),
+        {},
+      ),
+      prependedCode: Object.values(SupportedLanguages).reduce(
+        (carry, lang) => ({ ...carry, [lang]: '' }),
+        {},
+      ),
     },
   },
 };
@@ -68,7 +85,17 @@ const items: { [key: string]: Exercise } = Object.values(resources).reduce(
   {},
 );
 
+const add = (formValues: Omit<Exercise, 'id'>) => {
+  const id = uuid();
+  const newItem = { ...formValues, id };
+
+  items[id] = newItem;
+
+  return newItem;
+};
+
 export const testExercises = {
+  add,
   ids,
   items,
   resources,

@@ -18,7 +18,7 @@ const FullHeight = styled.div`
 `;
 
 // tslint:disable-next-line
-class _App extends React.PureComponent<AppProps> {
+class _App extends React.Component<AppProps> {
   public render() {
     return (
       <Provider store={this.props.store}>

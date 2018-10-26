@@ -1,7 +1,7 @@
 import { of, throwError } from 'rxjs';
-import { Method, xhr } from '../../../helpers';
 import { Exercise } from '../../../modules/exercises/models';
 import { testExercises } from '../../../test/data';
+import { Omit } from '../../../types/types';
 
 export const browse = ({
   page = 0,
@@ -30,6 +30,11 @@ export const read = (id: string) => {
   });
 };
 
-export const add = (exercise: Exercise) => {
-  return xhr(Method.POST, '/exercises', exercise);
+export const add = (exercise: Omit<Exercise, 'id'>) => {
+  const res = testExercises.add(exercise);
+  return of({
+    response: {
+      data: { _embedded: { exercise: res } },
+    },
+  });
 };
