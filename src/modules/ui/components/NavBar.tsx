@@ -60,19 +60,19 @@ export const Navbar: React.SFC<AppNavbarProps> = (props) => (
               <React.Fragment>
                 <MenuItem
                   icon={IconNames.COG}
-                  text="Account settings"
+                  text="Paramètres"
                   onClick={props.onProfileClick}
                 />
                 <MenuItem
                   icon={IconNames.LOG_OUT}
-                  text="Log out"
+                  text="Se déconnecter"
                   onClick={props.onLogoutClick}
                 />
               </React.Fragment>
             ) : (
               <MenuItem
                 icon={IconNames.LOG_IN}
-                text="Log in/Sign up"
+                text="Se connecter"
                 onClick={props.onLoginClick}
               />
             )}

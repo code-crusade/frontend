@@ -5,3 +5,8 @@ export type IntlString = {
   fr: string;
   en: string;
 };
+
+export interface BaseComponentProps {
+  loading: boolean;
+  error: Error;
+}

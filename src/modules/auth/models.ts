@@ -2,6 +2,4 @@
 
 import { User } from '../users/models';
 
-export type Auth = {
-  user: User;
-};
+export interface Auth extends User {}

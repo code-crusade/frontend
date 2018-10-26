@@ -24,7 +24,8 @@
     "object-literal-sort-keys": false,
     "jsx-no-lambda": false,
     "no-string-literal": false,
-    "prefer-array-literal": [true, { "allow-type-parameters": true }]
+    "prefer-array-literal": [true, { "allow-type-parameters": true }],
+    "no-empty-interface": false
   },
   "rulesDirectory": [
     "node_modules/tslint-eslint-rules/dist/rules",
