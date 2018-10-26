@@ -2,10 +2,14 @@ import { FormikProps } from 'formik';
 import * as React from 'react';
 import { Err404 } from '../../../components/Err404';
 import { Loading } from '../../../components/Loading';
-import { Difficulties, FunctionReturnTypes } from '../../../config/enums';
+import {
+  Difficulties,
+  FunctionReturnTypes,
+  SupportedLanguages,
+} from '../../../config/enums';
 import { Omit } from '../../../types/types';
 import { Exercise } from '../models';
-import { ExercisesAddForm } from './ExercisesAddForm';
+import { ExercisesAddFormik } from './ExercisesAddFormik';
 
 export type ExercisesReadProps = {
   onSubmit: (
@@ -26,7 +30,7 @@ export const ExercisesAdd: React.SFC<ExercisesReadProps> = (props) => {
   return (
     <React.Fragment>
       <h1>Nouvel exercice</h1>
-      <ExercisesAddForm
+      <ExercisesAddFormik
         initialValues={{
           title: {
             fr: '',
@@ -42,6 +46,14 @@ export const ExercisesAdd: React.SFC<ExercisesReadProps> = (props) => {
             functionReturnType: FunctionReturnTypes.STRING,
             functionReturnValue: '',
             args: [{ name: '', type: FunctionReturnTypes.INT }],
+            prependedCode: Object.values(SupportedLanguages).reduce(
+              (carry, lang) => ({ ...carry, [lang]: '' }),
+              {},
+            ),
+            appendedCode: Object.values(SupportedLanguages).reduce(
+              (carry, lang) => ({ ...carry, [lang]: '' }),
+              {},
+            ),
           },
         }}
         onSubmit={props.onSubmit}

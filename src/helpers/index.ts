@@ -82,14 +82,15 @@ export const generateCodeFromTemplate = (
     code += `}\n`;
   }
 
-  return code;
+  return `${template.prependedCode[targetLang]}\n${code}\n${
+    template.appendedCode[targetLang]
+  }`;
 };
 
 const convertToLangType = (
   val: FunctionReturnTypes,
   targetLang: SupportedLanguages,
 ) => {
-  console.log(targetLang, val);
   if (targetLang === SupportedLanguages.Java) {
     switch (val) {
       case 'float':

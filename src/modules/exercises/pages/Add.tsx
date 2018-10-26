@@ -37,7 +37,6 @@ interface AddProps extends InjectedProps {
 
 export class Add extends React.Component<AddProps, AddState> {
   handleChange = (newValue: string, e: IModelContentChangedEvent) => {
-    console.log('handleChange', newValue, e);
     this.setState({ code: newValue });
   };
 

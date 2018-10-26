@@ -13,12 +13,8 @@ export type Template = {
   functionReturnValue: any;
   functionReturnType: FunctionReturnTypes;
   args: Array<{ name: string; type: FunctionReturnTypes }>;
-  languageSpecs?: {
-    [lang in SupportedLanguages]: {
-      prependedCode: string;
-      appendedCode: string;
-    }
-  };
+  prependedCode: { [lang in SupportedLanguages]: string };
+  appendedCode: { [lang in SupportedLanguages]: string };
 };
 
 export type Exercise = {

@@ -1,7 +1,11 @@
 // tslint:disable:prefer-template
 import * as faker from 'faker';
 import * as uuid from 'uuid/v4';
-import { Difficulties, FunctionReturnTypes } from '../../config/enums';
+import {
+  Difficulties,
+  FunctionReturnTypes,
+  SupportedLanguages,
+} from '../../config/enums';
 import { Exercise } from '../../modules/exercises/models';
 import { Omit } from '../../types/types';
 
@@ -36,6 +40,14 @@ const resources: { [key: string]: Exercise } = {
       functionReturnValue: 4,
       functionReturnType: FunctionReturnTypes.INT,
       args: [{ name: 's', type: FunctionReturnTypes.STRING }],
+      appendedCode: Object.values(SupportedLanguages).reduce(
+        (carry, lang) => ({ ...carry, [lang]: '' }),
+        {},
+      ),
+      prependedCode: Object.values(SupportedLanguages).reduce(
+        (carry, lang) => ({ ...carry, [lang]: '' }),
+        {},
+      ),
     },
   },
   B: {
@@ -53,6 +65,14 @@ const resources: { [key: string]: Exercise } = {
         { name: 'nums1', type: FunctionReturnTypes['INT[]'] },
         { name: 'nums2', type: FunctionReturnTypes['INT[]'] },
       ],
+      appendedCode: Object.values(SupportedLanguages).reduce(
+        (carry, lang) => ({ ...carry, [lang]: '' }),
+        {},
+      ),
+      prependedCode: Object.values(SupportedLanguages).reduce(
+        (carry, lang) => ({ ...carry, [lang]: '' }),
+        {},
+      ),
     },
   },
 };

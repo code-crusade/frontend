@@ -44,7 +44,6 @@ export class Read extends React.Component<ReadProps, ReadState> {
     super(props);
 
     let code = '';
-    console.log(props);
 
     if (props.mostRecentSubmission) {
       code = props.mostRecentSubmission.code;
@@ -83,7 +82,6 @@ export class Read extends React.Component<ReadProps, ReadState> {
     editor: IStandaloneCodeEditor,
     monaco: typeof monacoEditor,
   ) => {
-    console.log('editorDidMount', editor);
     this.editor = editor;
     editor.focus();
   };
