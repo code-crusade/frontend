@@ -1,14 +1,14 @@
 import { Card, H4 } from '@blueprintjs/core';
 import * as React from 'react';
 import styled from 'styled-components';
-import { LoginFormik, OnSubmitLogin } from './LoginFormik';
+import { LoginForm, OnSubmitLogin } from './LoginForm';
 
 export type LoginProps = OnSubmitLogin;
 
 const Container = styled.div`
   display: grid;
   align-self: center;
-  width: 20%;
+  min-width: 25%;
 `;
 
 export const Login: React.SFC<LoginProps> = (props) => {
@@ -16,7 +16,7 @@ export const Login: React.SFC<LoginProps> = (props) => {
     <Container>
       <H4>Se connecter</H4>
       <Card elevation={1}>
-        <LoginFormik initialValues={{}} onSubmit={props.onSubmit} />
+        <LoginForm initialValues={{}} onSubmit={props.onSubmit} />
       </Card>
     </Container>
   );

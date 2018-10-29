@@ -6,16 +6,15 @@ import {
   Intent,
 } from '@blueprintjs/core';
 import * as classNames from 'classnames';
-import { Form, FormikProps } from 'formik';
+import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import { get } from 'lodash';
 import * as React from 'react';
+import * as Yup from 'yup';
 import { Credentials } from '../models';
 
-export type LoginFormProps = FormikProps<Credentials>;
-
-export class LoginForm extends React.Component<LoginFormProps> {
+export class LoginBaseForm extends React.Component<FormikProps<Credentials>> {
   render() {
-    const { touched, errors } = this.props;
+    const { touched, errors, isSubmitting, handleChange } = this.props;
 
     return (
       <Form>
@@ -29,6 +28,7 @@ export class LoginForm extends React.Component<LoginFormProps> {
             name="email"
             placeholder="Email"
             leftIcon="envelope"
+            onChange={handleChange}
             className={classNames({
               [Classes.INTENT_DANGER]:
                 get(touched, 'email') && get(errors, 'email'),
@@ -39,18 +39,47 @@ export class LoginForm extends React.Component<LoginFormProps> {
           <InputGroup
             type="password"
             name="password"
+            onChange={handleChange}
             placeholder="Mot de passe"
             leftIcon="lock"
           />
         </FormGroup>
-        <Button
-          type="submit"
-          disabled={this.props.isSubmitting}
-          intent="primary"
-        >
+        <Button type="submit" disabled={isSubmitting} intent="primary">
           Connexion
         </Button>
       </Form>
     );
   }
 }
+
+export type OnSubmitLogin = {
+  onSubmit: (
+    values: Credentials,
+    props: FormikProps<Partial<Credentials>>,
+  ) => void;
+};
+
+type LoginFormikProps = OnSubmitLogin & {
+  initialValues: FormikValues;
+};
+
+// Login Validation Schema
+const LoginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Email invalide')
+    .required('Email requis'),
+  password: Yup.string().required('Mot de passe requis'),
+});
+
+export const LoginForm: React.SFC<LoginFormikProps> = (props) => {
+  return (
+    <Formik
+      initialValues={props.initialValues}
+      validationSchema={LoginSchema}
+      onSubmit={props.onSubmit}
+      render={(formikProps: FormikProps<Credentials>) => (
+        <LoginBaseForm {...formikProps} />
+      )}
+    />
+  );
+};
