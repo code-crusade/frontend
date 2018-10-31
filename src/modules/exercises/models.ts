@@ -22,7 +22,7 @@ export type Exercise = {
   title: IntlString;
   description: IntlString;
   difficulty: Difficulties;
-  unitTests: UnitTest[];
+  sampleTestCases: TestCase[];
   template: Template;
 };
 
@@ -35,10 +35,16 @@ export type ExerciseSubmission = {
   language: SupportedLanguages;
 };
 
-export type UnitTest = {
-  input: Array<{
-    inputType: FunctionReturnTypes;
-    inputValue: any;
+export type TestCase = {
+  it: string;
+  assertions: Array<{
+    inputArguments: Array<{
+      type: FunctionReturnTypes;
+      value: any;
+    }>;
+    expectedOutput: {
+      type: FunctionReturnTypes;
+      value: any;
+    };
   }>;
-  outputValue: any;
 };
