@@ -4,7 +4,7 @@ export class DashboardBrowsePage extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <h1>Dashboard</h1>
+        <h1>Accueil</h1>
       </React.Fragment>
     );
   }

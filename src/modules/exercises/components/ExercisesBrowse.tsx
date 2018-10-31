@@ -30,7 +30,7 @@ export const ExercisesBrowse: React.SFC<WithExercisesInjectedProps> = (
   }
   return (
     <Container>
-      <h1>Exercises</h1>
+      <h1>Exercices</h1>
       <HTMLTable>
         <thead>
           <tr>

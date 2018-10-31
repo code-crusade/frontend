@@ -9,19 +9,21 @@ import {
   NavbarGroup,
   NavbarHeading,
   Popover,
+  Position,
 } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { History } from 'history';
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 import styled from 'styled-components';
 import { omitProps } from '../../../hocs/omitProps';
 
 export type AppNavbarProps = {
-  onLoginClick: () => void;
-  onLogoutClick: () => void;
-  onProfileClick: () => void;
+  onHomeClick(): void;
+  onExercisesClick(): void;
+  onLoginClick(): void;
+  onLogoutClick(): void;
+  onProfileClick(): void;
   isLoggedIn: boolean;
 };
 
@@ -31,62 +33,68 @@ const StyledNavbar = styled(BluePrintNavBar)`
 `;
 
 export const Navbar: React.SFC<AppNavbarProps> = (props) => (
-  <StyledNavbar>
+  <StyledNavbar className="bp3-dark">
     <NavbarGroup align={Alignment.LEFT}>
+      <NavbarHeading>
+        <img srcSet="/images/rabbit.svg" alt="Logo rabbit" width={32} />
+      </NavbarHeading>
       <NavbarHeading>Code Crusade</NavbarHeading>
       <NavbarDivider />
-      <Link to="/">
-        <Button
-          className={Classes.MINIMAL}
-          icon={IconNames.HOME}
-          text="Accueil"
-        />
-      </Link>
-      <Link to="/exercises">
-        <Button
-          className={Classes.MINIMAL}
-          icon={IconNames.ANNOTATION}
-          text="Exercises"
-        />
-      </Link>
+      <Button
+        className={Classes.MINIMAL}
+        icon={IconNames.HOME}
+        text="Accueil"
+        onClick={props.onHomeClick}
+      />
+      <Button
+        className={Classes.MINIMAL}
+        icon={IconNames.ANNOTATION}
+        text="Excercices"
+        onClick={props.onExercisesClick}
+      />
     </NavbarGroup>
     <NavbarGroup align={Alignment.RIGHT}>
-      <Popover
-        minimal={true}
-        content={
-          // https://github.com/palantir/blueprint/issues/185
-          <Menu>
-            {props.isLoggedIn ? (
-              <React.Fragment>
-                <MenuItem
-                  icon={IconNames.COG}
-                  text="Paramètres"
-                  onClick={props.onProfileClick}
-                />
-                <MenuItem
-                  icon={IconNames.LOG_OUT}
-                  text="Se déconnecter"
-                  onClick={props.onLogoutClick}
-                />
-              </React.Fragment>
-            ) : (
+      {props.isLoggedIn ? (
+        <Popover
+          minimal={true}
+          position={Position.BOTTOM}
+          content={
+            <Menu>
               <MenuItem
-                icon={IconNames.LOG_IN}
-                text="Se connecter"
-                onClick={props.onLoginClick}
+                icon={IconNames.COG}
+                text="Paramètres"
+                onClick={props.onProfileClick}
               />
-            )}
-          </Menu>
-        }
-      >
-        <Button className={Classes.MINIMAL} icon="cog" />
-      </Popover>
+              <MenuItem
+                icon={IconNames.LOG_OUT}
+                text="Se déconnecter"
+                onClick={props.onLogoutClick}
+              />
+            </Menu>
+          }
+        >
+          <Button className={Classes.MINIMAL} icon="user" text="Patrick" />
+        </Popover>
+      ) : (
+        <Button
+          className={Classes.MINIMAL}
+          icon={IconNames.LOG_IN}
+          text="Se connecter"
+          onClick={props.onLoginClick}
+        />
+      )}
     </NavbarGroup>
   </StyledNavbar>
 );
 
 export const AppNavbar = compose<any, any>(
   withProps((ownerProps: { history: History }) => ({
+    onHomeClick: () => {
+      ownerProps.history.push('/');
+    },
+    onExercisesClick: () => {
+      ownerProps.history.push('/exercises');
+    },
     onLoginClick: () => {
       ownerProps.history.push('/auth/login');
     },
