@@ -1,4 +1,5 @@
 // tslint:disable:prefer-template
+// tslint:disable:no-duplicate-string
 import * as faker from 'faker';
 import * as uuid from 'uuid/v4';
 import {
@@ -16,7 +17,7 @@ const ids: { [key: string]: string } = {
 };
 
 const partialResources: {
-  [key: string]: Omit<Exercise, 'title' | 'template'>;
+  [key: string]: Omit<Exercise, 'title' | 'template' | 'sampleTestCases'>;
 } = {};
 
 Object.keys(ids).forEach((key) => {
@@ -49,6 +50,7 @@ const resources: { [key: string]: Exercise } = {
         {},
       ),
     },
+<<<<<<< HEAD
     unitTests: [
       {
         input: [
@@ -76,6 +78,49 @@ const resources: { [key: string]: Exercise } = {
           },
         ],
         outputValue: 3,
+=======
+    sampleTestCases: [
+      {
+        it: 'Example tests',
+        assertions: [
+          {
+            inputArguments: [
+              {
+                type: FunctionReturnTypes.STRING,
+                value: 'abcabcbb',
+              },
+            ],
+            expectedOutput: {
+              type: FunctionReturnTypes.INT,
+              value: 3,
+            },
+          },
+          {
+            inputArguments: [
+              {
+                type: FunctionReturnTypes.STRING,
+                value: 'bbbbb',
+              },
+            ],
+            expectedOutput: {
+              type: FunctionReturnTypes.INT,
+              value: 1,
+            },
+          },
+          {
+            inputArguments: [
+              {
+                type: FunctionReturnTypes.STRING,
+                value: 'pwwkew',
+              },
+            ],
+            expectedOutput: {
+              type: FunctionReturnTypes.INT,
+              value: 3,
+            },
+          },
+        ],
+>>>>>>> Add UnitTest model & test-data
       },
     ],
   },
@@ -103,6 +148,7 @@ const resources: { [key: string]: Exercise } = {
         {},
       ),
     },
+<<<<<<< HEAD
     unitTests: [
       {
         input: [
@@ -129,6 +175,45 @@ const resources: { [key: string]: Exercise } = {
           },
         ],
         outputValue: 2.5,
+=======
+    sampleTestCases: [
+      {
+        it: 'Example tests',
+        assertions: [
+          {
+            inputArguments: [
+              {
+                type: FunctionReturnTypes['INT[]'],
+                value: [1, 3],
+              },
+              {
+                type: FunctionReturnTypes['INT[]'],
+                value: [2],
+              },
+            ],
+            expectedOutput: {
+              type: FunctionReturnTypes.FLOAT,
+              value: 2.0,
+            },
+          },
+          {
+            inputArguments: [
+              {
+                type: FunctionReturnTypes['INT[]'],
+                value: [1, 2],
+              },
+              {
+                type: FunctionReturnTypes['INT[]'],
+                value: [3, 4],
+              },
+            ],
+            expectedOutput: {
+              type: FunctionReturnTypes.FLOAT,
+              value: 2.5,
+            },
+          },
+        ],
+>>>>>>> Add UnitTest model & test-data
       },
     ],
   },
@@ -153,6 +238,7 @@ const resources: { [key: string]: Exercise } = {
         {},
       ),
     },
+<<<<<<< HEAD
     unitTests: [
       {
         input: [
@@ -180,6 +266,49 @@ const resources: { [key: string]: Exercise } = {
           },
         ],
         outputValue: 'semynak',
+=======
+    sampleTestCases: [
+      {
+        it: 'Example tests',
+        assertions: [
+          {
+            inputArguments: [
+              {
+                type: FunctionReturnTypes.STRING,
+                value: 'man i need a taxi up to ubud',
+              },
+            ],
+            expectedOutput: {
+              type: FunctionReturnTypes.STRING,
+              value: 'taxi',
+            },
+          },
+          {
+            inputArguments: [
+              {
+                type: FunctionReturnTypes.STRING,
+                value: 'what time are we climbing up to the volcano',
+              },
+            ],
+            expectedOutput: {
+              type: FunctionReturnTypes.STRING,
+              value: 'volcano',
+            },
+          },
+          {
+            inputArguments: [
+              {
+                type: FunctionReturnTypes.STRING,
+                value: 'take me to semynak',
+              },
+            ],
+            expectedOutput: {
+              type: FunctionReturnTypes.STRING,
+              value: 'semynak',
+            },
+          },
+        ],
+>>>>>>> Add UnitTest model & test-data
       },
     ],
   },
