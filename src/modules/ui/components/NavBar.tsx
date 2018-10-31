@@ -21,6 +21,9 @@ import { omitProps } from '../../../hocs/omitProps';
 export type AppNavbarProps = {
   onHomeClick(): void;
   onExercisesClick(): void;
+  onNewExceriseClick(): void;
+  onGroupsClick(): void;
+  onNewGroupClick(): void;
   onLoginClick(): void;
   onLogoutClick(): void;
   onProfileClick(): void;
@@ -35,9 +38,6 @@ const StyledNavbar = styled(BluePrintNavBar)`
 export const Navbar: React.SFC<AppNavbarProps> = (props) => (
   <StyledNavbar className="bp3-dark">
     <NavbarGroup align={Alignment.LEFT}>
-      <NavbarHeading>
-        <img srcSet="/images/rabbit.svg" alt="Logo rabbit" width={32} />
-      </NavbarHeading>
       <NavbarHeading>Code Crusade</NavbarHeading>
       <NavbarDivider />
       <Button
@@ -46,12 +46,56 @@ export const Navbar: React.SFC<AppNavbarProps> = (props) => (
         text="Accueil"
         onClick={props.onHomeClick}
       />
-      <Button
-        className={Classes.MINIMAL}
-        icon={IconNames.ANNOTATION}
-        text="Excercices"
-        onClick={props.onExercisesClick}
-      />
+      <Popover
+        minimal={true}
+        position={Position.BOTTOM}
+        content={
+          <Menu>
+            <MenuItem
+              icon={IconNames.ANNOTATION}
+              text="Excercices"
+              onClick={props.onExercisesClick}
+            />
+            <MenuItem
+              icon={IconNames.ADD}
+              text="Nouveau"
+              onClick={props.onNewExceriseClick}
+            />
+          </Menu>
+        }
+      >
+        <Button
+          className={Classes.MINIMAL}
+          icon={IconNames.ANNOTATION}
+          text="Excercices"
+          rightIcon={IconNames.CARET_DOWN}
+        />
+      </Popover>
+      <Popover
+        minimal={true}
+        position={Position.BOTTOM}
+        content={
+          <Menu>
+            <MenuItem
+              icon={IconNames.PEOPLE}
+              text="Groupes"
+              onClick={props.onGroupsClick}
+            />
+            <MenuItem
+              icon={IconNames.ADD}
+              text="Nouveau"
+              onClick={props.onNewGroupClick}
+            />
+          </Menu>
+        }
+      >
+        <Button
+          className={Classes.MINIMAL}
+          icon={IconNames.PEOPLE}
+          text="Groupes"
+          rightIcon={IconNames.CARET_DOWN}
+        />
+      </Popover>
     </NavbarGroup>
     <NavbarGroup align={Alignment.RIGHT}>
       {props.isLoggedIn ? (
@@ -73,7 +117,12 @@ export const Navbar: React.SFC<AppNavbarProps> = (props) => (
             </Menu>
           }
         >
-          <Button className={Classes.MINIMAL} icon="user" text="Patrick" />
+          <Button
+            className={Classes.MINIMAL}
+            icon={IconNames.USER}
+            text="Patrick" // TODO: Dynamic display the name
+            rightIcon={IconNames.CARET_DOWN}
+          />
         </Popover>
       ) : (
         <Button
@@ -94,6 +143,15 @@ export const AppNavbar = compose<any, any>(
     },
     onExercisesClick: () => {
       ownerProps.history.push('/exercises');
+    },
+    onNewExceriseClick: () => {
+      ownerProps.history.push('/exercises/add');
+    },
+    onGroupsClick: () => {
+      ownerProps.history.push('/groups');
+    },
+    onNewGroupClick: () => {
+      ownerProps.history.push('/groups/add');
     },
     onLoginClick: () => {
       ownerProps.history.push('/auth/login');

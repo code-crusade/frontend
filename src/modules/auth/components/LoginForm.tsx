@@ -12,7 +12,7 @@ import * as React from 'react';
 import * as Yup from 'yup';
 import { Credentials } from '../models';
 
-export class LoginBaseForm extends React.Component<FormikProps<Credentials>> {
+class LoginForm extends React.Component<FormikProps<Credentials>> {
   render() {
     const { touched, errors, isSubmitting, handleChange } = this.props;
 
@@ -71,14 +71,14 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required('Mot de passe requis'),
 });
 
-export const LoginForm: React.SFC<LoginFormikProps> = (props) => {
+export const LoginFormik: React.SFC<LoginFormikProps> = (props) => {
   return (
     <Formik
       initialValues={props.initialValues}
       validationSchema={LoginSchema}
       onSubmit={props.onSubmit}
       render={(formikProps: FormikProps<Credentials>) => (
-        <LoginBaseForm {...formikProps} />
+        <LoginForm {...formikProps} />
       )}
     />
   );

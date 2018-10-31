@@ -1,7 +1,7 @@
 import { Card, H4 } from '@blueprintjs/core';
 import * as React from 'react';
 import styled from 'styled-components';
-import { LoginForm, OnSubmitLogin } from './LoginForm';
+import { LoginFormik, OnSubmitLogin } from './LoginForm';
 
 export type LoginProps = OnSubmitLogin;
 
@@ -16,7 +16,7 @@ export const Login: React.SFC<LoginProps> = (props) => {
     <Container>
       <H4>Se connecter</H4>
       <Card elevation={1}>
-        <LoginForm initialValues={{}} onSubmit={props.onSubmit} />
+        <LoginFormik initialValues={{}} onSubmit={props.onSubmit} />
       </Card>
     </Container>
   );

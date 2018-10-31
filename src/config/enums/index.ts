@@ -25,3 +25,9 @@ export enum FunctionReturnTypes {
   'FLOAT[]' = 'float[]',
   'OBJECT[]' = 'object[]',
 }
+
+export enum Semesters {
+  FALL,
+  WINTER,
+  SUMMER,
+}
