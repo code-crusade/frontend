@@ -22,7 +22,7 @@ export type Exercise = {
   title: IntlString;
   description: IntlString;
   difficulty: Difficulties;
-  unitTests: any;
+  unitTests: UnitTest[];
   template: Template;
 };
 
@@ -33,4 +33,12 @@ export type ExerciseSubmission = {
   code: string;
   createdAt: Date;
   language: SupportedLanguages;
+};
+
+export type UnitTest = {
+  input: Array<{
+    inputType: FunctionReturnTypes;
+    inputValue: any;
+  }>;
+  outputValue: any;
 };

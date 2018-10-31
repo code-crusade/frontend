@@ -10,8 +10,9 @@ import { Exercise } from '../../modules/exercises/models';
 import { Omit } from '../../types/types';
 
 const ids: { [key: string]: string } = {
-  A: '96aa97d6-1ed6-4454-b563-b8cd0ef65a2c',
-  B: '2342b24e-e852-48fa-892f-95ddbb0b97a3',
+  A: '1',
+  B: '2',
+  C: '3',
 };
 
 const partialResources: {
@@ -23,7 +24,6 @@ Object.keys(ids).forEach((key) => {
     difficulty: Difficulties.MEDIUM,
     description: { fr: faker.lorem.paragraph(), en: faker.lorem.paragraph() },
     id: ids[key],
-    unitTests: [faker.commerce.product(), faker.commerce.color()],
   };
 });
 
@@ -49,6 +49,35 @@ const resources: { [key: string]: Exercise } = {
         {},
       ),
     },
+    unitTests: [
+      {
+        input: [
+          {
+            inputType: FunctionReturnTypes.STRING,
+            inputValue: 'abcabcbb',
+          },
+        ],
+        outputValue: 3,
+      },
+      {
+        input: [
+          {
+            inputType: FunctionReturnTypes.STRING,
+            inputValue: 'bbbbb',
+          },
+        ],
+        outputValue: 1,
+      },
+      {
+        input: [
+          {
+            inputType: FunctionReturnTypes.STRING,
+            inputValue: 'pwwkew',
+          },
+        ],
+        outputValue: 3,
+      },
+    ],
   },
   B: {
     ...partialResources.B,
@@ -74,6 +103,85 @@ const resources: { [key: string]: Exercise } = {
         {},
       ),
     },
+    unitTests: [
+      {
+        input: [
+          {
+            inputType: FunctionReturnTypes['INT[]'],
+            inputValue: [1, 3],
+          },
+          {
+            inputType: FunctionReturnTypes['INT[]'],
+            inputValue: [2],
+          },
+        ],
+        outputValue: 2.0,
+      },
+      {
+        input: [
+          {
+            inputType: FunctionReturnTypes['INT[]'],
+            inputValue: [1, 2],
+          },
+          {
+            inputType: FunctionReturnTypes['INT[]'],
+            inputValue: [3, 4],
+          },
+        ],
+        outputValue: 2.5,
+      },
+    ],
+  },
+  C: {
+    ...partialResources.C,
+    title: {
+      en: 'Highest Scoring Word',
+      fr: 'Mot ayant le plus haut score',
+    },
+    template: {
+      className: 'Kata',
+      functionName: 'high',
+      functionReturnValue: '',
+      functionReturnType: FunctionReturnTypes.STRING,
+      args: [{ name: 's', type: FunctionReturnTypes.STRING }],
+      appendedCode: Object.values(SupportedLanguages).reduce(
+        (carry, lang) => ({ ...carry, [lang]: '' }),
+        {},
+      ),
+      prependedCode: Object.values(SupportedLanguages).reduce(
+        (carry, lang) => ({ ...carry, [lang]: '' }),
+        {},
+      ),
+    },
+    unitTests: [
+      {
+        input: [
+          {
+            inputType: FunctionReturnTypes.STRING,
+            inputValue: 'man i need a taxi up to ubud',
+          },
+        ],
+        outputValue: 'taxi',
+      },
+      {
+        input: [
+          {
+            inputType: FunctionReturnTypes.STRING,
+            inputValue: 'what time are we climbing up to the volcano',
+          },
+        ],
+        outputValue: 'volcano',
+      },
+      {
+        input: [
+          {
+            inputType: FunctionReturnTypes.STRING,
+            inputValue: 'take me to semynak',
+          },
+        ],
+        outputValue: 'semynak',
+      },
+    ],
   },
 };
 
