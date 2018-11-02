@@ -33,13 +33,11 @@ export const typeOptions = [
   { label: 'float', value: FunctionReturnTypes.FLOAT },
   { label: 'int', value: FunctionReturnTypes.INT },
   { label: 'string', value: FunctionReturnTypes.STRING },
-  { label: 'object', value: FunctionReturnTypes.OBJECT },
   { label: 'boolean[]', value: FunctionReturnTypes['BOOLEAN[]'] },
   { label: 'char[]', value: FunctionReturnTypes['CHAR[]'] },
   { label: 'float[]', value: FunctionReturnTypes['FLOAT[]'] },
   { label: 'int[]', value: FunctionReturnTypes['INT[]'] },
   { label: 'string[]', value: FunctionReturnTypes['STRING[]'] },
-  { label: 'object[]', value: FunctionReturnTypes['OBJECT['] },
 ];
 
 const Container = styled.div`
