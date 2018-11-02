@@ -1,4 +1,4 @@
-import { Button, H1, H3, HTMLSelect, IResizeEntry } from '@blueprintjs/core';
+import { Button, H1, H3, HTMLSelect } from '@blueprintjs/core';
 import * as React from 'react';
 import MonacoEditor, {
   ChangeHandler,
@@ -15,7 +15,6 @@ export type EditorProps = {
   editorDidMount: EditorDidMount;
   editorOptions: object;
   editorOnChange: ChangeHandler;
-  editorOnResize: (entries: IResizeEntry[]) => void;
   onSubmit: (event: React.MouseEvent<HTMLElement>) => void;
   selectedLanguage: SupportedLanguages;
   onLanguageChange: React.ChangeEventHandler<HTMLSelectElement>;
@@ -24,19 +23,22 @@ export type EditorProps = {
 const Container = styled.div`
   display: grid;
   grid-row: 2 / end;
-  grid-template-columns: 10% 20% auto auto 20% 10%;
+  grid-template-columns: 50% 50%;
   grid-template-rows: 50px 25% 100px auto;
 `;
 
 const EditorContainer = styled.div`
-  grid-column: 3 / end
+  grid-column: 2 / end
   grid-row: 2 / end
+  padding: 1em;
+  max-width: 99%;
+  max-height: 99%
 `;
 
 const ExerciseContainer = styled.div`
-  grid-column: 1 / 3
-  grid-row: 1 / end
-  padding: 1em
+  grid-column: 1 / 2;
+  grid-row: 1 / end;
+  padding: 1em;
 `;
 
 const languagesOptions = [
