@@ -1,23 +1,22 @@
-import { Formik, FormikProps, FormikValues } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import * as React from 'react';
 import * as Yup from 'yup';
 import { Omit } from '../../../types/types';
 import { Exercise } from '../models';
 import { ExercisesAddForm } from './ExercisesAddForm';
 
+export type FormValues = Omit<Exercise, 'id'>;
+
 export type ExercisesAddFormikProps = {
-  onSubmit: (
-    values: Omit<Exercise, 'id'>,
-    props: FormikProps<Partial<Exercise>>,
-  ) => void;
-  initialValues: FormikValues;
+  onSubmit: (values: FormValues, props: FormikProps<FormValues>) => void;
+  initialValues: FormValues;
 };
 
 export const ExercisesAddFormik: React.SFC<ExercisesAddFormikProps> = (
   props,
 ) => {
   return (
-    <Formik
+    <Formik<FormValues>
       validationSchema={Yup.object().shape({
         title: Yup.object().shape({
           en: Yup.string(),
@@ -40,9 +39,10 @@ export const ExercisesAddFormik: React.SFC<ExercisesAddFormikProps> = (
           ),
         }),
       })}
+      validate={(values) => console.log(values)}
       initialValues={props.initialValues}
       onSubmit={props.onSubmit}
-      render={(formikProps: FormikProps<Exercise>) => (
+      render={(formikProps: FormikProps<FormValues>) => (
         <ExercisesAddForm {...formikProps} />
       )}
     />

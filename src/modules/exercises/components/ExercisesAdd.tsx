@@ -28,36 +28,35 @@ export const ExercisesAdd: React.SFC<ExercisesReadProps> = (props) => {
     return <Err404 />;
   }
   return (
-    <React.Fragment>
-      <h1>Nouvel exercice</h1>
-      <ExercisesAddFormik
-        initialValues={{
-          title: {
-            fr: '',
-            en: '',
-          },
-          description: {
-            fr: '',
-            en: '',
-          },
-          difficulty: Difficulties.EASY,
-          template: {
-            functionName: '',
-            functionReturnType: FunctionReturnTypes.STRING,
-            functionReturnValue: '',
-            args: [{ name: '', type: FunctionReturnTypes.INT }],
-            prependedCode: Object.values(SupportedLanguages).reduce(
-              (carry, lang) => ({ ...carry, [lang]: '' }),
-              {},
-            ),
-            appendedCode: Object.values(SupportedLanguages).reduce(
-              (carry, lang) => ({ ...carry, [lang]: '' }),
-              {},
-            ),
-          },
-        }}
-        onSubmit={props.onSubmit}
-      />
-    </React.Fragment>
+    <ExercisesAddFormik
+      initialValues={{
+        title: {
+          fr: '',
+          en: '',
+        },
+        description: {
+          fr: '',
+          en: '',
+        },
+        difficulty: Difficulties.EASY,
+        template: {
+          className: '',
+          functionName: '',
+          functionReturnType: FunctionReturnTypes.STRING,
+          functionReturnValue: '',
+          args: [{ name: '', type: FunctionReturnTypes.INT }],
+          prependedCode: Object.values(SupportedLanguages).reduce(
+            (carry, lang) => ({ ...carry, [lang]: '' }),
+            {},
+          ),
+          appendedCode: Object.values(SupportedLanguages).reduce(
+            (carry, lang) => ({ ...carry, [lang]: '' }),
+            {},
+          ),
+        },
+        sampleTestCases: [],
+      }}
+      onSubmit={props.onSubmit}
+    />
   );
 };
