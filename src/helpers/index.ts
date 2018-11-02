@@ -97,8 +97,6 @@ const convertToLangType = (
         return 'double';
       case 'float[]':
         return 'double[]';
-      case 'object':
-      case 'object[]':
       case 'string':
       case 'string[]':
         return capitalize(val);
