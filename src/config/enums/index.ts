@@ -17,13 +17,11 @@ export enum FunctionReturnTypes {
   STRING = 'string',
   CHAR = 'char',
   FLOAT = 'float',
-  OBJECT = 'object',
   'BOOLEAN[]' = 'boolean[]',
   'INT[]' = 'int[]',
   'STRING[]' = 'string[]',
   'CHAR[]' = 'char[]',
   'FLOAT[]' = 'float[]',
-  'OBJECT[]' = 'object[]',
 }
 
 export enum Semesters {
