@@ -71,6 +71,7 @@ export class DescriptionPanel extends React.Component<DescriptionPanelProps> {
               <StyledTextArea
                 fill
                 placeholder={`La première ligne du triangle vous sera attribuée sous la forme d'une chaîne et votre tâche sera de renvoyer la couleur finale qui apparaîtra dans la dernière ligne sous la forme d'une chaîne. Dans le cas de l'exemple ci-dessus, vous devez renvoyer le 'G' pour le 'RRGBRGBB' donné.\n\nLa chaîne de saisie ne contiendra que les lettres majuscules «B», «G» ou «R» et il y aura au moins une lettre pour que vous n'ayez pas à tester une entrée non valide.\n\nSi vous ne donnez qu'une seule couleur en entrée, retournez cette couleur.`}
+
                 className={classnames({
                   [Classes.INTENT_DANGER]:
                     get(touched, 'description.fr') &&
