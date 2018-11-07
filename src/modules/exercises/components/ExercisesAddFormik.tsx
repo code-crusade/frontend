@@ -39,7 +39,6 @@ export const ExercisesAddFormik: React.SFC<ExercisesAddFormikProps> = (
           ),
         }),
       })}
-      validate={(values) => console.log(values)}
       initialValues={props.initialValues}
       onSubmit={props.onSubmit}
       render={(formikProps: FormikProps<FormValues>) => (

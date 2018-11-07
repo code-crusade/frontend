@@ -24,11 +24,7 @@ const Container = styled.div`
   display: grid;
   grid-row: 2 / end;
   grid-template-columns: 50% 50%;
-<<<<<<< HEAD
   grid-template-rows: 100%;
-=======
-  grid-template-rows: 50px 25% 100px auto;
->>>>>>> Refactor add exercise form to prepare for test cases section
 `;
 
 // max-width at 100% prevents the editor from resizing correctly
