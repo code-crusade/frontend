@@ -44,7 +44,7 @@ export const ExercisesAdd: React.SFC<ExercisesReadProps> = (props) => {
           functionName: '',
           functionReturnType: FunctionReturnTypes.STRING,
           functionReturnValue: '',
-          args: [{ name: '', type: FunctionReturnTypes.INT }],
+          params: [{ name: '', type: FunctionReturnTypes.INT }],
           prependedCode: Object.values(SupportedLanguages).reduce(
             (carry, lang) => ({ ...carry, [lang]: '' }),
             {},
@@ -54,7 +54,17 @@ export const ExercisesAdd: React.SFC<ExercisesReadProps> = (props) => {
             {},
           ),
         },
-        sampleTestCases: [],
+        sampleTestCases: [
+          {
+            it: '',
+            assertions: [
+              {
+                inputArguments: [{ type: FunctionReturnTypes.INT, value: '' }],
+                expectedOutput: { type: FunctionReturnTypes.STRING, value: '' },
+              },
+            ],
+          },
+        ],
       }}
       onSubmit={props.onSubmit}
     />

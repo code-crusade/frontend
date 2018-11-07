@@ -32,14 +32,13 @@ export const ExercisesAddFormik: React.SFC<ExercisesAddFormikProps> = (
           functionName: Yup.string().required('Requis'),
           className: Yup.string(),
           functionReturnValue: Yup.string().required('Requis'),
-          args: Yup.array(
+          params: Yup.array(
             Yup.object().shape({
               name: Yup.string().required('Requis'),
             }),
           ),
         }),
       })}
-      validate={(values) => console.log(values)}
       initialValues={props.initialValues}
       onSubmit={props.onSubmit}
       render={(formikProps: FormikProps<FormValues>) => (

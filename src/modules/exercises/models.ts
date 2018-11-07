@@ -12,7 +12,7 @@ export type Template = {
   functionName: string;
   functionReturnValue: any;
   functionReturnType: FunctionReturnTypes;
-  args: Array<{ name: string; type: FunctionReturnTypes }>;
+  params: Array<{ name: string; type: FunctionReturnTypes }>;
   prependedCode: { [lang in SupportedLanguages]: string };
   appendedCode: { [lang in SupportedLanguages]: string };
 };
@@ -37,14 +37,15 @@ export type ExerciseSubmission = {
 
 export type TestCase = {
   it: string;
-  assertions: Array<{
-    inputArguments: Array<{
-      type: FunctionReturnTypes;
-      value: any;
-    }>;
-    expectedOutput: {
-      type: FunctionReturnTypes;
-      value: any;
-    };
-  }>;
+  assertions: Assertion[];
+};
+
+export type Assertion = {
+  inputArguments: Argument[];
+  expectedOutput: Argument;
+};
+
+export type Argument = {
+  type: FunctionReturnTypes;
+  value: any;
 };
