@@ -15,7 +15,7 @@ import { Field, FieldProps, FormikProps } from 'formik';
 import { get } from 'lodash';
 import * as React from 'react';
 import styled from 'styled-components';
-import { JustifyRight } from '../../../components/styled/JustifyRight';
+import { JustifyRightMargin } from '../../../components/styled/JustifyRightMargin';
 import { Difficulties } from '../../../config/enums';
 import { Exercise } from '../models';
 import { TemplatePanel } from './TemplatePanel';
@@ -38,18 +38,15 @@ const StyledTextArea = styled(TextArea)`
 
 export class DescriptionPanel extends React.Component<DescriptionPanelProps> {
   render() {
-    const { openPanel, closePanel, ...formikProps } = this.props;
-    const { handleChange, touched, errors } = formikProps;
-
     return (
       <Container>
-        <FormGroup
-          label="Titre"
-          intent={Intent.DANGER}
-          helperText={get(touched, 'title.fr') && get(errors, 'title.fr')}
-        >
-          <Field name="title.fr">
-            {({ field }: FieldProps) => (
+        <Field name="title.fr">
+          {({ field, form: { touched, errors } }: FieldProps) => (
+            <FormGroup
+              label="Titre"
+              intent={Intent.DANGER}
+              helperText={get(touched, 'title.fr') && get(errors, 'title.fr')}
+            >
               <InputGroup
                 placeholder="Ex.: Sous-chaîne la plus longue sans caractères répétés"
                 className={classnames({
@@ -58,22 +55,22 @@ export class DescriptionPanel extends React.Component<DescriptionPanelProps> {
                 })}
                 {...field}
               />
-            )}
-          </Field>
-        </FormGroup>
-        <FormGroup
-          label="Description"
-          intent={Intent.DANGER}
-          helperText={
-            get(touched, 'description.fr') && get(errors, 'description.fr')
-          }
-        >
-          <Field name="description.fr">
-            {({ field }: FieldProps) => (
+            </FormGroup>
+          )}
+        </Field>
+
+        <Field name="description.fr">
+          {({ field, form: { touched, errors } }: FieldProps) => (
+            <FormGroup
+              label="Description"
+              intent={Intent.DANGER}
+              helperText={
+                get(touched, 'description.fr') && get(errors, 'description.fr')
+              }
+            >
               <StyledTextArea
                 fill
                 placeholder={`La première ligne du triangle vous sera attribuée sous la forme d'une chaîne et votre tâche sera de renvoyer la couleur finale qui apparaîtra dans la dernière ligne sous la forme d'une chaîne. Dans le cas de l'exemple ci-dessus, vous devez renvoyer le 'G' pour le 'RRGBRGBB' donné.\n\nLa chaîne de saisie ne contiendra que les lettres majuscules «B», «G» ou «R» et il y aura au moins une lettre pour que vous n'ayez pas à tester une entrée non valide.\n\nSi vous ne donnez qu'une seule couleur en entrée, retournez cette couleur.`}
-                onChange={formikProps.handleChange}
                 className={classnames({
                   [Classes.INTENT_DANGER]:
                     get(touched, 'description.fr') &&
@@ -81,35 +78,39 @@ export class DescriptionPanel extends React.Component<DescriptionPanelProps> {
                 })}
                 {...field}
               />
-            )}
-          </Field>
-        </FormGroup>
+            </FormGroup>
+          )}
+        </Field>
+
         <FormGroup label="Difficulté">
           <Field name="difficulty">
             {({ field }: FieldProps) => (
-              <HTMLSelect
-                large
-                options={difficultiesOptions}
-                onChange={handleChange}
-                {...field}
-              />
+              <HTMLSelect large options={difficultiesOptions} {...field} />
             )}
           </Field>
         </FormGroup>
 
-        <JustifyRight>
-          <Button onClick={this.openTemplatePanel}>Suivant</Button>
-        </JustifyRight>
+        <JustifyRightMargin>
+          <Field
+            render={({ form }: FieldProps) => (
+              <Button
+                disabled={Boolean(
+                  !form.dirty || form.errors.description || form.errors.title,
+                )}
+                onClick={this.openTemplatePanel}
+              >
+                Suivant
+              </Button>
+            )}
+          />
+        </JustifyRightMargin>
       </Container>
     );
   }
 
   private openTemplatePanel = () => {
-    const { openPanel, closePanel, ...formikProps } = this.props;
-
     this.props.openPanel({
       component: TemplatePanel,
-      props: formikProps,
       title: "Point d'entrée",
     });
   };

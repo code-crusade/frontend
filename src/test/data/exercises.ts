@@ -40,7 +40,7 @@ const resources: { [key: string]: Exercise } = {
       functionName: 'lengthOfLongestSubstring',
       functionReturnValue: 4,
       functionReturnType: FunctionReturnTypes.INT,
-      args: [{ name: 's', type: FunctionReturnTypes.STRING }],
+      params: [{ name: 's', type: FunctionReturnTypes.STRING }],
       appendedCode: Object.values(SupportedLanguages).reduce(
         (carry, lang) => ({ ...carry, [lang]: '' }),
         {},
@@ -135,7 +135,7 @@ const resources: { [key: string]: Exercise } = {
       functionName: 'findMedianSortedArrays',
       functionReturnValue: 2.6,
       functionReturnType: FunctionReturnTypes.FLOAT,
-      args: [
+      params: [
         { name: 'nums1', type: FunctionReturnTypes['INT[]'] },
         { name: 'nums2', type: FunctionReturnTypes['INT[]'] },
       ],
@@ -228,7 +228,7 @@ const resources: { [key: string]: Exercise } = {
       functionName: 'high',
       functionReturnValue: '',
       functionReturnType: FunctionReturnTypes.STRING,
-      args: [{ name: 's', type: FunctionReturnTypes.STRING }],
+      params: [{ name: 's', type: FunctionReturnTypes.STRING }],
       appendedCode: Object.values(SupportedLanguages).reduce(
         (carry, lang) => ({ ...carry, [lang]: '' }),
         {},

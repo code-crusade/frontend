@@ -24,7 +24,7 @@ const Container = styled.div`
   display: grid;
   grid-row: 2 / end;
   grid-template-columns: 50% 50%;
-  grid-template-rows: 50px 25% 100px auto;
+  grid-template-rows: 100%;
 `;
 
 // max-width at 100% prevents the editor from resizing correctly
@@ -48,8 +48,7 @@ const FormContainer = styled.div`
 
 export class ExercisesAddForm extends React.Component<ExercisesAddFormProps> {
   render() {
-    const { values } = this.props;
-
+    const { values, validateField, validateForm } = this.props;
     const generatedCode = {
       python: generateCodeFromTemplate(
         values.template,
@@ -68,10 +67,11 @@ export class ExercisesAddForm extends React.Component<ExercisesAddFormProps> {
         <FormContainer>
           <h1>Nouvel exercice</h1>
           <Form>
+            {/* TODO: Find a better solution than PanelStack. It doesn't update when the props change (?!?!!??)*/}
             <PanelStack
               initialPanel={{
                 component: DescriptionPanel,
-                props: { ...this.props },
+                props: { validateForm, validateField },
                 title: 'Description',
               }}
             />
@@ -79,6 +79,11 @@ export class ExercisesAddForm extends React.Component<ExercisesAddFormProps> {
         </FormContainer>
         <PreviewContainer>
           <H4>Preview du code</H4>
+          <EditorTabs
+            languageMap={generatedCode}
+            editorOptions={readOnlyEditorOptions}
+          />
+          <H4>Preview des cas de tests</H4>
           <EditorTabs
             languageMap={generatedCode}
             editorOptions={readOnlyEditorOptions}

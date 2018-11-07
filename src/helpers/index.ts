@@ -35,14 +35,14 @@ export const generateCodeFromTemplate = (
   if (!template.functionReturnValue) {
     return 'Error: Function return value is missing';
   }
-  const argsAsString = template.args.reduce((carry, arg, i) => {
+  const paramsAsString = template.params.reduce((carry, arg, i) => {
     if (arg.name === '') {
       return carry;
     }
     let type = convertToLangType(arg.type, targetLang);
     type = type ? `${type} ` : '';
     return `${carry}${type}${arg.name}${
-      i < template.args.length - 1 ? ', ' : ''
+      i < template.params.length - 1 ? ', ' : ''
     }`;
   }, '');
 
@@ -54,13 +54,13 @@ export const generateCodeFromTemplate = (
   let code = '';
 
   if (targetLang === SupportedLanguages.Python) {
-    code += `def ${template.functionName}(${argsAsString}):\n`;
+    code += `def ${template.functionName}(${paramsAsString}):\n`;
     code += `    return ${template.functionReturnValue.toString()}\n`;
   }
   if (targetLang === SupportedLanguages.Cpp) {
     code += `${functionReturnType} ${snakeCase(
       template.functionName,
-    )}(${argsAsString})\n`;
+    )}(${paramsAsString})\n`;
     code += `{\n`;
     code += `    return ${template.functionReturnValue.toString()};\n`;
     code += `}\n`;
@@ -71,13 +71,15 @@ export const generateCodeFromTemplate = (
     code += `    public static ${convertToLangType(
       template.functionReturnType,
       targetLang,
-    )} ${template.functionName}(${argsAsString}) {\n`;
+    )} ${template.functionName}(${paramsAsString}) {\n`;
     code += `        return ${template.functionReturnValue.toString()};\n`;
     code += `    }\n`;
     code += `}\n`;
   }
   if (targetLang === SupportedLanguages.Javascript) {
-    code += `function ${camelCase(template.functionName)}(${argsAsString}) {\n`;
+    code += `function ${camelCase(
+      template.functionName,
+    )}(${paramsAsString}) {\n`;
     code += `    return ${template.functionReturnValue.toString()};\n`;
     code += `}\n`;
   }
