@@ -1,7 +1,12 @@
 import { Callout, HTMLTable } from '@blueprintjs/core';
 import { isEmpty } from 'lodash';
 import * as React from 'react';
+import styled from 'styled-components';
 import { Student } from '../models';
+
+const Table = styled(HTMLTable)`
+  width: 100%;
+`;
 
 interface StudentsTableProps {
   students: Student[];
@@ -16,9 +21,10 @@ export const StudentsTable: React.SFC<StudentsTableProps> = (props) => {
         <Callout intent="primary" title="Déposer un fichier Excel">
           <p>
             Pour activer l'aperçu, déposer un fichier Excel contenat la liste
-            d'étudiants. Vous trouverez ci-dessous un exemple du format attendu.
+            d'étudiants.
           </p>
-          <HTMLTable>
+          <p>Vous trouverez ci-dessous un exemple du format attendu :</p>
+          <Table>
             <thead>
               <tr>
                 <th>Prénom</th>
@@ -35,14 +41,14 @@ export const StudentsTable: React.SFC<StudentsTableProps> = (props) => {
                 <td>guy.tremblay.1@ens.etsmtl.ca</td>
               </tr>
             </tbody>
-          </HTMLTable>
+          </Table>
         </Callout>
       ) : (
         <div>
           <Callout title="Fichier Excel importé" intent="success">
             Voici une prévisualisation des {students.length} étudiants
           </Callout>
-          <HTMLTable>
+          <Table>
             <thead>
               <tr>
                 <th>Prénom</th>
@@ -61,7 +67,7 @@ export const StudentsTable: React.SFC<StudentsTableProps> = (props) => {
                 </tr>
               ))}
             </tbody>
-          </HTMLTable>
+          </Table>
         </div>
       )}
     </React.Fragment>

@@ -3,13 +3,13 @@ import { FormikProps } from 'formik';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { history } from 'src/services';
+import { WithHistory } from 'src/types/types';
 import { authLogIn } from '../actions';
 import { Login as LoginComponent } from '../components/Login';
 import { Credentials } from '../models';
 
-interface LoginProps {
+interface LoginProps extends WithHistory {
   login(credentials: Credentials): void;
-  history: typeof push;
 }
 
 export class Login extends React.PureComponent<LoginProps> {

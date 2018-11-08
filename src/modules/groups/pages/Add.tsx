@@ -1,37 +1,60 @@
+import { push } from 'connected-react-router';
+import { FormikProps } from 'formik';
+import { isEmpty, Omit } from 'lodash';
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { history } from 'src/services';
+import { WithHistory } from 'src/types/types';
 import { read, utils } from 'xlsx';
+import { groupsAdd } from '../actions';
 import { GroupsAdd } from '../components/GroupsAdd';
-import { Student } from '../models';
+import { convertToStudents } from '../helpers';
+import { Group, Student } from '../models';
 
-/** Convert content from Excels to actual students */
-function convertToStudents(content: object[]): Student[] {
-  const students: Student[] = [];
-  content.forEach((row, i) => {
-    if (i === 0) return; // Skip header
-    students.push({
-      firstName: row[0],
-      lastName: row[1],
-      accessCode: row[2],
-      email: row[3],
-    });
-  });
-  return students;
-}
-
-interface GroupsAddState {
+interface State {
   students: Student[];
 }
 
-export class GroupsAddPage extends React.Component<{}, GroupsAddState> {
+interface Props extends WithHistory {
+  addGroup(values: Omit<Group, 'id'>): void;
+}
+
+class Add extends React.Component<Props, State> {
   readonly state = {
     students: [],
   };
 
-  /** OnDrop will be called when user drop an Excel file  */
-  onDrop = (acceptedFiles: any) => {
+  readonly handleSumbit = (
+    values: Omit<Group, 'id'>,
+    props: FormikProps<Partial<Group>>,
+  ) => {
+    // Inject students in values to submit
+    values.students = isEmpty(this.state.students) ? [] : this.state.students;
+
+    this.props.addGroup({ ...values });
+    history.push('/groups');
+  };
+
+  /** Will be called when user drop an Excel file  */
+  readonly onFileDrop = (acceptedFiles: any) => {
     acceptedFiles.forEach((file: any) => {
       const reader = new FileReader();
       reader.onload = () => {
+        // Validate Excel file
+        const filename = file.name as string;
+        if (
+          !(
+            filename.endsWith('.xls') ||
+            filename.endsWith('.xlsx') ||
+            filename.endsWith('.ods')
+          )
+        ) {
+          return;
+        }
+
+        // Clean up before adding new students
+        this.setState({ students: [] });
+
         const content = reader.result;
         const workbook = read(content, { type: 'binary' });
         const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -47,6 +70,24 @@ export class GroupsAddPage extends React.Component<{}, GroupsAddState> {
   };
 
   render() {
-    return <GroupsAdd onDrop={this.onDrop} students={this.state.students} />;
+    return (
+      <React.Fragment>
+        <GroupsAdd
+          onDrop={this.onFileDrop}
+          onSubmit={this.handleSumbit}
+          students={this.state.students}
+        />
+      </React.Fragment>
+    );
   }
 }
+
+const mapDispatchToProps = {
+  addGroup: (values: Group) => groupsAdd.request(values),
+  push,
+};
+
+export const GroupsAddPage = connect(
+  null,
+  mapDispatchToProps,
+)(Add);

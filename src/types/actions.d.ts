@@ -4,11 +4,14 @@
 // declarations as shown below. (https://github.com/piotrwitek/typesafe-actions)
 
 import { LocationChangeAction, RouterAction } from 'connected-react-router';
-type ConnectedReactRouterAction = RouterAction | LocationChangeAction;
 import { ExercisesAction } from '../modules/exercises';
+import { GroupsAction } from '../modules/groups';
 import { UsersAction } from '../modules/users';
+
+type ConnectedReactRouterAction = RouterAction | LocationChangeAction;
 
 export type RootAction =
   | ConnectedReactRouterAction
   | ExercisesAction
-  | UsersAction;
+  | UsersAction
+  | GroupsAction;

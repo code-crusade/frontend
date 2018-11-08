@@ -27,7 +27,7 @@ export enum FunctionReturnTypes {
 }
 
 export enum Semesters {
-  FALL,
-  WINTER,
-  SUMMER,
+  FALL = 'Automne',
+  WINTER = 'Hiver',
+  SUMMER = 'Été',
 }

@@ -1,13 +1,9 @@
 import * as React from 'react';
+import { Semesters } from 'src/config/enums';
 import styled from 'styled-components';
 import { Student } from '../models';
-import { GroupsAddForm } from './GroupsAddForm';
+import { GroupsAddFormik, OnSubmitGroupsAdd } from './GroupsAddForm';
 import { StudentsTable } from './StudentsTable';
-
-export interface GroupsAddProps {
-  onDrop(acceptedFiles: any): void;
-  students: Student[];
-}
 
 const Container = styled.div`
   width: 100vw;
@@ -27,13 +23,29 @@ const StyledPreviewStudents = styled.div`
   padding-left: 20px;
 `;
 
+export type OnDrop = {
+  onDrop(acceptedFiles: any): void;
+};
+
+export interface GroupsAddProps extends OnSubmitGroupsAdd, OnDrop {
+  students: Student[];
+}
+
 export const GroupsAdd: React.SFC<GroupsAddProps> = (props) => {
   const { students } = props;
   return (
     <Container>
       <StyledGroupsAdd>
         <h1>Nouveau groupe</h1>
-        <GroupsAddForm {...props} />
+        <GroupsAddFormik
+          initialValues={{
+            class: 'LOG320',
+            year: new Date().getFullYear(),
+            semester: Semesters.FALL,
+            groupNumber: 1,
+          }}
+          {...props}
+        />
       </StyledGroupsAdd>
       <StyledPreviewStudents>
         <h1>Aperçu des étudiants</h1>
