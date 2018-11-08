@@ -14,6 +14,10 @@ const Centered = styled.p`
   text-align: center;
 `;
 
+const StyledTag = styled(Tag)`
+  margin-right: 5px;
+`;
+
 const activeStyle = {
   border: '2px solid #53ae42',
 };
@@ -30,9 +34,9 @@ export const DragAndDrop: React.SFC<DragAndDrop> = (props) => {
       <Centered>
         {props.formats &&
           props.formats.map((format, i) => (
-            <Tag large intent="success" key={i}>
+            <StyledTag intent="success" key={i} round>
               .{format}
-            </Tag>
+            </StyledTag>
           ))}
       </Centered>
       {props.children}

@@ -1,4 +1,4 @@
-import { camelCase, capitalize, snakeCase, some } from 'lodash';
+import { camelCase, capitalize, snakeCase } from 'lodash';
 import { ajax } from 'rxjs/ajax';
 import { URL_API } from '../config';
 import { FunctionReturnTypes, SupportedLanguages } from '../config/enums';
@@ -118,25 +118,4 @@ const convertToLangType = (
     }
   }
   return null;
-};
-
-export const csvToJSON = (csv: string, delimiter: string = ';') => {
-  const lines = csv.split('\n');
-
-  const result = [];
-
-  const headers = lines[0].split(delimiter);
-
-  for (let i = 1; i < lines.length; i++) {
-    const obj = {};
-    const currentline = lines[i].split(delimiter);
-    if (some(currentline)) {
-      for (let j = 0; j < headers.length; j++) {
-        obj[headers[j]] = currentline[j];
-      }
-      result.push(obj);
-    }
-  }
-
-  return result;
 };

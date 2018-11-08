@@ -1,4 +1,5 @@
 import {
+  Button,
   ControlGroup,
   FormGroup,
   HTMLSelect,
@@ -49,11 +50,14 @@ export class GroupsAddForm extends React.Component<GroupsAddProps> {
         </ControlGroup>
         <FormGroup label="Importer des étudiants">
           <DragAndDrop
-            text="Cliquer ou déposer ici le fichier Excel (CSV) contenant la liste des étudiants"
+            text="Cliquer ou déposer ici le fichier Excel contenant la liste des étudiants"
             onDrop={this.props.onDrop}
-            formats={['csv']}
+            formats={['ods', 'xlsx', 'xls']}
           />
         </FormGroup>
+        <Button type="submit" intent="primary" large icon="add">
+          Ajouter
+        </Button>
       </Form>
     );
   }
