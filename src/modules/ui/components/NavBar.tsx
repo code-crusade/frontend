@@ -9,19 +9,24 @@ import {
   NavbarGroup,
   NavbarHeading,
   Popover,
+  Position,
 } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { History } from 'history';
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import { compose, withProps } from 'recompose';
 import styled from 'styled-components';
 import { omitProps } from '../../../hocs/omitProps';
 
 export type AppNavbarProps = {
-  onLoginClick: () => void;
-  onLogoutClick: () => void;
-  onProfileClick: () => void;
+  onHomeClick(): void;
+  onExercisesClick(): void;
+  onNewExceriseClick(): void;
+  onGroupsClick(): void;
+  onNewGroupClick(): void;
+  onLoginClick(): void;
+  onLogoutClick(): void;
+  onProfileClick(): void;
   isLoggedIn: boolean;
 };
 
@@ -31,62 +36,123 @@ const StyledNavbar = styled(BluePrintNavBar)`
 `;
 
 export const Navbar: React.SFC<AppNavbarProps> = (props) => (
-  <StyledNavbar>
+  <StyledNavbar className="bp3-dark">
     <NavbarGroup align={Alignment.LEFT}>
       <NavbarHeading>Code Crusade</NavbarHeading>
       <NavbarDivider />
-      <Link to="/">
-        <Button
-          className={Classes.MINIMAL}
-          icon={IconNames.HOME}
-          text="Accueil"
-        />
-      </Link>
-      <Link to="/exercises">
-        <Button
-          className={Classes.MINIMAL}
-          icon={IconNames.ANNOTATION}
-          text="Exercises"
-        />
-      </Link>
-    </NavbarGroup>
-    <NavbarGroup align={Alignment.RIGHT}>
+      <Button
+        className={Classes.MINIMAL}
+        icon={IconNames.HOME}
+        text="Accueil"
+        onClick={props.onHomeClick}
+      />
       <Popover
         minimal={true}
+        position={Position.BOTTOM}
         content={
-          // https://github.com/palantir/blueprint/issues/185
           <Menu>
-            {props.isLoggedIn ? (
-              <React.Fragment>
-                <MenuItem
-                  icon={IconNames.COG}
-                  text="Paramètres"
-                  onClick={props.onProfileClick}
-                />
-                <MenuItem
-                  icon={IconNames.LOG_OUT}
-                  text="Se déconnecter"
-                  onClick={props.onLogoutClick}
-                />
-              </React.Fragment>
-            ) : (
-              <MenuItem
-                icon={IconNames.LOG_IN}
-                text="Se connecter"
-                onClick={props.onLoginClick}
-              />
-            )}
+            <MenuItem
+              icon={IconNames.ANNOTATION}
+              text="Excercices"
+              onClick={props.onExercisesClick}
+            />
+            <MenuItem
+              icon={IconNames.ADD}
+              text="Nouveau"
+              onClick={props.onNewExceriseClick}
+            />
           </Menu>
         }
       >
-        <Button className={Classes.MINIMAL} icon="cog" />
+        <Button
+          className={Classes.MINIMAL}
+          icon={IconNames.ANNOTATION}
+          text="Excercices"
+          rightIcon={IconNames.CARET_DOWN}
+        />
       </Popover>
+      <Popover
+        minimal={true}
+        position={Position.BOTTOM}
+        content={
+          <Menu>
+            <MenuItem
+              icon={IconNames.PEOPLE}
+              text="Groupes"
+              onClick={props.onGroupsClick}
+            />
+            <MenuItem
+              icon={IconNames.ADD}
+              text="Nouveau"
+              onClick={props.onNewGroupClick}
+            />
+          </Menu>
+        }
+      >
+        <Button
+          className={Classes.MINIMAL}
+          icon={IconNames.PEOPLE}
+          text="Groupes"
+          rightIcon={IconNames.CARET_DOWN}
+        />
+      </Popover>
+    </NavbarGroup>
+    <NavbarGroup align={Alignment.RIGHT}>
+      {props.isLoggedIn ? (
+        <Popover
+          minimal={true}
+          position={Position.BOTTOM}
+          content={
+            <Menu>
+              <MenuItem
+                icon={IconNames.COG}
+                text="Paramètres"
+                onClick={props.onProfileClick}
+              />
+              <MenuItem
+                icon={IconNames.LOG_OUT}
+                text="Se déconnecter"
+                onClick={props.onLogoutClick}
+              />
+            </Menu>
+          }
+        >
+          <Button
+            className={Classes.MINIMAL}
+            icon={IconNames.USER}
+            text="Patrick" // TODO: Dynamic display the name
+            rightIcon={IconNames.CARET_DOWN}
+          />
+        </Popover>
+      ) : (
+        <Button
+          className={Classes.MINIMAL}
+          icon={IconNames.LOG_IN}
+          text="Se connecter"
+          onClick={props.onLoginClick}
+        />
+      )}
     </NavbarGroup>
   </StyledNavbar>
 );
 
 export const AppNavbar = compose<any, any>(
   withProps((ownerProps: { history: History }) => ({
+    onHomeClick: () => {
+      ownerProps.history.push('/');
+    },
+    onExercisesClick: () => {
+      ownerProps.history.push('/exercises');
+    },
+    onNewExceriseClick: () => {
+      ownerProps.history.push('/exercises/add');
+    },
+    onGroupsClick: () => {
+      ownerProps.history.push('/groups');
+    },
+    onNewGroupClick: () => {
+      ownerProps.history.push('/groups/add');
+    },
     onLoginClick: () => {
       ownerProps.history.push('/auth/login');
     },
