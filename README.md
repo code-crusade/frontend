@@ -36,3 +36,4 @@ Fire!
 ```
 $ npm start
 ```
+![](https://media.giphy.com/media/DvMHwFYLVHlZe/giphy-downsized.gif)
