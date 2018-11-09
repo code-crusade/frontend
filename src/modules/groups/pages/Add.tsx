@@ -19,7 +19,7 @@ interface Props extends WithHistory {
   addGroup(values: Omit<Group, 'id'>): void;
 }
 
-class Add extends React.Component<Props, State> {
+class Add extends React.PureComponent<Props, State> {
   readonly state = {
     students: [],
   };
@@ -71,13 +71,11 @@ class Add extends React.Component<Props, State> {
 
   render() {
     return (
-      <React.Fragment>
-        <GroupsAdd
-          onDrop={this.onFileDrop}
-          onSubmit={this.handleSumbit}
-          students={this.state.students}
-        />
-      </React.Fragment>
+      <GroupsAdd
+        onDrop={this.onFileDrop}
+        onSubmit={this.handleSumbit}
+        students={this.state.students}
+      />
     );
   }
 }

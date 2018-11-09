@@ -4,7 +4,7 @@ import * as groups from './actions';
 import { Group } from './models';
 
 export type GroupsAction = ActionType<typeof groups>;
-type GroupsState = Readonly<{
+export type GroupsState = Readonly<{
   items: { [key: string]: Group };
   loading: boolean;
   error: Error | null;
@@ -22,7 +22,9 @@ export const groupsReducer = combineReducers<GroupsState, GroupsAction>({
   },
   error: (state = null, action) => {
     switch (action.type) {
+      case getType(groups.groupsBrowse.request):
       case getType(groups.groupsAdd.request):
+      case getType(groups.groupsBrowse.success):
       case getType(groups.groupsAdd.success):
         return null;
       case getType(groups.groupsAdd.failure):
@@ -33,9 +35,12 @@ export const groupsReducer = combineReducers<GroupsState, GroupsAction>({
   },
   loading: (state = false, action) => {
     switch (action.type) {
+      case getType(groups.groupsBrowse.request):
       case getType(groups.groupsAdd.request):
         return true;
+      case getType(groups.groupsBrowse.success):
       case getType(groups.groupsAdd.success):
+      case getType(groups.groupsBrowse.failure):
       case getType(groups.groupsAdd.failure):
         return false;
       default:

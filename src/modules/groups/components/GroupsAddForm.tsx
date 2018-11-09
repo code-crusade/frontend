@@ -25,7 +25,7 @@ const semestersOptions = [
 
 type FormProps = OnDrop & FormikProps<Group>;
 
-class GroupsAddForm extends React.Component<FormProps> {
+class GroupsAddForm extends React.PureComponent<FormProps> {
   render() {
     const {
       isSubmitting,
