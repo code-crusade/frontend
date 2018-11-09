@@ -25,7 +25,7 @@ export class Login extends React.PureComponent<LoginProps> {
   render() {
     return (
       <React.Fragment>
-        <LoginComponent onSubmit={this.handleSubmit} />
+        <LoginComponent />
       </React.Fragment>
     );
   }
