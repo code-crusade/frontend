@@ -79,7 +79,7 @@ class GroupsAddForm extends React.PureComponent<FormProps> {
               name="semester"
               options={semestersOptions}
               onChange={handleChange}
-              defaultValue={values.semster}
+              defaultValue={values.semester}
             />
           </FormGroup>
           <FormGroup

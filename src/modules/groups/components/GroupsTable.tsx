@@ -12,11 +12,13 @@ const Table = styled(HTMLTable)`
 interface GroupsTableProps {
   readonly groups: { [key: string]: Group };
   archive?: boolean;
-  onGroupClick?(): void;
+  onGroupClick(groupId: string): void;
 }
 
 export const GroupsTable: React.SFC<GroupsTableProps> = (props) => {
   const { groups, onGroupClick, archive } = props;
+
+  const handleGroupClick = (id: string) => onGroupClick(id);
 
   return isEmpty(groups) ? (
     <React.Fragment>
@@ -33,16 +35,18 @@ export const GroupsTable: React.SFC<GroupsTableProps> = (props) => {
           <th>Numéro</th>
           <th>Cours</th>
           <th>Session</th>
+          <th>Nombre d'étudiants</th>
         </tr>
       </thead>
       <tbody>
         {Object.values(groups).map((group, index) => (
-          <tr onClick={onGroupClick} key={group.id}>
+          <tr onClick={() => handleGroupClick(group.id)} key={group.id}>
             <td>{group.groupNumber}</td>
             <td>{group.class}</td>
             <td>
-              {group.semster} {group.year}
+              {group.semester} {group.year}
             </td>
+            <td>{group.students.length}</td>
           </tr>
         ))}
       </tbody>

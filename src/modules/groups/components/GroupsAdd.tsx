@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { TwoColumnsLayout } from 'src/components/TwoColumnsLayout';
 import { Semesters } from 'src/config/enums';
-import { Student } from '../models';
+import { Student } from 'src/modules/students/models';
+import { StudentsTable } from '../../students/components/StudentsTablePreview';
 import { GroupsAddFormik, OnSubmitGroupsAdd } from './GroupsAddForm';
-import { StudentsTable } from './StudentsTable';
 
 export type OnDrop = {
   onDrop(acceptedFiles: any): void;
@@ -17,7 +17,7 @@ export const GroupsAdd: React.SFC<GroupsAddProps> = (props) => {
   const { students } = props;
   return (
     <TwoColumnsLayout
-      leftTitle="Nouveau groupe"
+      leftHeader="Nouveau groupe"
       leftPanel={
         <GroupsAddFormik
           initialValues={{
@@ -29,7 +29,7 @@ export const GroupsAdd: React.SFC<GroupsAddProps> = (props) => {
           {...props}
         />
       }
-      rightTitle="Aperçu des étudiants"
+      rightHeader="Aperçu des étudiants"
       rightPanel={<StudentsTable students={students} />}
     />
   );

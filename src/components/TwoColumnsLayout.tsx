@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 interface Props {
   leftPanel: React.ReactNode;
-  leftTitle?: string;
+  leftHeader?: string | React.ReactNode;
   rightPanel: React.ReactNode;
-  rightTitle?: string;
+  rightHeader?: string | React.ReactNode;
 }
 
 const Container = styled.div`
@@ -27,15 +27,15 @@ const Right = styled.div`
 `;
 
 export const TwoColumnsLayout: React.SFC<Props> = (props) => {
-  const { leftPanel, rightPanel, leftTitle, rightTitle } = props;
+  const { leftPanel, rightPanel, leftHeader, rightHeader } = props;
   return (
     <Container>
       <Left>
-        {leftTitle && <h1>{leftTitle}</h1>}
+        {leftHeader && <h1>{leftHeader}</h1>}
         {leftPanel}
       </Left>
       <Right>
-        {rightTitle && <h1>{rightTitle}</h1>}
+        {rightHeader && <h1>{rightHeader}</h1>}
         {rightPanel}
       </Right>
     </Container>
