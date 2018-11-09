@@ -18,7 +18,7 @@ import * as classnames from 'classnames';
 import { FieldArray, Form, FormikProps } from 'formik';
 import { get } from 'lodash';
 import * as React from 'react';
-import { JustifyRight } from '../../../components/styled/JustifyRight';
+import { JustifyRight } from 'src/components/styled';
 import {
   Difficulties,
   FunctionReturnTypes,

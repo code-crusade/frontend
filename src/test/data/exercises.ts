@@ -24,7 +24,7 @@ Object.keys(ids).forEach((key) => {
     difficulty: Difficulties.MEDIUM,
     description: { fr: faker.lorem.paragraph(), en: faker.lorem.paragraph() },
     id: ids[key],
-  };
+  } as any; // FIXME: property unitTest is missing
 });
 
 const resources: { [key: string]: Exercise } = {

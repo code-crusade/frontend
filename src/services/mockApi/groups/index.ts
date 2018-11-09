@@ -5,6 +5,14 @@ import * as uuid from 'uuid/v4';
 
 export const groups: Group[] = [];
 
+export const browse = () => {
+  return of({
+    response: {
+      data: { _embedded: { groups: Object.values(groups) } },
+    },
+  });
+};
+
 const addGroup = (formValues: Omit<Group, 'id'>) => {
   const id = uuid();
   const newItem = { ...formValues, id };
