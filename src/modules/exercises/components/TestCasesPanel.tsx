@@ -2,7 +2,7 @@ import { Button, IPanelProps } from '@blueprintjs/core';
 import { FormikProps } from 'formik';
 import * as React from 'react';
 import styled from 'styled-components';
-import { JustifyRightMargin } from '../../../components/styled/JustifyRightMargin';
+import { JustifyRightMargin } from '../../../components/styled';
 import { Exercise } from '../models';
 import { TestCasesField } from './forms/TestCasesField';
 

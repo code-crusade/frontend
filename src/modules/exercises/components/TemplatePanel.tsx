@@ -4,7 +4,7 @@ import { Button, H5, IPanelProps, Tab, Tabs } from '@blueprintjs/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
 import styled from 'styled-components';
-import { JustifyRightMargin } from '../../../components/styled/JustifyRightMargin';
+import { JustifyRightMargin } from '../../../components/styled';
 import { FunctionReturnTypes } from '../../../config/enums';
 import { Exercise } from '../models';
 import { EditorTabs } from './EditorTabs';

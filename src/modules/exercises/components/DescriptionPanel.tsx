@@ -15,7 +15,7 @@ import { Field, FieldProps, FormikProps } from 'formik';
 import { get } from 'lodash';
 import * as React from 'react';
 import styled from 'styled-components';
-import { JustifyRightMargin } from '../../../components/styled/JustifyRightMargin';
+import { JustifyRightMargin } from '../../../components/styled';
 import { Difficulties } from '../../../config/enums';
 import { Exercise } from '../models';
 import { TemplatePanel } from './TemplatePanel';

@@ -12,7 +12,7 @@ import * as classnames from 'classnames';
 import { Field, FieldArray, FieldProps } from 'formik';
 import { get } from 'lodash';
 import * as React from 'react';
-import { JustifyRightMargin } from '../../../../components/styled/JustifyRightMargin';
+import { JustifyRightMargin } from '../../../../components/styled';
 import { FunctionReturnTypes } from '../../../../config/enums';
 import { TestCase } from '../../models';
 import { AssertionsField } from './AssertionsField';
