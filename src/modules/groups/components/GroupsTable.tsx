@@ -1,0 +1,55 @@
+import { Callout, HTMLTable } from '@blueprintjs/core';
+import { isEmpty } from 'lodash';
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { Group } from '../models';
+
+const Table = styled(HTMLTable)`
+  width: 100%;
+`;
+
+interface GroupsTableProps {
+  readonly groups: { [key: string]: Group };
+  archive?: boolean;
+  onGroupClick(groupId: string): void;
+}
+
+export const GroupsTable: React.SFC<GroupsTableProps> = (props) => {
+  const { groups, onGroupClick, archive } = props;
+
+  const handleGroupClick = (id: string) => onGroupClick(id);
+
+  return isEmpty(groups) ? (
+    <React.Fragment>
+      {!archive && (
+        <Callout title="Aucun groupe existant" intent="primary">
+          Créer un nouveau groupe en <Link to="groups/add">cliquant ici</Link>
+        </Callout>
+      )}
+    </React.Fragment>
+  ) : (
+    <Table interactive>
+      <thead>
+        <tr>
+          <th>Numéro</th>
+          <th>Cours</th>
+          <th>Session</th>
+          <th>Nombre d'étudiants</th>
+        </tr>
+      </thead>
+      <tbody>
+        {Object.values(groups).map((group, index) => (
+          <tr onClick={() => handleGroupClick(group.id)} key={group.id}>
+            <td>{group.groupNumber}</td>
+            <td>{group.class}</td>
+            <td>
+              {group.semester} {group.year}
+            </td>
+            <td>{group.students.length}</td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  );
+};

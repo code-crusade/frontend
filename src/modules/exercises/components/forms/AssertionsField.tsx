@@ -9,7 +9,7 @@ import { IconNames } from '@blueprintjs/icons';
 import { Field, FieldArray, FieldProps } from 'formik';
 import * as React from 'react';
 import styled from 'styled-components';
-import { JustifyRight } from '../../../../components/styled/JustifyRightMargin';
+import { JustifyRight } from '../../../../components/styled';
 import { FunctionReturnTypes } from '../../../../config/enums';
 import { Argument, Assertion, TestCase } from '../../models';
 import { FormValues } from '../ExercisesAddFormik';

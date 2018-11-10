@@ -25,7 +25,7 @@ const semestersOptions = [
 
 type FormProps = OnDrop & FormikProps<Group>;
 
-class GroupsAddForm extends React.Component<FormProps> {
+class GroupsAddForm extends React.PureComponent<FormProps> {
   render() {
     const {
       isSubmitting,
@@ -79,7 +79,7 @@ class GroupsAddForm extends React.Component<FormProps> {
               name="semester"
               options={semestersOptions}
               onChange={handleChange}
-              defaultValue={values.semster}
+              defaultValue={values.semester}
             />
           </FormGroup>
           <FormGroup

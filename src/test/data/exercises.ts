@@ -25,7 +25,7 @@ Object.keys(ids).forEach((key) => {
     difficulty: Difficulties.MEDIUM,
     description: { fr: faker.lorem.paragraph(), en: faker.lorem.paragraph() },
     id: ids[key],
-  };
+  } as any; // FIXME: property unitTest is missing
 });
 
 const resources: { [key: string]: Exercise } = {
@@ -50,35 +50,6 @@ const resources: { [key: string]: Exercise } = {
         {},
       ),
     },
-<<<<<<< HEAD
-    unitTests: [
-      {
-        input: [
-          {
-            inputType: FunctionReturnTypes.STRING,
-            inputValue: 'abcabcbb',
-          },
-        ],
-        outputValue: 3,
-      },
-      {
-        input: [
-          {
-            inputType: FunctionReturnTypes.STRING,
-            inputValue: 'bbbbb',
-          },
-        ],
-        outputValue: 1,
-      },
-      {
-        input: [
-          {
-            inputType: FunctionReturnTypes.STRING,
-            inputValue: 'pwwkew',
-          },
-        ],
-        outputValue: 3,
-=======
     sampleTestCases: [
       {
         it: 'Example tests',
@@ -120,7 +91,6 @@ const resources: { [key: string]: Exercise } = {
             },
           },
         ],
->>>>>>> Add UnitTest model & test-data
       },
     ],
   },
@@ -148,34 +118,6 @@ const resources: { [key: string]: Exercise } = {
         {},
       ),
     },
-<<<<<<< HEAD
-    unitTests: [
-      {
-        input: [
-          {
-            inputType: FunctionReturnTypes['INT[]'],
-            inputValue: [1, 3],
-          },
-          {
-            inputType: FunctionReturnTypes['INT[]'],
-            inputValue: [2],
-          },
-        ],
-        outputValue: 2.0,
-      },
-      {
-        input: [
-          {
-            inputType: FunctionReturnTypes['INT[]'],
-            inputValue: [1, 2],
-          },
-          {
-            inputType: FunctionReturnTypes['INT[]'],
-            inputValue: [3, 4],
-          },
-        ],
-        outputValue: 2.5,
-=======
     sampleTestCases: [
       {
         it: 'Example tests',
@@ -213,7 +155,6 @@ const resources: { [key: string]: Exercise } = {
             },
           },
         ],
->>>>>>> Add UnitTest model & test-data
       },
     ],
   },
@@ -238,35 +179,6 @@ const resources: { [key: string]: Exercise } = {
         {},
       ),
     },
-<<<<<<< HEAD
-    unitTests: [
-      {
-        input: [
-          {
-            inputType: FunctionReturnTypes.STRING,
-            inputValue: 'man i need a taxi up to ubud',
-          },
-        ],
-        outputValue: 'taxi',
-      },
-      {
-        input: [
-          {
-            inputType: FunctionReturnTypes.STRING,
-            inputValue: 'what time are we climbing up to the volcano',
-          },
-        ],
-        outputValue: 'volcano',
-      },
-      {
-        input: [
-          {
-            inputType: FunctionReturnTypes.STRING,
-            inputValue: 'take me to semynak',
-          },
-        ],
-        outputValue: 'semynak',
-=======
     sampleTestCases: [
       {
         it: 'Example tests',
@@ -308,7 +220,6 @@ const resources: { [key: string]: Exercise } = {
             },
           },
         ],
->>>>>>> Add UnitTest model & test-data
       },
     ],
   },

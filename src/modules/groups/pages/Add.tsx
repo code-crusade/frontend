@@ -3,13 +3,14 @@ import { FormikProps } from 'formik';
 import { isEmpty, Omit } from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { convertToStudents } from 'src/modules/students/helpers';
+import { Student } from 'src/modules/students/models';
 import { history } from 'src/services';
 import { WithHistory } from 'src/types/types';
 import { read, utils } from 'xlsx';
 import { groupsAdd } from '../actions';
 import { GroupsAdd } from '../components/GroupsAdd';
-import { convertToStudents } from '../helpers';
-import { Group, Student } from '../models';
+import { Group } from '../models';
 
 interface State {
   students: Student[];
@@ -19,7 +20,7 @@ interface Props extends WithHistory {
   addGroup(values: Omit<Group, 'id'>): void;
 }
 
-class Add extends React.Component<Props, State> {
+class Add extends React.PureComponent<Props, State> {
   readonly state = {
     students: [],
   };
@@ -71,13 +72,11 @@ class Add extends React.Component<Props, State> {
 
   render() {
     return (
-      <React.Fragment>
-        <GroupsAdd
-          onDrop={this.onFileDrop}
-          onSubmit={this.handleSumbit}
-          students={this.state.students}
-        />
-      </React.Fragment>
+      <GroupsAdd
+        onDrop={this.onFileDrop}
+        onSubmit={this.handleSumbit}
+        students={this.state.students}
+      />
     );
   }
 }
