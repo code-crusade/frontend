@@ -1,5 +1,5 @@
 import { Callout, HTMLTable } from '@blueprintjs/core';
-import { isEmpty } from 'lodash';
+import { Dictionary, isEmpty } from 'lodash';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -10,7 +10,7 @@ const Table = styled(HTMLTable)`
 `;
 
 interface GroupsTableProps {
-  readonly groups: { [key: string]: Group };
+  readonly groups: Dictionary<Group>;
   archive?: boolean;
   onGroupClick(groupId: string): void;
 }
@@ -20,15 +20,19 @@ export const GroupsTable: React.SFC<GroupsTableProps> = (props) => {
 
   const handleGroupClick = (id: string) => onGroupClick(id);
 
-  return isEmpty(groups) ? (
-    <React.Fragment>
-      {!archive && (
-        <Callout title="Aucun groupe existant" intent="primary">
-          Créer un nouveau groupe en <Link to="groups/add">cliquant ici</Link>
-        </Callout>
-      )}
-    </React.Fragment>
-  ) : (
+  if (isEmpty(groups)) {
+    if (archive) {
+      return <Callout title="Aucun groupe archivé existant" intent="primary" />;
+    }
+
+    return (
+      <Callout title="Aucun groupe en cours existant" intent="primary">
+        Créer un nouveau groupe en <Link to="groups/add">cliquant ici</Link>
+      </Callout>
+    );
+  }
+
+  return (
     <Table interactive>
       <thead>
         <tr>

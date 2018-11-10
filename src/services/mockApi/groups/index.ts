@@ -16,7 +16,6 @@ export const browse = () => {
 const addGroup = (formValues: Omit<Group, 'id'>) => {
   const id = uuid();
   const newItem = { ...formValues, id };
-  console.log(newItem);
 
   groups[id] = newItem;
   return newItem;
@@ -27,6 +26,19 @@ export const add = (group: Group) => {
   return of({
     response: {
       data: { _embedded: { group: res } },
+    },
+  });
+};
+
+export const archive = (payload: { groupId: string; archived: boolean }) => {
+  const group = groups[payload.groupId];
+  if (group) {
+    group.archived = payload.archived;
+  }
+
+  return of({
+    response: {
+      data: { _embedded: { group } },
     },
   });
 };

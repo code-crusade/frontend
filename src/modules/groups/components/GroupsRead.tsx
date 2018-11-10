@@ -8,6 +8,7 @@ import { Group } from '../models';
 
 interface GroupsReadProps {
   group?: Group;
+  onArchiveClick(groupId: string, archive: boolean): void;
 }
 
 const Buttons = styled.div`
@@ -32,29 +33,53 @@ export const GroupsRead: React.SFC<GroupsReadProps> = (props) => {
       </React.Fragment>
     );
   }
-  const group = props.group!;
 
+  const group = props.group!;
   return (
     <React.Fragment>
       <SpaceBetween>
         <h1>Groupe 0{group.groupNumber}</h1>
         <Buttons>
-          <Button
-            intent="primary"
-            icon="edit"
-            style={{ marginRight: '10px' }}
-            disabled
-          >
-            Modifier
-          </Button>
-          <Button intent="warning" icon="disable" disabled>
-            Archiver
-          </Button>
+          {group.archived && (
+            <Button
+              intent="warning"
+              icon="projects"
+              onClick={() => props.onArchiveClick(group.id, false)}
+            >
+              Désarchiver
+            </Button>
+          )}
+          {!group.archived && (
+            <React.Fragment>
+              <Button
+                intent="primary"
+                icon="edit"
+                style={{ marginRight: '10px' }}
+                disabled
+              >
+                Modifier
+              </Button>
+              <Button
+                intent="danger"
+                icon="projects"
+                onClick={() => props.onArchiveClick(group.id, true)}
+              >
+                Archiver
+              </Button>
+            </React.Fragment>
+          )}
         </Buttons>
       </SpaceBetween>
-      <Tag intent="primary">
-        {group.semester} {group.year}
-      </Tag>
+      <div>
+        <Tag intent="primary">
+          {group.semester} {group.year}
+        </Tag>
+        {group.archived && (
+          <Tag intent="danger" style={{ marginLeft: '5px' }}>
+            Archivé
+          </Tag>
+        )}
+      </div>
       <Spacy />
       <StudentsBrowse students={group.students} />
     </React.Fragment>

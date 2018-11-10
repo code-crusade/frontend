@@ -1,4 +1,5 @@
 import { Button, Tab, Tabs } from '@blueprintjs/core';
+import { Dictionary } from 'lodash';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Err404 } from 'src/components/Err404';
@@ -18,11 +19,22 @@ const AddButton = styled(Button)`
 
 interface GroupsBrowseProps extends WithGroupsInjectedProps {
   selectedGroup?: Group;
+  currentGroups: Dictionary<Group>;
+  archivedGroups: Dictionary<Group>;
   onGroupClick(groupId: string): void;
+  onArchiveGroupClick(groupId: string, archive: boolean): void;
 }
 
 export const GroupsBrowse: React.SFC<GroupsBrowseProps> = (props) => {
-  const { error, loading, selectedGroup } = props;
+  const {
+    error,
+    loading,
+    selectedGroup,
+    onGroupClick,
+    onArchiveGroupClick,
+    currentGroups,
+    archivedGroups,
+  } = props;
 
   if (loading) {
     return <Loading />;
@@ -45,12 +57,34 @@ export const GroupsBrowse: React.SFC<GroupsBrowseProps> = (props) => {
         </SpaceBetween>
       }
       leftPanel={
-        <Tabs selectedTabId="act">
-          <Tab id="act" title="Actuels" panel={<GroupsTable {...props} />} />
-          <Tab id="arch" title="Archives" disabled />
+        <Tabs renderActiveTabPanelOnly animate>
+          <Tab
+            id="current"
+            title="En cours"
+            panel={
+              <GroupsTable onGroupClick={onGroupClick} groups={currentGroups} />
+            }
+          />
+          <Tab
+            id="archives"
+            title="Archives"
+            disabled={Object.keys(archivedGroups).length === 0}
+            panel={
+              <GroupsTable
+                archive
+                onGroupClick={onGroupClick}
+                groups={archivedGroups}
+              />
+            }
+          />
         </Tabs>
       }
-      rightPanel={<GroupsRead group={selectedGroup} />}
+      rightPanel={
+        <GroupsRead
+          group={selectedGroup}
+          onArchiveClick={onArchiveGroupClick}
+        />
+      }
     />
   );
 };

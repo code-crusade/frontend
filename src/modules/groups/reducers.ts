@@ -12,9 +12,9 @@ export type GroupsState = Readonly<{
 
 export const groupsReducer = combineReducers<GroupsState, GroupsAction>({
   items: (state = {}, action) => {
-    // tslint:disable-next-line
     switch (action.type) {
       case getType(groups.groupsAdd.success):
+      case getType(groups.groupsArchive.success):
         return { ...state, [action.payload.id]: action.payload };
       default:
         return state;
@@ -24,10 +24,13 @@ export const groupsReducer = combineReducers<GroupsState, GroupsAction>({
     switch (action.type) {
       case getType(groups.groupsBrowse.request):
       case getType(groups.groupsAdd.request):
+      case getType(groups.groupsArchive.request):
       case getType(groups.groupsBrowse.success):
       case getType(groups.groupsAdd.success):
+      case getType(groups.groupsArchive.success):
         return null;
       case getType(groups.groupsAdd.failure):
+      case getType(groups.groupsArchive.failure):
         return action.payload;
       default:
         return state;
@@ -37,11 +40,14 @@ export const groupsReducer = combineReducers<GroupsState, GroupsAction>({
     switch (action.type) {
       case getType(groups.groupsBrowse.request):
       case getType(groups.groupsAdd.request):
+      case getType(groups.groupsArchive.request):
         return true;
       case getType(groups.groupsBrowse.success):
       case getType(groups.groupsAdd.success):
+      case getType(groups.groupsArchive.success):
       case getType(groups.groupsBrowse.failure):
       case getType(groups.groupsAdd.failure):
+      case getType(groups.groupsArchive.failure):
         return false;
       default:
         return state;

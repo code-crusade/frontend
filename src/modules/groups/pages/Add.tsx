@@ -31,6 +31,8 @@ class Add extends React.PureComponent<Props, State> {
   ) => {
     // Inject students in values to submit
     values.students = isEmpty(this.state.students) ? [] : this.state.students;
+    // Archived false by default
+    values.archived = false;
 
     this.props.addGroup({ ...values });
     history.push('/groups');
