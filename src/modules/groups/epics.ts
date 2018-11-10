@@ -5,9 +5,9 @@ import { Services } from 'src/services';
 import { RootState } from 'src/store/root-reducer';
 import { RootAction } from 'src/types/actions';
 import { isActionOf } from 'typesafe-actions';
-import { groupsAdd, groupsBrowse } from './actions';
+import { groupsAdd, groupsArchive, groupsBrowse } from './actions';
 
-const GroupsBrowseFlow: Epic<RootAction, RootAction, RootState, Services> = (
+const groupsBrowseFlow: Epic<RootAction, RootAction, RootState, Services> = (
   action$,
   store,
   { Api },
@@ -39,4 +39,24 @@ const groupsAddFlow: Epic<RootAction, RootAction, RootState, Services> = (
     ),
   );
 
-export const groupsEpics = combineEpics(groupsAddFlow, GroupsBrowseFlow);
+const groupsArchiveFlow: Epic<RootAction, RootAction, RootState, Services> = (
+  action$,
+  store,
+  { Api },
+) =>
+  action$.pipe(
+    filter(isActionOf(groupsArchive.request)),
+    switchMap((action) =>
+      from(Api.groups.archive(action.payload)).pipe(
+        map(({ response }) => response.data._embedded.group),
+        map(groupsArchive.success),
+        catchError((err) => of(groupsArchive.failure(err))),
+      ),
+    ),
+  );
+
+export const groupsEpics = combineEpics(
+  groupsAddFlow,
+  groupsBrowseFlow,
+  groupsArchiveFlow,
+);

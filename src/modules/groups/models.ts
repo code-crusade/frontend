@@ -8,4 +8,5 @@ export interface Group {
   semester: Semesters;
   year: number;
   students: Student[];
+  archived: boolean;
 }

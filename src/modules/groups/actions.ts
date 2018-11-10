@@ -12,3 +12,9 @@ export const groupsAdd = createAsyncAction(
   'GROUPS_ADD_SUCCESS',
   'GROUPS_ADD_FAILURE',
 )<Group, Group, Error>();
+
+export const groupsArchive = createAsyncAction(
+  'GROUPS_ARCHIVE_REQUEST',
+  'GROUPS_ARCHIVE_SUCCESS',
+  'GROUPS_ARCHIVE_FAILURE',
+)<{ groupId: string; archived: boolean }, Group, Error>();
