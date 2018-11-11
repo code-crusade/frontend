@@ -4,13 +4,12 @@ import { isEmpty, Omit } from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { convertToStudents } from 'src/modules/students/helpers';
-import { Student } from 'src/modules/students/models';
 import { history } from 'src/services';
 import { WithHistory } from 'src/types/types';
 import { read, utils } from 'xlsx';
+import { Group, Student } from '../../../__generated__/api';
 import { groupsAdd } from '../actions';
 import { GroupsAdd } from '../components/GroupsAdd';
-import { Group } from '../models';
 
 interface State {
   students: Student[];

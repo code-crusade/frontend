@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { ActionType, getType } from 'typesafe-actions';
+import { Group } from '../../__generated__/api';
 import * as groups from './actions';
-import { Group } from './models';
 
 export type GroupsAction = ActionType<typeof groups>;
 export type GroupsState = Readonly<{

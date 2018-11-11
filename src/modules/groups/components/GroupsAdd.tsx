@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { TwoColumnsLayout } from 'src/components/TwoColumnsLayout';
-import { Semesters } from 'src/config/enums';
-import { Student } from 'src/modules/students/models';
+import { Semesters, Student } from '../../../__generated__/api';
 import { StudentsTable } from '../../students/components/StudentsTablePreview';
 import { GroupsAddFormik, OnSubmitGroupsAdd } from './GroupsAddForm';
 

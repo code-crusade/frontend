@@ -1,9 +1,11 @@
-import { IResizeEntry } from '@blueprintjs/core';
 import * as monacoEditor from 'monaco-editor';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { SupportedLanguages } from '../../../config/enums';
+import {
+  ExerciseSubmission,
+  SupportedLanguages,
+} from '../../../__generated__/api';
 import { generateCodeFromTemplate } from '../../../helpers';
 import IModelContentChangedEvent = monacoEditor.editor.IModelContentChangedEvent;
 import IStandaloneCodeEditor = monacoEditor.editor.IStandaloneCodeEditor;
@@ -20,7 +22,6 @@ import {
   withExerciseSubmissions,
   WithExerciseSubmissionsInjectedProps,
 } from '../hocs/withExerciseSubmissions';
-import { ExerciseSubmission } from '../models';
 import { getMostRecentSubmissionOfUser } from '../selectors';
 
 interface ReadState {
@@ -104,22 +105,17 @@ export class Read extends React.Component<ReadProps, ReadState> {
       code: this.state.code,
       exerciseId: this.props.exercise.id,
       // userId: this.props.user.id,
-      userId: '4bab6e8a-ac2f-4458-ab3e-cb1cd9b08431',
+      userId: 1,
       language: this.state.selectedLanguage,
     });
   };
 
-  handleEditorResize = (entries: IResizeEntry[]) => {
-    console.log(
-      entries.map((e) => `${e.contentRect.width} x ${e.contentRect.height}`),
-    );
-    if (this.editor) {
-      this.editor.layout();
-    }
-  };
-
   handleResize = () => {
-    return (this.editor as any).layout();
+    setInterval(() => {
+      if (this.editor) {
+        this.editor.layout();
+      }
+    }, 100);
   };
 
   componentDidMount() {
@@ -139,11 +135,11 @@ export class Read extends React.Component<ReadProps, ReadState> {
         editorCode={this.state.code}
         editorOptions={{
           selectOnLineNumbers: true,
+          automaticLayout: false,
         }}
         editorDidMount={this.editorDidMount}
         editorOnChange={this.handleChange}
         onSubmit={this.handleSubmit}
-        editorOnResize={this.handleEditorResize}
         selectedLanguage={this.state.selectedLanguage}
         onLanguageChange={this.handleLanguageChange}
       />
@@ -174,7 +170,7 @@ const mapDispatchToProps = {
 export const ExercisesReadPage = compose(
   withLoggedInUser,
   withExercise,
-  withExerciseSubmissions, // This will not scale as we'll have 100s, but it's ok for now
+  withExerciseSubmissions,
   connect(
     mapStateToProps,
     mapDispatchToProps,

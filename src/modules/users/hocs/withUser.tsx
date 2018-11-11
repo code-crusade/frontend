@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
+import { User } from '../../../__generated__/api';
 import { RootState } from '../../../store/root-reducer';
 import { usersRead } from '../actions';
-import { User } from '../models';
 import { getUserById, getUsersError, getUsersLoading } from '../selectors';
 
 // These props will be subtracted from original component type
@@ -14,7 +14,7 @@ export interface WithUserInjectedProps {
 }
 
 interface SubstractedProps extends RouteComponentProps<{ id: string }> {
-  readUser: (id: string) => void;
+  readUser: (id: number) => void;
 }
 
 export const withUser = <WrappedProps extends WithUserInjectedProps>(
@@ -30,7 +30,7 @@ export const withUser = <WrappedProps extends WithUserInjectedProps>(
 
     public componentDidMount() {
       if (!this.props.loading) {
-        this.props.readUser(this.props.match.params.id);
+        this.props.readUser(Number(this.props.match.params.id));
       }
     }
 
@@ -47,12 +47,12 @@ export const withUser = <WrappedProps extends WithUserInjectedProps>(
     { match: { params } }: RouteComponentProps<{ id: string }>,
   ) => ({
     errors: getUsersError(state.users),
-    user: getUserById(state.users, params.id),
+    user: getUserById(state.users, Number(params.id)),
     loading: getUsersLoading(state.users),
   });
 
   return connect(
     mapStateToProps,
-    { readUser: (userId: string) => usersRead.request(userId) },
+    { readUser: (userId: number) => usersRead.request(userId) },
   )(WithUser);
 };

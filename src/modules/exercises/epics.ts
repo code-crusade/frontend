@@ -1,5 +1,6 @@
 import { combineEpics, Epic } from 'redux-observable';
 import { from, of } from 'rxjs';
+import { fromPromise } from 'rxjs/internal-compatibility';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
 import { Services } from '../../services';
@@ -22,8 +23,7 @@ const exercisesBrowseFlow: Epic<RootAction, RootAction, RootState, Services> = (
   action$.pipe(
     filter(isActionOf(exercisesBrowse.request)),
     switchMap((action) =>
-      Api.exercises.browse({}).pipe(
-        map(({ response }) => response.data._embedded.exercises),
+      fromPromise(Api.defaultApi.exercisesIndex({})).pipe(
         map(exercisesBrowse.success),
         catchError((err) => of(exercisesBrowse.failure(err))),
       ),
@@ -38,8 +38,7 @@ const exercisesReadFlow: Epic<RootAction, RootAction, RootState, Services> = (
   action$.pipe(
     filter(isActionOf(exercisesRead.request)),
     switchMap((action) =>
-      Api.exercises.read(action.payload).pipe(
-        map(({ response }) => response.data._embedded.exercises),
+      fromPromise(Api.defaultApi.exercisesExerciseIdGet(action.payload)).pipe(
         map(exercisesRead.success),
         catchError((err) => of(exercisesRead.failure(err))),
       ),
@@ -54,8 +53,7 @@ const exercisesAddFlow: Epic<RootAction, RootAction, RootState, Services> = (
   action$.pipe(
     filter(isActionOf(exercisesAdd.request)),
     switchMap((action) =>
-      from(Api.exercises.add(action.payload)).pipe(
-        map(({ response }) => response.data._embedded.exercise),
+      fromPromise(Api.defaultApi.exercisesAdd(action.payload)).pipe(
         map(exercisesAdd.success),
         catchError((err) => of(exercisesAdd.failure(err))),
       ),
@@ -71,11 +69,9 @@ const exerciseSubmissionsBrowseFlow: Epic<
   action$.pipe(
     filter(isActionOf(exerciseSubmissionsBrowse.request)),
     switchMap((action) =>
-      Api.exerciseSubmissions.browse({}).pipe(
-        map(({ response }) => {
-          console.log(response);
-          return response.data._embedded.exerciseSubmissions;
-        }),
+      fromPromise(
+        Api.defaultApi.exercisesExerciseIdSubmissionsGet(action.payload),
+      ).pipe(
         map(exerciseSubmissionsBrowse.success),
         catchError((err) => of(exerciseSubmissionsBrowse.failure(err))),
       ),
@@ -91,8 +87,12 @@ const exerciseSubmissionsAddFlow: Epic<
   action$.pipe(
     filter(isActionOf(exerciseSubmissionsAdd.request)),
     switchMap((action) =>
-      from(Api.exerciseSubmissions.add(action.payload)).pipe(
-        map(({ response }) => response.data._embedded.exercise),
+      from(
+        Api.defaultApi.exercisesExerciseIdSubmissionsPost(
+          action.payload.exerciseId,
+          action.payload,
+        ),
+      ).pipe(
         map(exerciseSubmissionsAdd.success),
         catchError((err) => of(exerciseSubmissionsAdd.failure(err))),
       ),

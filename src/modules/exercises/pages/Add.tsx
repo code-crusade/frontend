@@ -5,7 +5,11 @@ import * as monacoEditor from 'monaco-editor';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { SupportedLanguages } from '../../../config/enums';
+import {
+  Exercise,
+  ExerciseSubmission,
+  SupportedLanguages,
+} from '../../../__generated__/api';
 import { history } from '../../../services';
 import { RootState } from '../../../store/root-reducer';
 import { Omit } from '../../../types/types';
@@ -17,7 +21,6 @@ import { exercisesAdd } from '../actions';
 import { ExercisesAdd } from '../components/ExercisesAdd';
 import { WithExerciseInjectedProps } from '../hocs/withExercise';
 import { WithExerciseSubmissionsInjectedProps } from '../hocs/withExerciseSubmissions';
-import { Exercise, ExerciseSubmission } from '../models';
 import { getMostRecentSubmissionOfUser } from '../selectors';
 
 interface AddState {

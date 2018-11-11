@@ -10,7 +10,7 @@ import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import { get } from 'lodash';
 import * as React from 'react';
 import * as Yup from 'yup';
-import { Credentials } from '../models';
+import { Credentials } from '../../../__generated__/api';
 
 class LoginForm extends React.Component<FormikProps<Credentials>> {
   render() {

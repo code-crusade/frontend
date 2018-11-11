@@ -2,13 +2,13 @@ import { Dictionary, pickBy } from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { Group } from '../../../__generated__/api';
 import { groupsArchive } from '../actions';
 import { GroupsBrowse } from '../components/GroupsBrowse';
 import { withGroups, WithGroupsInjectedProps } from '../hocs/withGroups';
-import { Group } from '../models';
 
 interface BrowseProps extends WithGroupsInjectedProps {
-  onArchiveGroupClick(groupId: string, archived: boolean): void;
+  onArchiveGroupClick(groupId: number, archived: boolean): void;
 }
 
 interface BrowseState {
@@ -27,12 +27,12 @@ class Browse extends React.PureComponent<BrowseProps, BrowseState> {
     archivedGroups: this.filterGroups(true),
   };
 
-  readonly handleClickSelectGroup = (groupId: string) => {
+  readonly handleClickSelectGroup = (groupId: number) => {
     this.setState({ selectedGroup: this.props.groups[groupId] });
   };
 
-  readonly handleClickArchive = (groupId: string, archived: boolean) => {
-    this.props.onArchiveGroupClick(groupId, archived);
+  readonly handleClickArchive = (groupId: number, archived: boolean) => {
+    this.props.onArchiveGroupClick(Number(groupId), archived);
     this.setState({
       currentGroups: this.filterGroups(false),
       archivedGroups: this.filterGroups(true),
@@ -54,7 +54,7 @@ class Browse extends React.PureComponent<BrowseProps, BrowseState> {
 }
 
 const mapDispatchToProps = {
-  onArchiveGroupClick: (groupId: string, archived: boolean) =>
+  onArchiveGroupClick: (groupId: number, archived: boolean) =>
     groupsArchive.request({ groupId, archived }),
 };
 

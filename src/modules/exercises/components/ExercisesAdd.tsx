@@ -1,14 +1,14 @@
 import { FormikProps } from 'formik';
 import * as React from 'react';
-import { Err404 } from '../../../components/Err404';
-import { Loading } from '../../../components/Loading';
 import {
   Difficulties,
-  FunctionReturnTypes,
+  Exercise,
   SupportedLanguages,
-} from '../../../config/enums';
+  SupportedType,
+} from '../../../__generated__/api';
+import { Err404 } from '../../../components/Err404';
+import { Loading } from '../../../components/Loading';
 import { Omit } from '../../../types/types';
-import { Exercise } from '../models';
 import { ExercisesAddFormik } from './ExercisesAddFormik';
 
 export type ExercisesReadProps = {
@@ -28,36 +28,45 @@ export const ExercisesAdd: React.SFC<ExercisesReadProps> = (props) => {
     return <Err404 />;
   }
   return (
-    <React.Fragment>
-      <h1>Nouvel exercice</h1>
-      <ExercisesAddFormik
-        initialValues={{
-          title: {
-            fr: '',
-            en: '',
+    <ExercisesAddFormik
+      initialValues={{
+        title: {
+          fr: '',
+          en: '',
+        },
+        description: {
+          fr: '',
+          en: '',
+        },
+        difficulty: Difficulties.EASY,
+        template: {
+          className: '',
+          functionName: '',
+          functionReturnType: SupportedType.STRING,
+          functionReturnValue: '',
+          params: [{ name: '', type: SupportedType.INT }],
+          prependedCode: Object.values(SupportedLanguages).reduce(
+            (carry, lang) => ({ ...carry, [lang]: '' }),
+            {},
+          ),
+          appendedCode: Object.values(SupportedLanguages).reduce(
+            (carry, lang) => ({ ...carry, [lang]: '' }),
+            {},
+          ),
+        },
+        sampleTestCases: [
+          {
+            it: '',
+            assertions: [
+              {
+                inputArguments: [{ type: SupportedType.INT, value: '' }],
+                expectedOutput: { type: SupportedType.STRING, value: '' },
+              },
+            ],
           },
-          description: {
-            fr: '',
-            en: '',
-          },
-          difficulty: Difficulties.EASY,
-          template: {
-            functionName: '',
-            functionReturnType: FunctionReturnTypes.STRING,
-            functionReturnValue: '',
-            args: [{ name: '', type: FunctionReturnTypes.INT }],
-            prependedCode: Object.values(SupportedLanguages).reduce(
-              (carry, lang) => ({ ...carry, [lang]: '' }),
-              {},
-            ),
-            appendedCode: Object.values(SupportedLanguages).reduce(
-              (carry, lang) => ({ ...carry, [lang]: '' }),
-              {},
-            ),
-          },
-        }}
-        onSubmit={props.onSubmit}
-      />
-    </React.Fragment>
+        ],
+      }}
+      onSubmit={props.onSubmit}
+    />
   );
 };

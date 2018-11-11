@@ -3,9 +3,9 @@ import { isEmpty } from 'lodash';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Difficulties } from '../../../__generated__/api';
 import { Err404 } from '../../../components/Err404';
 import { Loading } from '../../../components/Loading';
-import { Difficulties } from '../../../config/enums';
 import { WithExercisesInjectedProps } from '../hocs/withExercises';
 
 const Container = styled.div`
@@ -58,6 +58,8 @@ export const ExercisesBrowse: React.SFC<WithExercisesInjectedProps> = (
                       return <Tag intent={Intent.WARNING}>Moyen</Tag>;
                     case Difficulties.HARD:
                       return <Tag intent={Intent.DANGER}>Difficile</Tag>;
+                    default:
+                      return <Tag>Unknown</Tag>;
                   }
                 })()}
               </td>

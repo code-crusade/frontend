@@ -1,6 +1,5 @@
 import * as exercisesActions from './actions';
 import { exercisesEpics } from './epics';
-import * as exercisesModels from './models';
 import {
   ExercisesAction,
   exercisesReducer,
@@ -14,7 +13,6 @@ import {
 import * as exercisesSelectors from './selectors';
 
 export {
-  exercisesModels,
   exercisesActions,
   exercisesSelectors,
   exercisesEpics,

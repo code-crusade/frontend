@@ -7,7 +7,7 @@ import { ExerciseSubmissionsState } from './reducers/exerciseSubmissionsReducer'
 
 export const getExercisesState = (state: RootState) => state.exercises;
 export const getExercises = (state: ExercisesState) => state.items;
-export const getExerciseId = (state: any, exerciseId: string) => exerciseId;
+export const getExerciseId = (state: any, exerciseId: number) => exerciseId;
 export const getExerciseById = createSelector(
   [getExercises, getExerciseId],
   (items, id) => items[id],
@@ -20,7 +20,7 @@ export const getExerciseSubmissions = (state: RootState) =>
   state.exerciseSubmissions.items;
 export const getExerciseSubmissionId = (
   state: ExerciseSubmissionsState,
-  id: string,
+  id: number,
 ) => id;
 export const getExerciseSubmissionById = createSelector(
   [getExerciseSubmissions, getExerciseSubmissionId],
@@ -31,7 +31,8 @@ export const getExerciseSubmissionsByExerciseId = createSelector(
   (exerciseSubmissions, exerciseId) =>
     pickBy(
       exerciseSubmissions,
-      (exerciseSubmission) => exerciseSubmission.exerciseId === exerciseId,
+      (exerciseSubmission) =>
+        (exerciseSubmission as any).exerciseId === exerciseId, // FIXME: remove any
     ),
 );
 export const getExerciseSubmissionsLoading = (
@@ -47,7 +48,8 @@ export const getMostRecentSubmissionOfUser = createSelector(
       Object.values(
         pickBy(
           exerciseSubmissions,
-          (exerciseSubmission) => user && exerciseSubmission.userId === user.id,
+          (exerciseSubmission) =>
+            user && (exerciseSubmission as any).userId === user.id, // FIXME: remove any
         ),
       ),
       'date',

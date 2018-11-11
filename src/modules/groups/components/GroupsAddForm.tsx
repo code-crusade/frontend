@@ -11,10 +11,9 @@ import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import { get } from 'lodash';
 import * as React from 'react';
 import { Omit } from 'react-redux';
-import { Semesters } from 'src/config/enums';
 import { DragAndDrop } from 'src/modules/groups/components/DragAndDrop';
 import * as Yup from 'yup';
-import { Group } from '../models';
+import { Group, Semesters } from '../../../__generated__/api';
 import { OnDrop } from './GroupsAdd';
 
 const semestersOptions = [
@@ -47,7 +46,7 @@ class GroupsAddForm extends React.PureComponent<FormProps> {
             type="text"
             name="class"
             placeholder="Sigle du cours"
-            defaultValue={values.class}
+            defaultValue={values._class}
             onChange={handleChange}
             className={classNames({
               [Classes.INTENT_DANGER]:

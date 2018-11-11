@@ -2,7 +2,7 @@ import { Callout, HTMLTable } from '@blueprintjs/core';
 import { isEmpty } from 'lodash';
 import * as React from 'react';
 import styled from 'styled-components';
-import { Student } from '../models';
+import { Student } from '../../../__generated__/api';
 
 const Table = styled(HTMLTable)`
   width: 100%;

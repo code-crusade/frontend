@@ -1,22 +1,22 @@
 // tslint:disable:prefer-template
+// tslint:disable:no-duplicate-string
 import * as faker from 'faker';
-import * as uuid from 'uuid/v4';
 import {
   Difficulties,
-  FunctionReturnTypes,
+  Exercise,
   SupportedLanguages,
-} from '../../config/enums';
-import { Exercise } from '../../modules/exercises/models';
+  SupportedType,
+} from '../../__generated__/api';
 import { Omit } from '../../types/types';
 
-const ids: { [key: string]: string } = {
-  A: '1',
-  B: '2',
-  C: '3',
+const ids: { [key: string]: number } = {
+  A: 1,
+  B: 2,
+  C: 3,
 };
 
 const partialResources: {
-  [key: string]: Omit<Exercise, 'title' | 'template'>;
+  [key: string]: Omit<Exercise, 'title' | 'template' | 'sampleTestCases'>;
 } = {};
 
 Object.keys(ids).forEach((key) => {
@@ -24,7 +24,7 @@ Object.keys(ids).forEach((key) => {
     difficulty: Difficulties.MEDIUM,
     description: { fr: faker.lorem.paragraph(), en: faker.lorem.paragraph() },
     id: ids[key],
-  } as any; // FIXME: property unitTest is missing
+  };
 });
 
 const resources: { [key: string]: Exercise } = {
@@ -38,8 +38,8 @@ const resources: { [key: string]: Exercise } = {
       className: 'LengthOfLongestSubstring',
       functionName: 'lengthOfLongestSubstring',
       functionReturnValue: 4,
-      functionReturnType: FunctionReturnTypes.INT,
-      args: [{ name: 's', type: FunctionReturnTypes.STRING }],
+      functionReturnType: SupportedType.INT,
+      params: [{ name: 's', type: SupportedType.STRING }],
       appendedCode: Object.values(SupportedLanguages).reduce(
         (carry, lang) => ({ ...carry, [lang]: '' }),
         {},
@@ -49,33 +49,47 @@ const resources: { [key: string]: Exercise } = {
         {},
       ),
     },
-    unitTests: [
+    sampleTestCases: [
       {
-        input: [
+        it: 'Example tests',
+        assertions: [
           {
-            inputType: FunctionReturnTypes.STRING,
-            inputValue: 'abcabcbb',
+            inputArguments: [
+              {
+                type: SupportedType.STRING,
+                value: 'abcabcbb',
+              },
+            ],
+            expectedOutput: {
+              type: SupportedType.INT,
+              value: 3,
+            },
+          },
+          {
+            inputArguments: [
+              {
+                type: SupportedType.STRING,
+                value: 'bbbbb',
+              },
+            ],
+            expectedOutput: {
+              type: SupportedType.INT,
+              value: 1,
+            },
+          },
+          {
+            inputArguments: [
+              {
+                type: SupportedType.STRING,
+                value: 'pwwkew',
+              },
+            ],
+            expectedOutput: {
+              type: SupportedType.INT,
+              value: 3,
+            },
           },
         ],
-        outputValue: 3,
-      },
-      {
-        input: [
-          {
-            inputType: FunctionReturnTypes.STRING,
-            inputValue: 'bbbbb',
-          },
-        ],
-        outputValue: 1,
-      },
-      {
-        input: [
-          {
-            inputType: FunctionReturnTypes.STRING,
-            inputValue: 'pwwkew',
-          },
-        ],
-        outputValue: 3,
       },
     ],
   },
@@ -89,10 +103,10 @@ const resources: { [key: string]: Exercise } = {
       className: 'FindMedianSortedArrays',
       functionName: 'findMedianSortedArrays',
       functionReturnValue: 2.6,
-      functionReturnType: FunctionReturnTypes.FLOAT,
-      args: [
-        { name: 'nums1', type: FunctionReturnTypes['INT[]'] },
-        { name: 'nums2', type: FunctionReturnTypes['INT[]'] },
+      functionReturnType: SupportedType.FLOAT,
+      params: [
+        { name: 'nums1', type: SupportedType['INTARRAY'] },
+        { name: 'nums2', type: SupportedType['INTARRAY'] },
       ],
       appendedCode: Object.values(SupportedLanguages).reduce(
         (carry, lang) => ({ ...carry, [lang]: '' }),
@@ -103,32 +117,43 @@ const resources: { [key: string]: Exercise } = {
         {},
       ),
     },
-    unitTests: [
+    sampleTestCases: [
       {
-        input: [
+        it: 'Example tests',
+        assertions: [
           {
-            inputType: FunctionReturnTypes['INT[]'],
-            inputValue: [1, 3],
+            inputArguments: [
+              {
+                type: SupportedType['INTARRAY'],
+                value: [1, 3],
+              },
+              {
+                type: SupportedType['INTARRAY'],
+                value: [2],
+              },
+            ],
+            expectedOutput: {
+              type: SupportedType.FLOAT,
+              value: 2.0,
+            },
           },
           {
-            inputType: FunctionReturnTypes['INT[]'],
-            inputValue: [2],
+            inputArguments: [
+              {
+                type: SupportedType['INTARRAY'],
+                value: [1, 2],
+              },
+              {
+                type: SupportedType['INTARRAY'],
+                value: [3, 4],
+              },
+            ],
+            expectedOutput: {
+              type: SupportedType.FLOAT,
+              value: 2.5,
+            },
           },
         ],
-        outputValue: 2.0,
-      },
-      {
-        input: [
-          {
-            inputType: FunctionReturnTypes['INT[]'],
-            inputValue: [1, 2],
-          },
-          {
-            inputType: FunctionReturnTypes['INT[]'],
-            inputValue: [3, 4],
-          },
-        ],
-        outputValue: 2.5,
       },
     ],
   },
@@ -142,8 +167,8 @@ const resources: { [key: string]: Exercise } = {
       className: 'Kata',
       functionName: 'high',
       functionReturnValue: '',
-      functionReturnType: FunctionReturnTypes.STRING,
-      args: [{ name: 's', type: FunctionReturnTypes.STRING }],
+      functionReturnType: SupportedType.STRING,
+      params: [{ name: 's', type: SupportedType.STRING }],
       appendedCode: Object.values(SupportedLanguages).reduce(
         (carry, lang) => ({ ...carry, [lang]: '' }),
         {},
@@ -153,39 +178,53 @@ const resources: { [key: string]: Exercise } = {
         {},
       ),
     },
-    unitTests: [
+    sampleTestCases: [
       {
-        input: [
+        it: 'Example tests',
+        assertions: [
           {
-            inputType: FunctionReturnTypes.STRING,
-            inputValue: 'man i need a taxi up to ubud',
+            inputArguments: [
+              {
+                type: SupportedType.STRING,
+                value: 'man i need a taxi up to ubud',
+              },
+            ],
+            expectedOutput: {
+              type: SupportedType.STRING,
+              value: 'taxi',
+            },
+          },
+          {
+            inputArguments: [
+              {
+                type: SupportedType.STRING,
+                value: 'what time are we climbing up to the volcano',
+              },
+            ],
+            expectedOutput: {
+              type: SupportedType.STRING,
+              value: 'volcano',
+            },
+          },
+          {
+            inputArguments: [
+              {
+                type: SupportedType.STRING,
+                value: 'take me to semynak',
+              },
+            ],
+            expectedOutput: {
+              type: SupportedType.STRING,
+              value: 'semynak',
+            },
           },
         ],
-        outputValue: 'taxi',
-      },
-      {
-        input: [
-          {
-            inputType: FunctionReturnTypes.STRING,
-            inputValue: 'what time are we climbing up to the volcano',
-          },
-        ],
-        outputValue: 'volcano',
-      },
-      {
-        input: [
-          {
-            inputType: FunctionReturnTypes.STRING,
-            inputValue: 'take me to semynak',
-          },
-        ],
-        outputValue: 'semynak',
       },
     ],
   },
 };
 
-const items: { [key: string]: Exercise } = Object.values(resources).reduce(
+const items: { [key: number]: Exercise } = Object.values(resources).reduce(
   (carry: object, resource: Exercise) => ({
     ...carry,
     [resource.id]: resource,
@@ -194,7 +233,7 @@ const items: { [key: string]: Exercise } = Object.values(resources).reduce(
 );
 
 const add = (formValues: Omit<Exercise, 'id'>) => {
-  const id = uuid();
+  const id = Object.values(items).length + 1;
   const newItem = { ...formValues, id };
 
   items[id] = newItem;

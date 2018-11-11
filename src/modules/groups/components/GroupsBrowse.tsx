@@ -7,8 +7,8 @@ import { Loading } from 'src/components/Loading';
 import { SpaceBetween } from 'src/components/styled';
 import { TwoColumnsLayout } from 'src/components/TwoColumnsLayout';
 import styled from 'styled-components';
+import { Group } from '../../../__generated__/api';
 import { WithGroupsInjectedProps } from '../hocs/withGroups';
-import { Group } from '../models';
 import { GroupsRead } from './GroupsRead';
 import { GroupsTable } from './GroupsTable';
 
@@ -21,8 +21,8 @@ interface GroupsBrowseProps extends WithGroupsInjectedProps {
   selectedGroup?: Group;
   currentGroups: Dictionary<Group>;
   archivedGroups: Dictionary<Group>;
-  onGroupClick(groupId: string): void;
-  onArchiveGroupClick(groupId: string, archive: boolean): void;
+  onGroupClick(groupId: number): void;
+  onArchiveGroupClick(groupId: number, archive: boolean): void;
 }
 
 export const GroupsBrowse: React.SFC<GroupsBrowseProps> = (props) => {

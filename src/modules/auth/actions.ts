@@ -1,6 +1,5 @@
 import { createAsyncAction } from 'typesafe-actions';
-import { User } from '../users/models';
-import { Credentials } from './models';
+import { Credentials, User } from '../../__generated__/api';
 
 export const authLogIn = createAsyncAction(
   'AUTH_LOG_IN_REQUEST',
