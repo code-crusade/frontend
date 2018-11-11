@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { ActionType, getType } from 'typesafe-actions';
+import { User } from '../../../__generated__/api';
 import * as users from '../actions';
-import { User } from '../models';
 
 export type UsersAction = ActionType<typeof users>;
 

@@ -1,6 +1,6 @@
 import * as _Api from './api';
 import { history } from './historyService';
-import * as MockApi from './mockApi';
+import { MockApi } from './mockApi';
 
 export const Api = process.env.REACT_APP_USE_TEST_DATA ? MockApi : _Api;
 

@@ -1,19 +1,21 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { Exercise } from '../../../__generated__/api';
 import { RootState } from '../../../store/root-reducer';
 import { exerciseSubmissionsBrowse } from '../actions';
-import { Exercise } from '../models';
 import {
   getExerciseSubmissions,
   getExerciseSubmissionsError,
   getExerciseSubmissionsLoading,
 } from '../selectors';
+import { WithExerciseInjectedProps } from './withExercise';
 
 // These props will be subtracted from original component type
 export interface WithExerciseSubmissionsInjectedProps {
   loading: boolean;
   error: Error;
-  exercises: { [key: string]: Exercise };
+  exercises: { [key: number]: Exercise };
 }
 
 interface SubstractedProps {
@@ -55,8 +57,18 @@ export const withExerciseSubmissions = <
     loading: getExerciseSubmissionsLoading(state.exerciseSubmissions),
   });
 
+  const mapDispatchToProps = (
+    dispatch: Dispatch,
+    ownProps: WrappedProps & WithExerciseInjectedProps,
+  ) => {
+    return {
+      browseExerciseSubmissions: () =>
+        dispatch(exerciseSubmissionsBrowse.request(ownProps.exercise.id)),
+    };
+  };
+
   return connect(
     mapStateToProps,
-    { browseExerciseSubmissions: () => exerciseSubmissionsBrowse.request() },
+    mapDispatchToProps,
   )(WithExerciseSubmissions);
 };

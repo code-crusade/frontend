@@ -1,11 +1,7 @@
-import * as exercisesRoutes from './exercises';
-import * as exerciseSubmissionsRoutes from './exerciseSubmissions';
-import * as groups from './groups';
-import * as usersRoutes from './users';
+import { AuthApiMock } from './authApi';
+import { DefaultApiMock } from './defaultApi';
 
-export {
-  exercisesRoutes as exercises,
-  exerciseSubmissionsRoutes as exerciseSubmissions,
-  usersRoutes as users,
-  groups,
+export const MockApi = {
+  defaultApi: new DefaultApiMock(),
+  authApi: new AuthApiMock(),
 };

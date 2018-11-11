@@ -1,5 +1,5 @@
+import { Group } from 'src/__generated__/api';
 import { createAsyncAction } from 'typesafe-actions';
-import { Group } from './models';
 
 export const groupsBrowse = createAsyncAction(
   'GROUPS_BROWSE_REQUEST',
@@ -17,4 +17,4 @@ export const groupsArchive = createAsyncAction(
   'GROUPS_ARCHIVE_REQUEST',
   'GROUPS_ARCHIVE_SUCCESS',
   'GROUPS_ARCHIVE_FAILURE',
-)<{ groupId: string; archived: boolean }, Group, Error>();
+)<{ groupId: number; archived: boolean }, Group, Error>();

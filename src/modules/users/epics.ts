@@ -1,5 +1,6 @@
 import { combineEpics, Epic } from 'redux-observable';
-import { from, of } from 'rxjs';
+import { of } from 'rxjs';
+import { fromPromise } from 'rxjs/internal-compatibility';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
 import { Services } from '../../services';
@@ -16,8 +17,7 @@ const usersBrowseFlow: Epic<RootAction, RootAction, RootState, Services> = (
   action$.pipe(
     filter(isActionOf(usersBrowse.request)),
     switchMap((action) =>
-      Api.users.browse({}).pipe(
-        map(({ response }) => response.data._embedded.users),
+      fromPromise(Api.defaultApi.usersBrowse()).pipe(
         map(usersBrowse.success),
         catchError((err) => of(usersBrowse.failure(err))),
       ),
@@ -32,8 +32,7 @@ const usersReadFlow: Epic<RootAction, RootAction, RootState, Services> = (
   action$.pipe(
     filter(isActionOf(usersRead.request)),
     switchMap((action) =>
-      Api.users.read(action.payload).pipe(
-        map(({ response }) => response.data._embedded.users),
+      fromPromise(Api.defaultApi.usersRead(action.payload)).pipe(
         map(usersRead.success),
         catchError((err) => of(usersRead.failure(err))),
       ),
@@ -48,8 +47,7 @@ const usersAddFlow: Epic<RootAction, RootAction, RootState, Services> = (
   action$.pipe(
     filter(isActionOf(usersAdd.request)),
     switchMap((action) =>
-      from(Api.users.add(action.payload)).pipe(
-        map(({ response }) => response.data._embedded.user),
+      fromPromise(Api.defaultApi.usersAdd(action.payload)).pipe(
         map(usersAdd.success),
         catchError((err) => of(usersAdd.failure(err))),
       ),

@@ -9,9 +9,8 @@ import { IconNames } from '@blueprintjs/icons';
 import { Field, FieldArray, FieldProps } from 'formik';
 import * as React from 'react';
 import styled from 'styled-components';
+import { Argument, Assertion, TestCase } from '../../../../__generated__/api';
 import { JustifyRight } from '../../../../components/styled';
-import { FunctionReturnTypes } from '../../../../config/enums';
-import { Argument, Assertion, TestCase } from '../../models';
 import { FormValues } from '../ExercisesAddFormik';
 
 const Compact = styled.div`
@@ -35,7 +34,7 @@ export const AssertionsField: React.SFC<AssertionsFieldProps> = (props) => {
         console.log(values, name);
         const newAssertion = {
           inputArguments: values.template.params.map(
-            (param: { type: FunctionReturnTypes; value: any }) => ({
+            (param: { type: SupportedType; value: any }) => ({
               type: param.type,
               value: '',
             }),
@@ -57,7 +56,7 @@ export const AssertionsField: React.SFC<AssertionsFieldProps> = (props) => {
                         (inputArgument: Argument, j: number) => (
                           <Field
                             key={j}
-                            name={`${name}.${i}.inputArguments.${j}.name`}
+                            name={`${name}.${i}.inputArguments.${j}.value`}
                             render={({ field }: FieldProps<FormValues>) => (
                               <InputGroup
                                 small

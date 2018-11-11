@@ -1,9 +1,9 @@
 import * as faker from 'faker';
-import { User } from '../../modules/users/models';
+import { User } from '../../__generated__/api';
 
-const ids: { [key: string]: string } = {
-  A: '589bd63c-bcd9-4a42-91b1-a581b5bee951',
-  B: 'fcc253ee-2b82-4c24-86be-362959e0a01f',
+const ids: { [key: string]: number } = {
+  A: 1,
+  B: 2,
 };
 
 const partialResources: {
@@ -29,7 +29,7 @@ const resources: { [key: string]: User } = {
   },
 };
 
-const items: { [key: string]: User } = Object.values(resources).reduce(
+const items: { [key: number]: User } = Object.values(resources).reduce(
   (carry: object, resource: User) => ({
     ...carry,
     [resource.id]: resource,

@@ -1,8 +1,11 @@
 import { FormGroup, HTMLSelect } from '@blueprintjs/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
-import { FunctionReturnTypes } from '../../../../../config/enums';
-import { Argument, Assertion, TestCase } from '../../../models';
+import {
+  Argument,
+  Assertion,
+  TestCase,
+} from '../../../../../__generated__/api';
 import { FormValues } from '../../ExercisesAddFormik';
 import { typeOptions } from '../../TemplatePanel';
 
@@ -38,7 +41,7 @@ export const FunctionReturnTypeField: React.SFC<
 // Maybe an immutable library like emmer would prevent these long functions
 const updateTestCasesReturnType = (
   form: FormikProps<FormValues>,
-  newValue: FunctionReturnTypes,
+  newValue: SupportedType,
 ) => {
   form.values.sampleTestCases.forEach((testCase: TestCase, i: number) => {
     testCase.assertions.forEach((assertion: Assertion, j: number) => {

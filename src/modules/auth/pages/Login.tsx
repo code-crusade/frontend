@@ -4,9 +4,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { history } from 'src/services';
 import { WithHistory } from 'src/types/types';
+import { Credentials } from '../../../__generated__/api';
 import { authLogIn } from '../actions';
 import { Login as LoginComponent } from '../components/Login';
-import { Credentials } from '../models';
 
 interface LoginProps extends WithHistory {
   login(credentials: Credentials): void;

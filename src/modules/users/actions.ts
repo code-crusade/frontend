@@ -1,5 +1,5 @@
 import { createAsyncAction } from 'typesafe-actions';
-import { User } from './models';
+import { User } from '../../__generated__/api';
 
 export const usersBrowse = createAsyncAction(
   'USERS_BROWSE_REQUEST',
@@ -11,7 +11,7 @@ export const usersRead = createAsyncAction(
   'USERS_READ_REQUEST',
   'USERS_READ_SUCCESS',
   'USERS_READ_FAILURE',
-)<string, User, Error>();
+)<number, User, Error>();
 
 export const usersAdd = createAsyncAction(
   'USERS_ADD_REQUEST',

@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { UsersState } from './reducers/usersReducer';
 
 export const getUsers = (state: UsersState) => state.items;
-export const getUserId = (state: UsersState, id: string) => id;
+export const getUserId = (state: UsersState, id: number) => id;
 export const getUserById = createSelector(
   [getUsers, getUserId],
   (items, id) => items[id],

@@ -15,9 +15,8 @@ import { Field, FieldProps, FormikProps } from 'formik';
 import { get } from 'lodash';
 import * as React from 'react';
 import styled from 'styled-components';
+import { Difficulties, Exercise } from '../../../__generated__/api';
 import { JustifyRightMargin } from '../../../components/styled';
-import { Difficulties } from '../../../config/enums';
-import { Exercise } from '../models';
 import { TemplatePanel } from './TemplatePanel';
 
 const difficultiesOptions = [

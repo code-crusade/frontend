@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RootState } from 'src/store/root-reducer';
+import { Group } from '../../../__generated__/api';
 import { groupsBrowse } from '../actions';
-import { Group } from '../models';
 import { getGroups, getGroupsError, getGroupsLoading } from '../selectors';
 
 // These props will be subtracted from original component type

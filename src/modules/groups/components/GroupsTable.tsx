@@ -3,7 +3,7 @@ import { Dictionary, isEmpty } from 'lodash';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Group } from '../models';
+import { Group } from '../../../__generated__/api';
 
 const Table = styled(HTMLTable)`
   width: 100%;
@@ -12,13 +12,13 @@ const Table = styled(HTMLTable)`
 interface GroupsTableProps {
   readonly groups: Dictionary<Group>;
   archive?: boolean;
-  onGroupClick(groupId: string): void;
+  onGroupClick(groupId: number): void;
 }
 
 export const GroupsTable: React.SFC<GroupsTableProps> = (props) => {
   const { groups, onGroupClick, archive } = props;
 
-  const handleGroupClick = (id: string) => onGroupClick(id);
+  const handleGroupClick = (id: number) => onGroupClick(id);
 
   if (isEmpty(groups)) {
     if (archive) {
@@ -46,7 +46,7 @@ export const GroupsTable: React.SFC<GroupsTableProps> = (props) => {
         {Object.values(groups).map((group, index) => (
           <tr onClick={() => handleGroupClick(group.id)} key={group.id}>
             <td>{group.groupNumber}</td>
-            <td>{group.class}</td>
+            <td>{group._class}</td>
             <td>
               {group.semester} {group.year}
             </td>

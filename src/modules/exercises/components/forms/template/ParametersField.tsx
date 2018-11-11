@@ -10,8 +10,11 @@ import * as classnames from 'classnames';
 import { Field, FieldArray, FieldProps, FormikProps } from 'formik';
 import { get } from 'lodash';
 import * as React from 'react';
-import { FunctionReturnTypes } from '../../../../../config/enums';
-import { Assertion, TestCase } from '../../../models';
+import {
+  Assertion,
+  SupportedType,
+  TestCase,
+} from '../../../../../__generated__/api';
 import { FormValues } from '../../ExercisesAddFormik';
 import { typeOptions } from '../../TemplatePanel';
 
@@ -30,10 +33,7 @@ export const ParametersField: React.SFC<ParametersFieldProps> = (props) => {
           return (
             <div>
               {arrayHelpers.form.values.template.params.map(
-                (
-                  arg: { type: FunctionReturnTypes; name: string },
-                  index: number,
-                ) => (
+                (arg: { type: SupportedType; name: string }, index: number) => (
                   <ControlGroup key={index}>
                     <Field
                       name={`${name}.${index}.name`}
@@ -82,7 +82,7 @@ export const ParametersField: React.SFC<ParametersFieldProps> = (props) => {
                       type="button"
                       onClick={() => {
                         arrayHelpers.insert(index + 1, {
-                          type: FunctionReturnTypes.INT,
+                          type: SupportedType.INT,
                           name: '',
                         });
 
@@ -117,7 +117,7 @@ const insertArgumentInTestCases = (
           [
             ...array.slice(0, insertionIndex),
             {
-              type: FunctionReturnTypes.INT,
+              type: SupportedType.INT,
               name: '',
             },
             ...array.slice(insertionIndex),
@@ -148,7 +148,7 @@ const removeArgumentFromTestCases = (
 
 const updateTestCasesArgType = (
   form: FormikProps<FormValues>,
-  newValue: FunctionReturnTypes,
+  newValue: SupportedType,
   updateIndex: number,
 ) => {
   form.values.sampleTestCases.forEach((testCase: TestCase, i: number) => {

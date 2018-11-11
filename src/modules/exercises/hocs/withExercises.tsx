@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Exercise } from '../../../__generated__/api';
 import { RootState } from '../../../store/root-reducer';
 import { exercisesBrowse } from '../actions';
-import { Exercise } from '../models';
 import {
   getExercises,
   getExercisesError,
@@ -13,7 +13,7 @@ import {
 export interface WithExercisesInjectedProps {
   loading: boolean;
   error: Error;
-  exercises: { [key: string]: Exercise };
+  exercises: { [key: number]: Exercise };
 }
 
 interface SubstractedProps {

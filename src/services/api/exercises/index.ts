@@ -1,5 +1,5 @@
+import { Exercise } from '../../../__generated__/api';
 import { Method, xhr } from '../../../helpers';
-import { Exercise } from '../../../modules/exercises/models';
 
 export const browse = ({
   page = 0,
@@ -13,7 +13,7 @@ export const browse = ({
   return xhr(Method.GET, '/exercises');
 };
 
-export const read = (id: string) => {
+export const read = (id: number) => {
   return xhr(Method.GET, `/exercises/${id}`);
 };
 

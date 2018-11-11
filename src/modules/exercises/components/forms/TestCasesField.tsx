@@ -12,9 +12,8 @@ import * as classnames from 'classnames';
 import { Field, FieldArray, FieldProps } from 'formik';
 import { get } from 'lodash';
 import * as React from 'react';
+import { TestCase } from 'src/__generated__/api';
 import { JustifyRightMargin } from '../../../../components/styled';
-import { FunctionReturnTypes } from '../../../../config/enums';
-import { TestCase } from '../../models';
 import { AssertionsField } from './AssertionsField';
 
 export interface TestCasesFieldProps {
@@ -78,10 +77,7 @@ export const TestCasesField: React.SFC<TestCasesFieldProps> = (props) => {
                         assertions: [
                           {
                             inputArguments: form.values.template.params.map(
-                              (param: {
-                                type: FunctionReturnTypes;
-                                value: any;
-                              }) => ({
+                              (param: { type: SupportedType; value: any }) => ({
                                 type: param.type,
                                 value: '',
                               }),

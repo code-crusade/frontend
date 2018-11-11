@@ -4,8 +4,11 @@ import { H4, PanelStack } from '@blueprintjs/core';
 import { Form, FormikProps } from 'formik';
 import * as React from 'react';
 import styled from 'styled-components';
-import { SupportedLanguages } from '../../../config/enums';
-import { generateCodeFromTemplate } from '../../../helpers';
+import { SupportedLanguages } from '../../../__generated__/api';
+import {
+  generateCodeFromTemplate,
+  generateTestsFromTestCases,
+} from '../../../helpers';
 import { DescriptionPanel } from './DescriptionPanel';
 import { EditorTabs } from './EditorTabs';
 import { FormValues } from './ExercisesAddFormik';
@@ -62,6 +65,19 @@ export class ExercisesAddForm extends React.Component<ExercisesAddFormProps> {
       ),
     };
 
+    const generatedTests = {
+      python: generateTestsFromTestCases(
+        values as any,
+        SupportedLanguages.Python,
+      ),
+      java: generateTestsFromTestCases(values as any, SupportedLanguages.Java),
+      cpp: generateTestsFromTestCases(values as any, SupportedLanguages.Cpp),
+      javascript: generateTestsFromTestCases(
+        values as any,
+        SupportedLanguages.Javascript,
+      ),
+    };
+
     return (
       <Container>
         <FormContainer>
@@ -85,7 +101,7 @@ export class ExercisesAddForm extends React.Component<ExercisesAddFormProps> {
           />
           <H4>Preview des cas de tests</H4>
           <EditorTabs
-            languageMap={generatedCode}
+            languageMap={generatedTests}
             editorOptions={readOnlyEditorOptions}
           />
         </PreviewContainer>
