@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 import * as React from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import styled from 'styled-components';
-import { SupportedLanguages } from '../../../config/enums';
+import { SupportedLanguages } from '../../../__generated__/api';
 
 const PanelContainer = styled.div`
   margin-bottom: 2em;

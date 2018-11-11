@@ -1,15 +1,17 @@
 // tslint:disable:prefer-template
 
 import * as faker from 'faker';
-import { SupportedLanguages } from '../../config/enums';
-import { ExerciseSubmission } from '../../modules/exercises/models';
+import {
+  ExerciseSubmission,
+  SupportedLanguages,
+} from '../../__generated__/api';
 import { Omit } from '../../types/types';
 import { testExercises } from './exercises';
 import { testUsers } from './users';
 
-const ids: { [key: string]: string } = {
-  A: '589bd63c-bcd9-4a42-91b1-a581b5bee951',
-  B: 'fcc253ee-2b82-4c24-86be-362959e0a01f',
+const ids: { [key: string]: number } = {
+  A: 1,
+  B: 2,
 };
 
 const partialResources: {

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { SpaceBetween } from 'src/components/styled';
 import { StudentsBrowse } from 'src/modules/students/components/StudentsBrowse';
 import styled from 'styled-components';
-import { Group } from '../models';
+import { Group } from '../../../__generated__/api';
 
 interface GroupsReadProps {
   group?: Group;

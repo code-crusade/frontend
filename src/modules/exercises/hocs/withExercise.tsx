@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
+import { Exercise } from '../../../__generated__/api';
 import { RootState } from '../../../store/root-reducer';
 import { exercisesRead } from '../actions';
-import { Exercise } from '../models';
 import {
   getExerciseById,
   getExercisesError,
@@ -18,7 +18,7 @@ export interface WithExerciseInjectedProps {
 }
 
 interface SubstractedProps extends RouteComponentProps<{ id: string }> {
-  readExercise: (id: string) => void;
+  readExercise: (id: number) => void;
 }
 
 export const withExercise = <WrappedProps extends WithExerciseInjectedProps>(
@@ -34,7 +34,7 @@ export const withExercise = <WrappedProps extends WithExerciseInjectedProps>(
 
     public componentDidMount() {
       if (!this.props.loading) {
-        this.props.readExercise(this.props.match.params.id);
+        this.props.readExercise(Number(this.props.match.params.id));
       }
     }
 
@@ -51,12 +51,12 @@ export const withExercise = <WrappedProps extends WithExerciseInjectedProps>(
     { match: { params } }: RouteComponentProps<{ id: string }>,
   ) => ({
     errors: getExercisesError(state.exercises),
-    exercise: getExerciseById(state.exercises, params.id),
+    exercise: getExerciseById(state.exercises, Number(params.id)),
     loading: getExercisesLoading(state.exercises),
   });
 
   return connect(
     mapStateToProps,
-    { readExercise: (exerciseId: string) => exercisesRead.request(exerciseId) },
+    { readExercise: (exerciseId: number) => exercisesRead.request(exerciseId) },
   )(WithExercise);
 };

@@ -1,4 +1,4 @@
-import { Student } from './models';
+import { Student } from '../../__generated__/api';
 
 /** Convert content from Excels to actual students */
 export function convertToStudents(content: object[]): Student[] {

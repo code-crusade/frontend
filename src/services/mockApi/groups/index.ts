@@ -1,7 +1,7 @@
 import { Omit } from 'react-redux';
 import { of } from 'rxjs';
-import { Group } from 'src/modules/groups/models';
 import * as uuid from 'uuid/v4';
+import { Group } from '../../../__generated__/api';
 
 export const groups: Group[] = [];
 

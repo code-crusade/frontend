@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { ActionType, getType } from 'typesafe-actions';
+import { ExerciseSubmission } from '../../../__generated__/api';
 import * as exercises from '../actions';
-import { ExerciseSubmission } from '../models';
 
 export type ExerciseSubmissionsAction = ActionType<typeof exercises>;
 
 export type ExerciseSubmissionsState = Readonly<{
-  items: { [key: string]: ExerciseSubmission };
+  items: { [key: number]: ExerciseSubmission };
   loading: boolean;
   error: Error | null;
 }>;

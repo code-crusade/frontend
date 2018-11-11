@@ -1,14 +1,14 @@
 import { FormikProps } from 'formik';
 import * as React from 'react';
-import { Err404 } from '../../../components/Err404';
-import { Loading } from '../../../components/Loading';
 import {
   Difficulties,
-  FunctionReturnTypes,
+  Exercise,
   SupportedLanguages,
-} from '../../../config/enums';
+  SupportedType,
+} from '../../../__generated__/api';
+import { Err404 } from '../../../components/Err404';
+import { Loading } from '../../../components/Loading';
 import { Omit } from '../../../types/types';
-import { Exercise } from '../models';
 import { ExercisesAddFormik } from './ExercisesAddFormik';
 
 export type ExercisesReadProps = {
@@ -42,9 +42,9 @@ export const ExercisesAdd: React.SFC<ExercisesReadProps> = (props) => {
         template: {
           className: '',
           functionName: '',
-          functionReturnType: FunctionReturnTypes.STRING,
+          functionReturnType: SupportedType.STRING,
           functionReturnValue: '',
-          params: [{ name: '', type: FunctionReturnTypes.INT }],
+          params: [{ name: '', type: SupportedType.INT }],
           prependedCode: Object.values(SupportedLanguages).reduce(
             (carry, lang) => ({ ...carry, [lang]: '' }),
             {},
@@ -59,8 +59,8 @@ export const ExercisesAdd: React.SFC<ExercisesReadProps> = (props) => {
             it: '',
             assertions: [
               {
-                inputArguments: [{ type: FunctionReturnTypes.INT, value: '' }],
-                expectedOutput: { type: FunctionReturnTypes.STRING, value: '' },
+                inputArguments: [{ type: SupportedType.INT, value: '' }],
+                expectedOutput: { type: SupportedType.STRING, value: '' },
               },
             ],
           },

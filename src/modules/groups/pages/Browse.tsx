@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { Group } from '../../../__generated__/api';
 import { GroupsBrowse } from '../components/GroupsBrowse';
 import { withGroups, WithGroupsInjectedProps } from '../hocs/withGroups';
-import { Group } from '../models';
 
 interface BrowseState {
   selectedGroup?: Group;
@@ -12,7 +12,7 @@ class Browse extends React.PureComponent<WithGroupsInjectedProps, BrowseState> {
     selectedGroup: undefined,
   };
 
-  handleClickSelectGroup = (groupId: string) => {
+  handleClickSelectGroup = (groupId: number) => {
     this.setState({ selectedGroup: this.props.groups[groupId] });
   };
 

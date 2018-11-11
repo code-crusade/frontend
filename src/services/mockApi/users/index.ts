@@ -1,6 +1,6 @@
 import { of, throwError } from 'rxjs';
+import { User } from '../../../__generated__/api';
 import { Method, xhr } from '../../../helpers';
-import { User } from '../../../modules/users/models';
 import { testUsers } from '../../../test/data';
 
 export const browse = ({

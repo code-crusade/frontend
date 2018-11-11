@@ -1,8 +1,8 @@
 import { Formik, FormikProps } from 'formik';
 import * as React from 'react';
 import * as Yup from 'yup';
+import { Exercise } from '../../../__generated__/api';
 import { Omit } from '../../../types/types';
-import { Exercise } from '../models';
 import { ExercisesAddForm } from './ExercisesAddForm';
 
 export type FormValues = Omit<Exercise, 'id'>;

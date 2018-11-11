@@ -5,9 +5,9 @@ import MonacoEditor, {
   EditorDidMount,
 } from 'react-monaco-editor';
 import styled from 'styled-components';
+import { SupportedLanguages } from '../../../__generated__/api';
 import { Err404 } from '../../../components/Err404';
 import { Loading } from '../../../components/Loading';
-import { SupportedLanguages } from '../../../config/enums';
 import { WithExerciseInjectedProps } from '../hocs/withExercise';
 
 export type EditorProps = {

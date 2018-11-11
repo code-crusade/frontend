@@ -1,5 +1,5 @@
 import { of, throwError } from 'rxjs';
-import { Exercise } from '../../../modules/exercises/models';
+import { Exercise } from '../../../__generated__/api';
 import { testExercises } from '../../../test/data';
 import { Omit } from '../../../types/types';
 
@@ -19,7 +19,7 @@ export const browse = ({
   });
 };
 
-export const read = (id: string) => {
+export const read = (id: number) => {
   if (!testExercises.items[id]) {
     return throwError('Resource Not Found');
   }

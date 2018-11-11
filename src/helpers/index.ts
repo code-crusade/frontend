@@ -1,8 +1,13 @@
-import { camelCase, capitalize, snakeCase } from 'lodash';
+import { camelCase, capitalize, snakeCase, upperFirst } from 'lodash';
 import { ajax } from 'rxjs/ajax';
+import {
+  Argument,
+  Exercise,
+  SupportedLanguages,
+  SupportedType,
+  Template,
+} from '../__generated__/api';
 import { URL_API } from '../config';
-import { FunctionReturnTypes, SupportedLanguages } from '../config/enums';
-import { Template } from '../modules/exercises/models';
 
 export enum Method {
   POST = 'POST',
@@ -35,13 +40,13 @@ export const generateCodeFromTemplate = (
   if (!template.functionReturnValue) {
     return 'Error: Function return value is missing';
   }
-  const paramsAsString = template.params.reduce((carry, arg, i) => {
-    if (arg.name === '') {
+  const paramsAsString = template.params.reduce((carry, param, i) => {
+    if (param.name === '') {
       return carry;
     }
-    let type = convertToLangType(arg.type, targetLang);
+    let type = convertToLangType(param.type, targetLang);
     type = type ? `${type} ` : '';
-    return `${carry}${type}${arg.name}${
+    return `${carry}${type}${param.name}${
       i < template.params.length - 1 ? ', ' : ''
     }`;
   }, '');
@@ -67,7 +72,7 @@ export const generateCodeFromTemplate = (
   }
   if (targetLang === SupportedLanguages.Java) {
     code += `public class ${template.className ||
-      capitalize(template.functionName)} {\n`;
+      upperFirst(template.functionName)} {\n`;
     code += `    public static ${convertToLangType(
       template.functionReturnType,
       targetLang,
@@ -90,17 +95,17 @@ export const generateCodeFromTemplate = (
 };
 
 const convertToLangType = (
-  val: FunctionReturnTypes,
+  val: SupportedType,
   targetLang: SupportedLanguages,
 ) => {
   if (targetLang === SupportedLanguages.Java) {
     switch (val) {
-      case 'float':
+      case SupportedType.FLOAT:
         return 'double';
-      case 'float[]':
+      case SupportedType.FLOATARRAY:
         return 'double[]';
-      case 'string':
-      case 'string[]':
+      case SupportedType.STRING:
+      case SupportedType.STRINGARRAY:
         return capitalize(val);
       default:
         return val;
@@ -109,13 +114,93 @@ const convertToLangType = (
   if (targetLang === SupportedLanguages.Cpp) {
     /* tslint:disable-next-line */
     switch (val) {
-      case 'string':
+      case SupportedType.STRING:
         return 'std::string';
-      case 'string[]':
-        return 'std::string[]';
+      case SupportedType['INTARRAY']:
+        return 'std::vector<int>';
+      case SupportedType['BOOLEANARRAY']:
+        return 'std::vector<boolean>';
+      case SupportedType['FLOATARRAY']:
+        return 'std::vector<float>';
+      case SupportedType['STRINGARRAY']:
+        return 'std::vector<std::string>';
       default:
         return val;
     }
   }
   return null;
+};
+
+export const generateTestsFromTestCases = (
+  exercise: Exercise,
+  targetLang: SupportedLanguages,
+) => {
+  const { template, sampleTestCases } = exercise;
+  let code = '';
+
+  if (targetLang === SupportedLanguages.Python) {
+    return '';
+  }
+  if (targetLang === SupportedLanguages.Cpp) {
+    return '';
+  }
+  if (targetLang === SupportedLanguages.Java) {
+    return '';
+  }
+  if (targetLang === SupportedLanguages.Javascript) {
+    code += `let assert = require("chai").assert;\n\n`;
+    code += `describe('Challenge', function() {\n`;
+    sampleTestCases.forEach((testCase) => {
+      code += `    it('${testCase.it}', function() {\n`;
+      testCase.assertions.forEach((assertion) => {
+        code += `        assert.${getAssertionFn(
+          assertion.expectedOutput,
+        )}(${camelCase(template.functionName)}(`;
+        code += assertion.inputArguments.reduce(
+          (carry, inputArgument, i, arr) => {
+            if (!inputArgument.value) {
+              return carry;
+            }
+            return (
+              carry +
+              formatArg(inputArgument) +
+              (arr.length - 1 === i ? '' : ', ')
+            );
+          },
+          '',
+        );
+        code += `), ${formatArg(assertion.expectedOutput)});\n`;
+      });
+      code += `    });\n\n`;
+    });
+    code += '});\n';
+  }
+
+  return code;
+};
+
+export const getAssertionFn = (arg: Argument) => {
+  switch (arg.type) {
+    case SupportedType.FLOAT:
+      return `'${arg.value}'`;
+    case SupportedType['STRINGARRAY']:
+      return JSON.parse(`[${arg.value}]`).map((s: string) =>
+        s.replace('"', "'"),
+      );
+    default:
+      return 'deepEqual';
+  }
+};
+
+export const formatArg = (arg: Argument) => {
+  switch (arg.type) {
+    case SupportedType.STRING:
+      return `'${arg.value}'`;
+    case SupportedType['STRINGARRAY']:
+      return JSON.parse(`[${arg.value}]`).map((s: string) =>
+        s.replace('"', "'"),
+      );
+    default:
+      return arg.value;
+  }
 };

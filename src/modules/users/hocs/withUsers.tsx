@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { User } from '../../../__generated__/api';
 import { RootState } from '../../../store/root-reducer';
 import { usersBrowse } from '../actions';
-import { User } from '../models';
 import { getUsers, getUsersError, getUsersLoading } from '../selectors';
 
 // These props will be subtracted from original component type

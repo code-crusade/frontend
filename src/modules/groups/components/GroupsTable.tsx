@@ -3,22 +3,22 @@ import { isEmpty } from 'lodash';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Group } from '../models';
+import { Group } from '../../../__generated__/api';
 
 const Table = styled(HTMLTable)`
   width: 100%;
 `;
 
 interface GroupsTableProps {
-  readonly groups: { [key: string]: Group };
+  readonly groups: { [key: number]: Group };
   archive?: boolean;
-  onGroupClick(groupId: string): void;
+  onGroupClick(groupId: number): void;
 }
 
 export const GroupsTable: React.SFC<GroupsTableProps> = (props) => {
   const { groups, onGroupClick, archive } = props;
 
-  const handleGroupClick = (id: string) => onGroupClick(id);
+  const handleGroupClick = (id: number) => onGroupClick(id);
 
   return isEmpty(groups) ? (
     <React.Fragment>
@@ -42,7 +42,7 @@ export const GroupsTable: React.SFC<GroupsTableProps> = (props) => {
         {Object.values(groups).map((group, index) => (
           <tr onClick={() => handleGroupClick(group.id)} key={group.id}>
             <td>{group.groupNumber}</td>
-            <td>{group.class}</td>
+            <td>{group._class}</td>
             <td>
               {group.semester} {group.year}
             </td>
