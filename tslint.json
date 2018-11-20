@@ -26,7 +26,8 @@
     "no-string-literal": false,
     "prefer-array-literal": [true, { "allow-type-parameters": true }],
     "no-empty-interface": false,
-    "no-increment-decrement": false
+    "no-increment-decrement": false,
+    "no-small-switch": false
   },
   "rulesDirectory": [
     "node_modules/tslint-eslint-rules/dist/rules",

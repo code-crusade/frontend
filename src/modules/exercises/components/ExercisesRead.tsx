@@ -16,6 +16,7 @@ export type EditorProps = {
   editorOptions: object;
   editorOnChange: ChangeHandler;
   onSubmit: (event: React.MouseEvent<HTMLElement>) => void;
+  onValidateClick: (event: React.MouseEvent<HTMLElement>) => void;
   selectedLanguage: SupportedLanguages;
   onLanguageChange: React.ChangeEventHandler<HTMLSelectElement>;
 };
@@ -63,6 +64,7 @@ export const ExercisesRead: React.SFC<
         <H1>{props.exercise.title.fr}</H1>
         <H3>{props.exercise.description.fr}</H3>
         <Button onClick={props.onSubmit}>Soumettre</Button>
+        <Button onClick={props.onValidateClick}>Valider tests</Button>
       </ExerciseContainer>
       <HTMLSelect
         large

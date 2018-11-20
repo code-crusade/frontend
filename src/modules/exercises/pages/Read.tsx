@@ -1,9 +1,10 @@
 import * as monacoEditor from 'monaco-editor';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, Dispatch } from 'redux';
 import {
   ExerciseSubmission,
+  RunnerArguments,
   SupportedLanguages,
 } from '../../../__generated__/api';
 import { generateCodeFromTemplate } from '../../../helpers';
@@ -15,7 +16,7 @@ import {
   withLoggedInUser,
   WithLoggedInUserInjectedProps,
 } from '../../auth/hocs/withLoggedInUser';
-import { exerciseSubmissionsAdd } from '../actions';
+import { exercisesTestCode, exerciseSubmissionsAdd } from '../actions';
 import { ExercisesRead } from '../components/ExercisesRead';
 import { withExercise, WithExerciseInjectedProps } from '../hocs/withExercise';
 import {
@@ -34,7 +35,10 @@ type InjectedProps = WithLoggedInUserInjectedProps &
   WithExerciseSubmissionsInjectedProps;
 
 interface ReadProps extends InjectedProps {
-  addSubmission: (values: Omit<ExerciseSubmission, 'id' | 'createdAt'>) => void;
+  addSubmission: (
+    values: Omit<ExerciseSubmission, 'id' | 'createdAt' | 'userId'>,
+  ) => void;
+  testCode: (values: RunnerArguments) => void;
   mostRecentSubmission?: ExerciseSubmission;
 }
 
@@ -88,7 +92,6 @@ export class Read extends React.Component<ReadProps, ReadState> {
   };
 
   handleChange = (newValue: string, e: IModelContentChangedEvent) => {
-    console.log('handleChange', newValue, e);
     this.setState({ code: newValue });
   };
 
@@ -102,11 +105,17 @@ export class Read extends React.Component<ReadProps, ReadState> {
 
   handleSubmit = (event: React.MouseEvent<HTMLElement>) => {
     this.props.addSubmission({
-      code: this.state.code,
       exerciseId: this.props.exercise.id,
-      // userId: this.props.user.id,
-      userId: 1,
+      code: this.state.code,
       language: this.state.selectedLanguage,
+    });
+  };
+
+  handleValidateClick = (event: React.MouseEvent<HTMLElement>) => {
+    this.props.testCode({
+      code: this.state.code,
+      language: this.state.selectedLanguage,
+      fixture: 'test fixture',
     });
   };
 
@@ -139,7 +148,8 @@ export class Read extends React.Component<ReadProps, ReadState> {
         }}
         editorDidMount={this.editorDidMount}
         editorOnChange={this.handleChange}
-        onSubmit={this.handleSubmit}
+        onSubmit={this.handleValidateClick}
+        onValidateClick={this.handleValidateClick}
         selectedLanguage={this.state.selectedLanguage}
         onLanguageChange={this.handleLanguageChange}
       />
@@ -162,10 +172,20 @@ const mapStateToProps = (
   };
 };
 
-const mapDispatchToProps = {
+const mapDispatchToProps = (
+  dispatch: Dispatch,
+  ownProps: WithExerciseInjectedProps,
+) => ({
   addSubmission: (values: ExerciseSubmission) =>
-    exerciseSubmissionsAdd.request(values),
-};
+    dispatch(exerciseSubmissionsAdd.request(values)),
+  testCode: (values: RunnerArguments) =>
+    dispatch(
+      exercisesTestCode.request({
+        exerciseId: ownProps.exercise.id,
+        ...values,
+      }),
+    ),
+});
 
 export const ExercisesReadPage = compose(
   withLoggedInUser,

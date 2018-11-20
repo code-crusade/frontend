@@ -10,6 +10,7 @@ import {
   exercisesAdd,
   exercisesBrowse,
   exercisesRead,
+  exercisesTestCode,
   exerciseSubmissionsAdd,
   exerciseSubmissionsBrowse,
 } from './actions';
@@ -99,10 +100,32 @@ const exerciseSubmissionsAddFlow: Epic<
     ),
   );
 
+const exercisesTestCodeFlow: Epic<
+  RootAction,
+  RootAction,
+  RootState,
+  Services
+> = (action$, store, { Api }) =>
+  action$.pipe(
+    filter(isActionOf(exercisesTestCode.request)),
+    switchMap((action) =>
+      from(
+        Api.defaultApi.exercisesExerciseIdTestPost(
+          action.payload.exerciseId,
+          action.payload,
+        ),
+      ).pipe(
+        map(exercisesTestCode.success),
+        catchError((err) => of(exercisesTestCode.failure(err))),
+      ),
+    ),
+  );
+
 export const exercisesEpics = combineEpics(
   exerciseSubmissionsBrowseFlow,
   exerciseSubmissionsAddFlow,
   exercisesBrowseFlow,
   exercisesReadFlow,
   exercisesAddFlow,
+  exercisesTestCodeFlow,
 );

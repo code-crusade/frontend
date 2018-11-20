@@ -220,7 +220,7 @@ export interface CodeValidationReport {
    * @type {boolean}
    * @memberof CodeValidationReport
    */
-  timedOut?: boolean;
+  timedOut: boolean;
   /**
    *
    * @type {string}
@@ -246,19 +246,19 @@ export interface CodeValidationReportResult {
    * @type {CodeValidationReportResultAssertions}
    * @memberof CodeValidationReportResult
    */
-  assertions?: CodeValidationReportResultAssertions;
+  assertions: CodeValidationReportResultAssertions;
   /**
    *
    * @type {boolean}
    * @memberof CodeValidationReportResult
    */
-  completed?: boolean;
+  completed: boolean;
   /**
    *
    * @type {Array<TestCaseResult>}
    * @memberof CodeValidationReportResult
    */
-  output?: Array<TestCaseResult>;
+  output: Array<TestCaseResult>;
 }
 
 /**

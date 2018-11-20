@@ -19,7 +19,7 @@ export interface WithExerciseSubmissionsInjectedProps {
 }
 
 interface SubstractedProps {
-  browseExerciseSubmissions: () => void;
+  browseExerciseSubmissions?: () => void;
 }
 
 export const withExerciseSubmissions = <
@@ -38,7 +38,7 @@ export const withExerciseSubmissions = <
     public static readonly WrappedComponent = WrappedComponent;
 
     public componentDidMount() {
-      if (!this.props.loading) {
+      if (!this.props.loading && this.props.browseExerciseSubmissions) {
         this.props.browseExerciseSubmissions();
       }
     }
@@ -61,6 +61,10 @@ export const withExerciseSubmissions = <
     dispatch: Dispatch,
     ownProps: WrappedProps & WithExerciseInjectedProps,
   ) => {
+    // It is possible that the exercise hasn't loaded yet
+    if (!ownProps.exercise) {
+      return {};
+    }
     return {
       browseExerciseSubmissions: () =>
         dispatch(exerciseSubmissionsBrowse.request(ownProps.exercise.id)),
