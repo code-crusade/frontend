@@ -30,8 +30,8 @@ export const add = (group: Group) => {
   });
 };
 
-export const archive = (payload: { groupId: string; archived: boolean }) => {
-  const group = groups[payload.groupId];
+export const archive = (payload: { id: string; archived: boolean }) => {
+  const group = groups[payload.id];
   if (group) {
     group.archived = payload.archived;
   }

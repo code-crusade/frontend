@@ -17,4 +17,4 @@ export const groupsArchive = createAsyncAction(
   'GROUPS_ARCHIVE_REQUEST',
   'GROUPS_ARCHIVE_SUCCESS',
   'GROUPS_ARCHIVE_FAILURE',
-)<{ groupId: number; archived: boolean }, Group, Error>();
+)<{ id: number; archived: boolean }, Group, Error>();

@@ -11,22 +11,21 @@
  * Do not edit the class manually.
  */
 
+import * as url from 'url';
+import * as portableFetch from 'portable-fetch';
+import { Configuration } from './configuration';
 
-import * as url from "url";
-import * as portableFetch from "portable-fetch";
-import { Configuration } from "./configuration";
-
-const BASE_PATH = "http://localhost:8080".replace(/\/+$/, "");
+const BASE_PATH = 'http://localhost:8080'.replace(/\/+$/, '');
 
 /**
  *
  * @export
  */
 export const COLLECTION_FORMATS = {
-    csv: ",",
-    ssv: " ",
-    tsv: "\t",
-    pipes: "|",
+  csv: ',',
+  ssv: ' ',
+  tsv: '\t',
+  pipes: '|',
 };
 
 /**
@@ -35,7 +34,7 @@ export const COLLECTION_FORMATS = {
  * @interface FetchAPI
  */
 export interface FetchAPI {
-    (url: string, init?: any): Promise<Response>;
+  (url: string, init?: any): Promise<Response>;
 }
 
 /**
@@ -44,8 +43,8 @@ export interface FetchAPI {
  * @interface FetchArgs
  */
 export interface FetchArgs {
-    url: string;
-    options: any;
+  url: string;
+  options: any;
 }
 
 /**
@@ -54,15 +53,19 @@ export interface FetchArgs {
  * @class BaseAPI
  */
 export class BaseAPI {
-    protected configuration: Configuration | undefined;
+  protected configuration: Configuration | undefined;
 
-    constructor(configuration?: Configuration, protected basePath: string = BASE_PATH, protected fetch: FetchAPI = portableFetch) {
-        if (configuration) {
-            this.configuration = configuration;
-            this.basePath = configuration.basePath || this.basePath;
-        }
+  constructor(
+    configuration?: Configuration,
+    protected basePath: string = BASE_PATH,
+    protected fetch: FetchAPI = portableFetch,
+  ) {
+    if (configuration) {
+      this.configuration = configuration;
+      this.basePath = configuration.basePath || this.basePath;
     }
-};
+  }
+}
 
 /**
  *
@@ -71,10 +74,10 @@ export class BaseAPI {
  * @extends {Error}
  */
 export class RequiredError extends Error {
-    name: "RequiredError" = "RequiredError";
-    constructor(public field: string, msg?: string) {
-        super(msg);
-    }
+  name: 'RequiredError' = 'RequiredError';
+  constructor(public field: string, msg?: string) {
+    super(msg);
+  }
 }
 
 /**
@@ -82,8 +85,7 @@ export class RequiredError extends Error {
  * @export
  * @interface AnyValue
  */
-export interface AnyValue {
-}
+export interface AnyValue {}
 
 /**
  * An argument
@@ -91,18 +93,18 @@ export interface AnyValue {
  * @interface Argument
  */
 export interface Argument {
-    /**
-     *
-     * @type {SupportedType}
-     * @memberof Argument
-     */
-    type: SupportedType;
-    /**
-     * Type encompassing any value type
-     * @type {any}
-     * @memberof Argument
-     */
-    value: any;
+  /**
+   *
+   * @type {SupportedType}
+   * @memberof Argument
+   */
+  type: SupportedType;
+  /**
+   * Type encompassing any value type
+   * @type {any}
+   * @memberof Argument
+   */
+  value: any;
 }
 
 /**
@@ -111,18 +113,64 @@ export interface Argument {
  * @interface Assertion
  */
 export interface Assertion {
-    /**
-     *
-     * @type {Array<Argument>}
-     * @memberof Assertion
-     */
-    inputArguments: Array<Argument>;
-    /**
-     *
-     * @type {Argument}
-     * @memberof Assertion
-     */
-    expectedOutput: Argument;
+  /**
+   *
+   * @type {Array<Argument>}
+   * @memberof Assertion
+   */
+  inputArguments: Array<Argument>;
+  /**
+   *
+   * @type {Argument}
+   * @memberof Assertion
+   */
+  expectedOutput: Argument;
+}
+
+/**
+ *
+ * @export
+ * @interface AssertionResult
+ */
+export interface AssertionResult {
+  /**
+   *
+   * @type {boolean}
+   * @memberof AssertionResult
+   */
+  passed: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof AssertionResult
+   */
+  text: string;
+  /**
+   *
+   * @type {Array<AssertionResultItems>}
+   * @memberof AssertionResult
+   */
+  items: Array<AssertionResultItems>;
+}
+
+/**
+ *
+ * @export
+ * @interface AssertionResultItems
+ */
+export interface AssertionResultItems {
+  /**
+   *
+   * @type {boolean}
+   * @memberof AssertionResultItems
+   */
+  passed?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof AssertionResultItems
+   */
+  message?: string;
 }
 
 /**
@@ -131,56 +179,106 @@ export interface Assertion {
  * @interface CodeValidationReport
  */
 export interface CodeValidationReport {
-    /**
-     *
-     * @type {number}
-     * @memberof CodeValidationReport
-     */
-    exerciseId?: number;
-    /**
-     *
-     * @type {Array<CodeValidationReportResults>}
-     * @memberof CodeValidationReport
-     */
-    results?: Array<CodeValidationReportResults>;
+  /**
+   *
+   * @type {number}
+   * @memberof CodeValidationReport
+   */
+  exerciseId: number;
+  /**
+   *
+   * @type {number}
+   * @memberof CodeValidationReport
+   */
+  exitCode: number;
+  /**
+   *
+   * @type {string}
+   * @memberof CodeValidationReport
+   */
+  message: string;
+  /**
+   *
+   * @type {CodeValidationReportResult}
+   * @memberof CodeValidationReport
+   */
+  result: CodeValidationReportResult;
+  /**
+   *
+   * @type {string}
+   * @memberof CodeValidationReport
+   */
+  stderr: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CodeValidationReport
+   */
+  stdout: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CodeValidationReport
+   */
+  timedOut?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof CodeValidationReport
+   */
+  token: string;
+  /**
+   *
+   * @type {number}
+   * @memberof CodeValidationReport
+   */
+  executionTime: number;
 }
 
 /**
  *
  * @export
- * @interface CodeValidationReportResults
+ * @interface CodeValidationReportResult
  */
-export interface CodeValidationReportResults {
-    /**
-     *
-     * @type {string}
-     * @memberof CodeValidationReportResults
-     */
-    testName?: string;
-    /**
-     *
-     * @type {boolean}
-     * @memberof CodeValidationReportResults
-     */
-    passed?: boolean;
-    /**
-     *
-     * @type {Array<any>}
-     * @memberof CodeValidationReportResults
-     */
-    inputParameters?: Array<any>;
-    /**
-     *
-     * @type {any}
-     * @memberof CodeValidationReportResults
-     */
-    expectedOutput?: any;
-    /**
-     *
-     * @type {any}
-     * @memberof CodeValidationReportResults
-     */
-    actualOutput?: any;
+export interface CodeValidationReportResult {
+  /**
+   *
+   * @type {CodeValidationReportResultAssertions}
+   * @memberof CodeValidationReportResult
+   */
+  assertions?: CodeValidationReportResultAssertions;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CodeValidationReportResult
+   */
+  completed?: boolean;
+  /**
+   *
+   * @type {Array<TestCaseResult>}
+   * @memberof CodeValidationReportResult
+   */
+  output?: Array<TestCaseResult>;
+}
+
+/**
+ *
+ * @export
+ * @interface CodeValidationReportResultAssertions
+ */
+export interface CodeValidationReportResultAssertions {
+  /**
+   *
+   * @type {number}
+   * @memberof CodeValidationReportResultAssertions
+   */
+  passed?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof CodeValidationReportResultAssertions
+   */
+  failed?: number;
 }
 
 /**
@@ -189,18 +287,18 @@ export interface CodeValidationReportResults {
  * @interface Credentials
  */
 export interface Credentials {
-    /**
-     *
-     * @type {string}
-     * @memberof Credentials
-     */
-    username: string;
-    /**
-     *
-     * @type {string}
-     * @memberof Credentials
-     */
-    password: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Credentials
+   */
+  username: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Credentials
+   */
+  password: string;
 }
 
 /**
@@ -209,9 +307,9 @@ export interface Credentials {
  * @enum {string}
  */
 export enum Difficulties {
-    EASY = 'EASY',
-    MEDIUM = 'MEDIUM',
-    HARD = 'HARD'
+  EASY = 'EASY',
+  MEDIUM = 'MEDIUM',
+  HARD = 'HARD',
 }
 
 /**
@@ -220,48 +318,48 @@ export enum Difficulties {
  * @interface Exercise
  */
 export interface Exercise {
-    /**
-     *
-     * @type {number}
-     * @memberof Exercise
-     */
-    id: number;
-    /**
-     *
-     * @type {IntlString}
-     * @memberof Exercise
-     */
-    title: IntlString;
-    /**
-     *
-     * @type {IntlString}
-     * @memberof Exercise
-     */
-    description: IntlString;
-    /**
-     *
-     * @type {Difficulties}
-     * @memberof Exercise
-     */
-    difficulty: Difficulties;
-    /**
-     *
-     * @type {Template}
-     * @memberof Exercise
-     */
-    template: Template;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof Exercise
-     */
-    supportedLanguages?: Array<string>;
-    /**
-     *
-     * @type {Array<TestCase>}
-     * @memberof Exercise
-     */
-    sampleTestCases: Array<TestCase>;
+  /**
+   *
+   * @type {number}
+   * @memberof Exercise
+   */
+  id: number;
+  /**
+   *
+   * @type {IntlString}
+   * @memberof Exercise
+   */
+  title: IntlString;
+  /**
+   *
+   * @type {IntlString}
+   * @memberof Exercise
+   */
+  description: IntlString;
+  /**
+   *
+   * @type {Difficulties}
+   * @memberof Exercise
+   */
+  difficulty: Difficulties;
+  /**
+   *
+   * @type {Template}
+   * @memberof Exercise
+   */
+  template: Template;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof Exercise
+   */
+  supportedLanguages?: Array<string>;
+  /**
+   *
+   * @type {Array<TestCase>}
+   * @memberof Exercise
+   */
+  sampleTestCases: Array<TestCase>;
 }
 
 /**
@@ -270,42 +368,42 @@ export interface Exercise {
  * @interface ExerciseSubmission
  */
 export interface ExerciseSubmission {
-    /**
-     *
-     * @type {number}
-     * @memberof ExerciseSubmission
-     */
-    id: number;
-    /**
-     *
-     * @type {number}
-     * @memberof ExerciseSubmission
-     */
-    exerciseId: number;
-    /**
-     *
-     * @type {number}
-     * @memberof ExerciseSubmission
-     */
-    userId: number;
-    /**
-     *
-     * @type {string}
-     * @memberof ExerciseSubmission
-     */
-    code: string;
-    /**
-     *
-     * @type {any}
-     * @memberof ExerciseSubmission
-     */
-    language: any;
-    /**
-     *
-     * @type {Date}
-     * @memberof ExerciseSubmission
-     */
-    createdAt?: Date;
+  /**
+   *
+   * @type {number}
+   * @memberof ExerciseSubmission
+   */
+  id: number;
+  /**
+   *
+   * @type {number}
+   * @memberof ExerciseSubmission
+   */
+  exerciseId: number;
+  /**
+   *
+   * @type {number}
+   * @memberof ExerciseSubmission
+   */
+  userId: number;
+  /**
+   *
+   * @type {string}
+   * @memberof ExerciseSubmission
+   */
+  code: string;
+  /**
+   *
+   * @type {any}
+   * @memberof ExerciseSubmission
+   */
+  language: any;
+  /**
+   *
+   * @type {Date}
+   * @memberof ExerciseSubmission
+   */
+  createdAt?: Date;
 }
 
 /**
@@ -314,48 +412,48 @@ export interface ExerciseSubmission {
  * @interface Group
  */
 export interface Group {
-    /**
-     *
-     * @type {number}
-     * @memberof Group
-     */
-    id: number;
-    /**
-     *
-     * @type {number}
-     * @memberof Group
-     */
-    groupNumber: number;
-    /**
-     *
-     * @type {string}
-     * @memberof Group
-     */
-    _class: string;
-    /**
-     *
-     * @type {Semesters}
-     * @memberof Group
-     */
-    semester: Semesters;
-    /**
-     *
-     * @type {number}
-     * @memberof Group
-     */
-    year: number;
-    /**
-     *
-     * @type {Array<Student>}
-     * @memberof Group
-     */
-    students: Array<Student>;
-    /**
-     *
-     * @type {boolean}
-     * @memberof Group
-     */
-    archived: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof Group
+   */
+  id: number;
+  /**
+   *
+   * @type {number}
+   * @memberof Group
+   */
+  groupNumber: number;
+  /**
+   *
+   * @type {string}
+   * @memberof Group
+   */
+  course: string;
+  /**
+   *
+   * @type {Semesters}
+   * @memberof Group
+   */
+  semester: Semesters;
+  /**
+   *
+   * @type {number}
+   * @memberof Group
+   */
+  year: number;
+  /**
+   *
+   * @type {Array<Student>}
+   * @memberof Group
+   */
+  students: Array<Student>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Group
+   */
+  archived: boolean;
 }
 
 /**
@@ -364,18 +462,18 @@ export interface Group {
  * @interface IntlString
  */
 export interface IntlString {
-    /**
-     *
-     * @type {string}
-     * @memberof IntlString
-     */
-    fr: string;
-    /**
-     *
-     * @type {string}
-     * @memberof IntlString
-     */
-    en?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof IntlString
+   */
+  fr: string;
+  /**
+   *
+   * @type {string}
+   * @memberof IntlString
+   */
+  en?: string;
 }
 
 /**
@@ -384,18 +482,18 @@ export interface IntlString {
  * @interface Parameter
  */
 export interface Parameter {
-    /**
-     *
-     * @type {string}
-     * @memberof Parameter
-     */
-    name: string;
-    /**
-     *
-     * @type {SupportedType}
-     * @memberof Parameter
-     */
-    type: SupportedType;
+  /**
+   *
+   * @type {string}
+   * @memberof Parameter
+   */
+  name: string;
+  /**
+   *
+   * @type {SupportedType}
+   * @memberof Parameter
+   */
+  type: SupportedType;
 }
 
 /**
@@ -404,36 +502,36 @@ export interface Parameter {
  * @interface RFC7807Body
  */
 export interface RFC7807Body {
-    /**
-     *
-     * @type {string}
-     * @memberof RFC7807Body
-     */
-    type?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof RFC7807Body
-     */
-    title?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof RFC7807Body
-     */
-    detail?: string;
-    /**
-     *
-     * @type {number}
-     * @memberof RFC7807Body
-     */
-    status?: number;
-    /**
-     *
-     * @type {string}
-     * @memberof RFC7807Body
-     */
-    instance?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof RFC7807Body
+   */
+  type?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof RFC7807Body
+   */
+  title?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof RFC7807Body
+   */
+  detail?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof RFC7807Body
+   */
+  status?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof RFC7807Body
+   */
+  instance?: string;
 }
 
 /**
@@ -442,18 +540,24 @@ export interface RFC7807Body {
  * @interface RunnerArguments
  */
 export interface RunnerArguments {
-    /**
-     * code
-     * @type {string}
-     * @memberof RunnerArguments
-     */
-    code?: string;
-    /**
-     * language
-     * @type {string}
-     * @memberof RunnerArguments
-     */
-    language?: string;
+  /**
+   * code
+   * @type {string}
+   * @memberof RunnerArguments
+   */
+  code?: string;
+  /**
+   * language
+   * @type {string}
+   * @memberof RunnerArguments
+   */
+  language?: string;
+  /**
+   * fixture
+   * @type {string}
+   * @memberof RunnerArguments
+   */
+  fixture?: string;
 }
 
 /**
@@ -462,9 +566,9 @@ export interface RunnerArguments {
  * @enum {string}
  */
 export enum Semesters {
-    FALL = 'FALL',
-    WINTER = 'WINTER',
-    SUMMER = 'SUMMER'
+  FALL = 'FALL',
+  WINTER = 'WINTER',
+  SUMMER = 'SUMMER',
 }
 
 /**
@@ -473,42 +577,42 @@ export enum Semesters {
  * @interface Student
  */
 export interface Student {
-    /**
-     *
-     * @type {number}
-     * @memberof Student
-     */
-    accessCode: number;
-    /**
-     *
-     * @type {number}
-     * @memberof Student
-     */
-    firstName: number;
-    /**
-     *
-     * @type {string}
-     * @memberof Student
-     */
-    lastName: string;
-    /**
-     *
-     * @type {string}
-     * @memberof Student
-     */
-    email?: string;
-    /**
-     *
-     * @type {number}
-     * @memberof Student
-     */
-    totalExercisesSuccessed?: number;
-    /**
-     *
-     * @type {number}
-     * @memberof Student
-     */
-    totalExercisesDone?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof Student
+   */
+  accessCode: number;
+  /**
+   *
+   * @type {number}
+   * @memberof Student
+   */
+  firstName: number;
+  /**
+   *
+   * @type {string}
+   * @memberof Student
+   */
+  lastName: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Student
+   */
+  email?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof Student
+   */
+  totalExercisesSuccessed?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof Student
+   */
+  totalExercisesDone?: number;
 }
 
 /**
@@ -517,10 +621,10 @@ export interface Student {
  * @enum {string}
  */
 export enum SupportedLanguages {
-    Cpp = 'cpp',
-    Java = 'java',
-    Javascript = 'javascript',
-    Python = 'python'
+  Cpp = 'cpp',
+  Java = 'java',
+  Javascript = 'javascript',
+  Python = 'python',
 }
 
 /**
@@ -529,16 +633,16 @@ export enum SupportedLanguages {
  * @enum {string}
  */
 export enum SupportedType {
-    BOOLEAN = 'BOOLEAN',
-    INT = 'INT',
-    FLOAT = 'FLOAT',
-    STRING = 'STRING',
-    CHAR = 'CHAR',
-    BOOLEANARRAY = 'BOOLEAN_ARRAY',
-    INTARRAY = 'INT_ARRAY',
-    FLOATARRAY = 'FLOAT_ARRAY',
-    STRINGARRAY = 'STRING_ARRAY',
-    CHARARRAY = 'CHAR_ARRAY'
+  BOOLEAN = 'BOOLEAN',
+  INT = 'INT',
+  FLOAT = 'FLOAT',
+  STRING = 'STRING',
+  CHAR = 'CHAR',
+  BOOLEANARRAY = 'BOOLEAN_ARRAY',
+  INTARRAY = 'INT_ARRAY',
+  FLOATARRAY = 'FLOAT_ARRAY',
+  STRINGARRAY = 'STRING_ARRAY',
+  CHARARRAY = 'CHAR_ARRAY',
 }
 
 /**
@@ -547,48 +651,48 @@ export enum SupportedType {
  * @interface Template
  */
 export interface Template {
-    /**
-     *
-     * @type {string}
-     * @memberof Template
-     */
-    className?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof Template
-     */
-    functionName: string;
-    /**
-     *
-     * @type {Array<Parameter>}
-     * @memberof Template
-     */
-    params: Array<Parameter>;
-    /**
-     * Type encompassing any value type
-     * @type {any}
-     * @memberof Template
-     */
-    functionReturnValue: any;
-    /**
-     *
-     * @type {SupportedType}
-     * @memberof Template
-     */
-    functionReturnType: SupportedType;
-    /**
-     *
-     * @type {{ [key: string]: string; }}
-     * @memberof Template
-     */
-    prependedCode: { [key: string]: string; };
-    /**
-     *
-     * @type {{ [key: string]: string; }}
-     * @memberof Template
-     */
-    appendedCode: { [key: string]: string; };
+  /**
+   *
+   * @type {string}
+   * @memberof Template
+   */
+  className?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Template
+   */
+  functionName: string;
+  /**
+   *
+   * @type {Array<Parameter>}
+   * @memberof Template
+   */
+  params: Array<Parameter>;
+  /**
+   * Type encompassing any value type
+   * @type {any}
+   * @memberof Template
+   */
+  functionReturnValue: any;
+  /**
+   *
+   * @type {SupportedType}
+   * @memberof Template
+   */
+  functionReturnType: SupportedType;
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof Template
+   */
+  prependedCode: { [key: string]: string };
+  /**
+   *
+   * @type {{ [key: string]: string; }}
+   * @memberof Template
+   */
+  appendedCode: { [key: string]: string };
 }
 
 /**
@@ -597,18 +701,44 @@ export interface Template {
  * @interface TestCase
  */
 export interface TestCase {
-    /**
-     *
-     * @type {string}
-     * @memberof TestCase
-     */
-    it: string;
-    /**
-     *
-     * @type {Array<Assertion>}
-     * @memberof TestCase
-     */
-    assertions: Array<Assertion>;
+  /**
+   *
+   * @type {string}
+   * @memberof TestCase
+   */
+  it: string;
+  /**
+   *
+   * @type {Array<Assertion>}
+   * @memberof TestCase
+   */
+  assertions: Array<Assertion>;
+}
+
+/**
+ *
+ * @export
+ * @interface TestCaseResult
+ */
+export interface TestCaseResult {
+  /**
+   *
+   * @type {boolean}
+   * @memberof TestCaseResult
+   */
+  passed: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof TestCaseResult
+   */
+  text: string;
+  /**
+   *
+   * @type {Array<AssertionResult>}
+   * @memberof TestCaseResult
+   */
+  items: Array<AssertionResult>;
 }
 
 /**
@@ -617,118 +747,155 @@ export interface TestCase {
  * @interface User
  */
 export interface User {
-    /**
-     *
-     * @type {number}
-     * @memberof User
-     */
-    id: number;
-    /**
-     *
-     * @type {string}
-     * @memberof User
-     */
-    firstName: string;
-    /**
-     *
-     * @type {string}
-     * @memberof User
-     */
-    lastName: string;
-    /**
-     *
-     * @type {string}
-     * @memberof User
-     */
-    email: string;
-    /**
-     *
-     * @type {string}
-     * @memberof User
-     */
-    password: string;
+  /**
+   *
+   * @type {number}
+   * @memberof User
+   */
+  id: number;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  firstName: string;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  lastName: string;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  email: string;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  password: string;
 }
-
 
 /**
  * AuthApi - fetch parameter creator
  * @export
  */
-export const AuthApiFetchParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         *
-         * @summary Provides a session cookie given a valid CAS Service ticket
-         * @param {string} ticket
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        authCasloginGet(ticket: string, options: any = {}): FetchArgs {
-            // verify required parameter 'ticket' is not null or undefined
-            if (ticket === null || ticket === undefined) {
-                throw new RequiredError('ticket','Required parameter ticket was null or undefined when calling authCasloginGet.');
-            }
-            const localVarPath = `/auth/caslogin`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+export const AuthApiFetchParamCreator = function(
+  configuration?: Configuration,
+) {
+  return {
+    /**
+     *
+     * @summary Provides a session cookie given a valid CAS Service ticket
+     * @param {string} ticket
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    authCasloginGet(ticket: string, options: any = {}): FetchArgs {
+      // verify required parameter 'ticket' is not null or undefined
+      if (ticket === null || ticket === undefined) {
+        throw new RequiredError(
+          'ticket',
+          'Required parameter ticket was null or undefined when calling authCasloginGet.',
+        );
+      }
+      const localVarPath = `/auth/caslogin`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'GET' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            if (ticket !== undefined) {
-                localVarQueryParameter['ticket'] = ticket;
-            }
+      if (ticket !== undefined) {
+        localVarQueryParameter['ticket'] = ticket;
+      }
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Provides a session cookie given a username and password
-         * @param {Credentials} credentials
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        authLoginPost(credentials: Credentials, options: any = {}): FetchArgs {
-            // verify required parameter 'credentials' is not null or undefined
-            if (credentials === null || credentials === undefined) {
-                throw new RequiredError('credentials','Required parameter credentials was null or undefined when calling authLoginPost.');
-            }
-            const localVarPath = `/auth/login`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Provides a session cookie given a username and password
+     * @param {Credentials} credentials
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    authLoginPost(credentials: Credentials, options: any = {}): FetchArgs {
+      // verify required parameter 'credentials' is not null or undefined
+      if (credentials === null || credentials === undefined) {
+        throw new RequiredError(
+          'credentials',
+          'Required parameter credentials was null or undefined when calling authLoginPost.',
+        );
+      }
+      const localVarPath = `/auth/login`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'POST' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Credentials" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(credentials || {}) : (credentials || "");
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
+      const needsSerialization =
+        <any>'Credentials' !== 'string' ||
+        localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization
+        ? JSON.stringify(credentials || {})
+        : credentials || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+  };
 };
 
 /**
@@ -736,75 +903,107 @@ export const AuthApiFetchParamCreator = function (configuration?: Configuration)
  * @export
  */
 export const AuthApiFp = function(configuration?: Configuration) {
-    return {
-        /**
-         *
-         * @summary Provides a session cookie given a valid CAS Service ticket
-         * @param {string} ticket
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        authCasloginGet(ticket: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
-            const localVarFetchArgs = AuthApiFetchParamCreator(configuration).authCasloginGet(ticket, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response;
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
-         * @summary Provides a session cookie given a username and password
-         * @param {Credentials} credentials
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        authLoginPost(credentials: Credentials, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
-            const localVarFetchArgs = AuthApiFetchParamCreator(configuration).authLoginPost(credentials, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response;
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-    }
+  return {
+    /**
+     *
+     * @summary Provides a session cookie given a valid CAS Service ticket
+     * @param {string} ticket
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    authCasloginGet(
+      ticket: string,
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+      const localVarFetchArgs = AuthApiFetchParamCreator(
+        configuration,
+      ).authCasloginGet(ticket, options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response;
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Provides a session cookie given a username and password
+     * @param {Credentials} credentials
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    authLoginPost(
+      credentials: Credentials,
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+      const localVarFetchArgs = AuthApiFetchParamCreator(
+        configuration,
+      ).authLoginPost(credentials, options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response;
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+  };
 };
 
 /**
  * AuthApi - factory interface
  * @export
  */
-export const AuthApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
-    return {
-        /**
-         *
-         * @summary Provides a session cookie given a valid CAS Service ticket
-         * @param {string} ticket
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        authCasloginGet(ticket: string, options?: any) {
-            return AuthApiFp(configuration).authCasloginGet(ticket, options)(fetch, basePath);
-        },
-        /**
-         *
-         * @summary Provides a session cookie given a username and password
-         * @param {Credentials} credentials
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        authLoginPost(credentials: Credentials, options?: any) {
-            return AuthApiFp(configuration).authLoginPost(credentials, options)(fetch, basePath);
-        },
-    };
+export const AuthApiFactory = function(
+  configuration?: Configuration,
+  fetch?: FetchAPI,
+  basePath?: string,
+) {
+  return {
+    /**
+     *
+     * @summary Provides a session cookie given a valid CAS Service ticket
+     * @param {string} ticket
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    authCasloginGet(ticket: string, options?: any) {
+      return AuthApiFp(configuration).authCasloginGet(ticket, options)(
+        fetch,
+        basePath,
+      );
+    },
+    /**
+     *
+     * @summary Provides a session cookie given a username and password
+     * @param {Credentials} credentials
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    authLoginPost(credentials: Credentials, options?: any) {
+      return AuthApiFp(configuration).authLoginPost(credentials, options)(
+        fetch,
+        basePath,
+      );
+    },
+  };
 };
 
 /**
@@ -813,26 +1012,25 @@ export const AuthApiFactory = function (configuration?: Configuration, fetch?: F
  * @interface AuthApi
  */
 export interface AuthApiInterface {
-    /**
-     *
-     * @summary Provides a session cookie given a valid CAS Service ticket
-     * @param {string} ticket
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthApiInterface
-     */
-    authCasloginGet(ticket: string, options?: any): Promise<{}>;
+  /**
+   *
+   * @summary Provides a session cookie given a valid CAS Service ticket
+   * @param {string} ticket
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthApiInterface
+   */
+  authCasloginGet(ticket: string, options?: any): Promise<{}>;
 
-    /**
-     *
-     * @summary Provides a session cookie given a username and password
-     * @param {Credentials} credentials
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthApiInterface
-     */
-    authLoginPost(credentials: Credentials, options?: any): Promise<{}>;
-
+  /**
+   *
+   * @summary Provides a session cookie given a username and password
+   * @param {Credentials} credentials
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthApiInterface
+   */
+  authLoginPost(credentials: Credentials, options?: any): Promise<{}>;
 }
 
 /**
@@ -842,595 +1040,917 @@ export interface AuthApiInterface {
  * @extends {BaseAPI}
  */
 export class AuthApi extends BaseAPI implements AuthApiInterface {
-    /**
-     *
-     * @summary Provides a session cookie given a valid CAS Service ticket
-     * @param {string} ticket
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthApi
-     */
-    public authCasloginGet(ticket: string, options?: any) {
-        return AuthApiFp(this.configuration).authCasloginGet(ticket, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Provides a session cookie given a valid CAS Service ticket
+   * @param {string} ticket
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthApi
+   */
+  public authCasloginGet(ticket: string, options?: any) {
+    return AuthApiFp(this.configuration).authCasloginGet(ticket, options)(
+      this.fetch,
+      this.basePath,
+    );
+  }
 
-    /**
-     *
-     * @summary Provides a session cookie given a username and password
-     * @param {Credentials} credentials
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthApi
-     */
-    public authLoginPost(credentials: Credentials, options?: any) {
-        return AuthApiFp(this.configuration).authLoginPost(credentials, options)(this.fetch, this.basePath);
-    }
-
+  /**
+   *
+   * @summary Provides a session cookie given a username and password
+   * @param {Credentials} credentials
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthApi
+   */
+  public authLoginPost(credentials: Credentials, options?: any) {
+    return AuthApiFp(this.configuration).authLoginPost(credentials, options)(
+      this.fetch,
+      this.basePath,
+    );
+  }
 }
 
 /**
  * DefaultApi - fetch parameter creator
  * @export
  */
-export const DefaultApiFetchParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         *
-         * @summary Creates a new exercise
-         * @param {Exercise} exercise
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesAdd(exercise: Exercise, options: any = {}): FetchArgs {
-            // verify required parameter 'exercise' is not null or undefined
-            if (exercise === null || exercise === undefined) {
-                throw new RequiredError('exercise','Required parameter exercise was null or undefined when calling exercisesAdd.');
-            }
-            const localVarPath = `/exercises`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+export const DefaultApiFetchParamCreator = function(
+  configuration?: Configuration,
+) {
+  return {
+    /**
+     *
+     * @summary Creates a new exercise
+     * @param {Exercise} exercise
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesAdd(exercise: Exercise, options: any = {}): FetchArgs {
+      // verify required parameter 'exercise' is not null or undefined
+      if (exercise === null || exercise === undefined) {
+        throw new RequiredError(
+          'exercise',
+          'Required parameter exercise was null or undefined when calling exercisesAdd.',
+        );
+      }
+      const localVarPath = `/exercises`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'POST' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication authCookie required
+      // authentication authCookie required
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Exercise" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(exercise || {}) : (exercise || "");
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
+      const needsSerialization =
+        <any>'Exercise' !== 'string' ||
+        localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization
+        ? JSON.stringify(exercise || {})
+        : exercise || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Gets the specified exercise
-         * @param {number} exerciseId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdGet(exerciseId: number, options: any = {}): FetchArgs {
-            // verify required parameter 'exerciseId' is not null or undefined
-            if (exerciseId === null || exerciseId === undefined) {
-                throw new RequiredError('exerciseId','Required parameter exerciseId was null or undefined when calling exercisesExerciseIdGet.');
-            }
-            const localVarPath = `/exercises/{exerciseId}`
-                .replace(`{${"exerciseId"}}`, encodeURIComponent(String(exerciseId)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Gets the specified exercise
+     * @param {number} exerciseId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdGet(exerciseId: number, options: any = {}): FetchArgs {
+      // verify required parameter 'exerciseId' is not null or undefined
+      if (exerciseId === null || exerciseId === undefined) {
+        throw new RequiredError(
+          'exerciseId',
+          'Required parameter exerciseId was null or undefined when calling exercisesExerciseIdGet.',
+        );
+      }
+      const localVarPath = `/exercises/{exerciseId}`.replace(
+        `{${'exerciseId'}}`,
+        encodeURIComponent(String(exerciseId)),
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'GET' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication authCookie required
+      // authentication authCookie required
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Gets the list of submissions for the specified exercise
-         * @param {number} exerciseId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdSubmissionsGet(exerciseId: number, options: any = {}): FetchArgs {
-            // verify required parameter 'exerciseId' is not null or undefined
-            if (exerciseId === null || exerciseId === undefined) {
-                throw new RequiredError('exerciseId','Required parameter exerciseId was null or undefined when calling exercisesExerciseIdSubmissionsGet.');
-            }
-            const localVarPath = `/exercises/{exerciseId}/submissions`
-                .replace(`{${"exerciseId"}}`, encodeURIComponent(String(exerciseId)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Gets the list of submissions for the specified exercise
+     * @param {number} exerciseId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdSubmissionsGet(
+      exerciseId: number,
+      options: any = {},
+    ): FetchArgs {
+      // verify required parameter 'exerciseId' is not null or undefined
+      if (exerciseId === null || exerciseId === undefined) {
+        throw new RequiredError(
+          'exerciseId',
+          'Required parameter exerciseId was null or undefined when calling exercisesExerciseIdSubmissionsGet.',
+        );
+      }
+      const localVarPath = `/exercises/{exerciseId}/submissions`.replace(
+        `{${'exerciseId'}}`,
+        encodeURIComponent(String(exerciseId)),
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'GET' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication authCookie required
+      // authentication authCookie required
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Submits the code as the current user's solution for the exercise
-         * @param {number} exerciseId
-         * @param {ExerciseSubmission} exerciseSubmission
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdSubmissionsPost(exerciseId: number, exerciseSubmission: ExerciseSubmission, options: any = {}): FetchArgs {
-            // verify required parameter 'exerciseId' is not null or undefined
-            if (exerciseId === null || exerciseId === undefined) {
-                throw new RequiredError('exerciseId','Required parameter exerciseId was null or undefined when calling exercisesExerciseIdSubmissionsPost.');
-            }
-            // verify required parameter 'exerciseSubmission' is not null or undefined
-            if (exerciseSubmission === null || exerciseSubmission === undefined) {
-                throw new RequiredError('exerciseSubmission','Required parameter exerciseSubmission was null or undefined when calling exercisesExerciseIdSubmissionsPost.');
-            }
-            const localVarPath = `/exercises/{exerciseId}/submissions`
-                .replace(`{${"exerciseId"}}`, encodeURIComponent(String(exerciseId)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Submits the code as the current user's solution for the exercise
+     * @param {number} exerciseId
+     * @param {ExerciseSubmission} exerciseSubmission
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdSubmissionsPost(
+      exerciseId: number,
+      exerciseSubmission: ExerciseSubmission,
+      options: any = {},
+    ): FetchArgs {
+      // verify required parameter 'exerciseId' is not null or undefined
+      if (exerciseId === null || exerciseId === undefined) {
+        throw new RequiredError(
+          'exerciseId',
+          'Required parameter exerciseId was null or undefined when calling exercisesExerciseIdSubmissionsPost.',
+        );
+      }
+      // verify required parameter 'exerciseSubmission' is not null or undefined
+      if (exerciseSubmission === null || exerciseSubmission === undefined) {
+        throw new RequiredError(
+          'exerciseSubmission',
+          'Required parameter exerciseSubmission was null or undefined when calling exercisesExerciseIdSubmissionsPost.',
+        );
+      }
+      const localVarPath = `/exercises/{exerciseId}/submissions`.replace(
+        `{${'exerciseId'}}`,
+        encodeURIComponent(String(exerciseId)),
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'POST' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication authCookie required
+      // authentication authCookie required
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"ExerciseSubmission" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(exerciseSubmission || {}) : (exerciseSubmission || "");
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
+      const needsSerialization =
+        <any>'ExerciseSubmission' !== 'string' ||
+        localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization
+        ? JSON.stringify(exerciseSubmission || {})
+        : exerciseSubmission || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Gets the list of submissions for the specified exercise
-         * @param {number} exerciseId
-         * @param {number} submissionId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdSubmissionsSubmissionIdGet(exerciseId: number, submissionId: number, options: any = {}): FetchArgs {
-            // verify required parameter 'exerciseId' is not null or undefined
-            if (exerciseId === null || exerciseId === undefined) {
-                throw new RequiredError('exerciseId','Required parameter exerciseId was null or undefined when calling exercisesExerciseIdSubmissionsSubmissionIdGet.');
-            }
-            // verify required parameter 'submissionId' is not null or undefined
-            if (submissionId === null || submissionId === undefined) {
-                throw new RequiredError('submissionId','Required parameter submissionId was null or undefined when calling exercisesExerciseIdSubmissionsSubmissionIdGet.');
-            }
-            const localVarPath = `/exercises/{exerciseId}/submissions/{submissionId}`
-                .replace(`{${"exerciseId"}}`, encodeURIComponent(String(exerciseId)))
-                .replace(`{${"submissionId"}}`, encodeURIComponent(String(submissionId)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Gets the list of submissions for the specified exercise
+     * @param {number} exerciseId
+     * @param {number} submissionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdSubmissionsSubmissionIdGet(
+      exerciseId: number,
+      submissionId: number,
+      options: any = {},
+    ): FetchArgs {
+      // verify required parameter 'exerciseId' is not null or undefined
+      if (exerciseId === null || exerciseId === undefined) {
+        throw new RequiredError(
+          'exerciseId',
+          'Required parameter exerciseId was null or undefined when calling exercisesExerciseIdSubmissionsSubmissionIdGet.',
+        );
+      }
+      // verify required parameter 'submissionId' is not null or undefined
+      if (submissionId === null || submissionId === undefined) {
+        throw new RequiredError(
+          'submissionId',
+          'Required parameter submissionId was null or undefined when calling exercisesExerciseIdSubmissionsSubmissionIdGet.',
+        );
+      }
+      const localVarPath = `/exercises/{exerciseId}/submissions/{submissionId}`
+        .replace(`{${'exerciseId'}}`, encodeURIComponent(String(exerciseId)))
+        .replace(
+          `{${'submissionId'}}`,
+          encodeURIComponent(String(submissionId)),
+        );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'GET' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication authCookie required
+      // authentication authCookie required
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Gets the results of the exercise validation for this submission
-         * @param {number} exerciseId
-         * @param {number} submissionId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdSubmissionsSubmissionIdResultsGet(exerciseId: number, submissionId: number, options: any = {}): FetchArgs {
-            // verify required parameter 'exerciseId' is not null or undefined
-            if (exerciseId === null || exerciseId === undefined) {
-                throw new RequiredError('exerciseId','Required parameter exerciseId was null or undefined when calling exercisesExerciseIdSubmissionsSubmissionIdResultsGet.');
-            }
-            // verify required parameter 'submissionId' is not null or undefined
-            if (submissionId === null || submissionId === undefined) {
-                throw new RequiredError('submissionId','Required parameter submissionId was null or undefined when calling exercisesExerciseIdSubmissionsSubmissionIdResultsGet.');
-            }
-            const localVarPath = `/exercises/{exerciseId}/submissions/{submissionId}/results`
-                .replace(`{${"exerciseId"}}`, encodeURIComponent(String(exerciseId)))
-                .replace(`{${"submissionId"}}`, encodeURIComponent(String(submissionId)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Gets the results of the exercise validation for this submission
+     * @param {number} exerciseId
+     * @param {number} submissionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdSubmissionsSubmissionIdResultsGet(
+      exerciseId: number,
+      submissionId: number,
+      options: any = {},
+    ): FetchArgs {
+      // verify required parameter 'exerciseId' is not null or undefined
+      if (exerciseId === null || exerciseId === undefined) {
+        throw new RequiredError(
+          'exerciseId',
+          'Required parameter exerciseId was null or undefined when calling exercisesExerciseIdSubmissionsSubmissionIdResultsGet.',
+        );
+      }
+      // verify required parameter 'submissionId' is not null or undefined
+      if (submissionId === null || submissionId === undefined) {
+        throw new RequiredError(
+          'submissionId',
+          'Required parameter submissionId was null or undefined when calling exercisesExerciseIdSubmissionsSubmissionIdResultsGet.',
+        );
+      }
+      const localVarPath = `/exercises/{exerciseId}/submissions/{submissionId}/results`
+        .replace(`{${'exerciseId'}}`, encodeURIComponent(String(exerciseId)))
+        .replace(
+          `{${'submissionId'}}`,
+          encodeURIComponent(String(submissionId)),
+        );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'GET' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication authCookie required
+      // authentication authCookie required
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Validate the code against the exercise's test suite
-         * @param {number} exerciseId
-         * @param {RunnerArguments} runnerArguments
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdTestPost(exerciseId: number, runnerArguments: RunnerArguments, options: any = {}): FetchArgs {
-            // verify required parameter 'exerciseId' is not null or undefined
-            if (exerciseId === null || exerciseId === undefined) {
-                throw new RequiredError('exerciseId','Required parameter exerciseId was null or undefined when calling exercisesExerciseIdTestPost.');
-            }
-            // verify required parameter 'runnerArguments' is not null or undefined
-            if (runnerArguments === null || runnerArguments === undefined) {
-                throw new RequiredError('runnerArguments','Required parameter runnerArguments was null or undefined when calling exercisesExerciseIdTestPost.');
-            }
-            const localVarPath = `/exercises/{exerciseId}/test`
-                .replace(`{${"exerciseId"}}`, encodeURIComponent(String(exerciseId)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Validate the code against the exercise's test suite
+     * @param {number} exerciseId
+     * @param {RunnerArguments} runnerArguments
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdTestPost(
+      exerciseId: number,
+      runnerArguments: RunnerArguments,
+      options: any = {},
+    ): FetchArgs {
+      // verify required parameter 'exerciseId' is not null or undefined
+      if (exerciseId === null || exerciseId === undefined) {
+        throw new RequiredError(
+          'exerciseId',
+          'Required parameter exerciseId was null or undefined when calling exercisesExerciseIdTestPost.',
+        );
+      }
+      // verify required parameter 'runnerArguments' is not null or undefined
+      if (runnerArguments === null || runnerArguments === undefined) {
+        throw new RequiredError(
+          'runnerArguments',
+          'Required parameter runnerArguments was null or undefined when calling exercisesExerciseIdTestPost.',
+        );
+      }
+      const localVarPath = `/exercises/{exerciseId}/test`.replace(
+        `{${'exerciseId'}}`,
+        encodeURIComponent(String(exerciseId)),
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'POST' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication authCookie required
+      // authentication authCookie required
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"RunnerArguments" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(runnerArguments || {}) : (runnerArguments || "");
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
+      const needsSerialization =
+        <any>'RunnerArguments' !== 'string' ||
+        localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization
+        ? JSON.stringify(runnerArguments || {})
+        : runnerArguments || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Gets the full list of exercises
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesIndex(options: any = {}): FetchArgs {
-            const localVarPath = `/exercises`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Gets the full list of exercises
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesIndex(options: any = {}): FetchArgs {
+      const localVarPath = `/exercises`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'GET' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication authCookie required
+      // authentication authCookie required
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Creates a new group
-         * @param {Group} group
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        groupsAdd(group: Group, options: any = {}): FetchArgs {
-            // verify required parameter 'group' is not null or undefined
-            if (group === null || group === undefined) {
-                throw new RequiredError('group','Required parameter group was null or undefined when calling groupsAdd.');
-            }
-            const localVarPath = `/groups`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Creates a new group
+     * @param {Group} group
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    groupsAdd(group: Group, options: any = {}): FetchArgs {
+      // verify required parameter 'group' is not null or undefined
+      if (group === null || group === undefined) {
+        throw new RequiredError(
+          'group',
+          'Required parameter group was null or undefined when calling groupsAdd.',
+        );
+      }
+      const localVarPath = `/groups`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'POST' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication authCookie required
+      // authentication authCookie required
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Group" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(group || {}) : (group || "");
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
+      const needsSerialization =
+        <any>'Group' !== 'string' ||
+        localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization
+        ? JSON.stringify(group || {})
+        : group || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Gets the full list of groups
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        groupsBrowse(options: any = {}): FetchArgs {
-            const localVarPath = `/groups`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Gets the full list of groups
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    groupsBrowse(options: any = {}): FetchArgs {
+      const localVarPath = `/groups`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'GET' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication authCookie required
+      // authentication authCookie required
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Edits an existing group
-         * @param {Group} group
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        groupsEdit(group: Group, options: any = {}): FetchArgs {
-            // verify required parameter 'group' is not null or undefined
-            if (group === null || group === undefined) {
-                throw new RequiredError('group','Required parameter group was null or undefined when calling groupsEdit.');
-            }
-            const localVarPath = `/groups`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'PUT' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Edits an existing group
+     * @param {Group} group
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    groupsEdit(group: Group, options: any = {}): FetchArgs {
+      // verify required parameter 'group' is not null or undefined
+      if (group === null || group === undefined) {
+        throw new RequiredError(
+          'group',
+          'Required parameter group was null or undefined when calling groupsEdit.',
+        );
+      }
+      const localVarPath = `/groups`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'PUT' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication authCookie required
+      // authentication authCookie required
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Group" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(group || {}) : (group || "");
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
+      const needsSerialization =
+        <any>'Group' !== 'string' ||
+        localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization
+        ? JSON.stringify(group || {})
+        : group || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Runs provided code
-         * @param {number} exerciseId
-         * @param {RunnerArguments} runnerArguments
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        runCodeForExercise(exerciseId: number, runnerArguments: RunnerArguments, options: any = {}): FetchArgs {
-            // verify required parameter 'exerciseId' is not null or undefined
-            if (exerciseId === null || exerciseId === undefined) {
-                throw new RequiredError('exerciseId','Required parameter exerciseId was null or undefined when calling runCodeForExercise.');
-            }
-            // verify required parameter 'runnerArguments' is not null or undefined
-            if (runnerArguments === null || runnerArguments === undefined) {
-                throw new RequiredError('runnerArguments','Required parameter runnerArguments was null or undefined when calling runCodeForExercise.');
-            }
-            const localVarPath = `/runner/{exerciseId}`
-                .replace(`{${"exerciseId"}}`, encodeURIComponent(String(exerciseId)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Runs provided code
+     * @param {number} exerciseId
+     * @param {RunnerArguments} runnerArguments
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    runCodeForExercise(
+      exerciseId: number,
+      runnerArguments: RunnerArguments,
+      options: any = {},
+    ): FetchArgs {
+      // verify required parameter 'exerciseId' is not null or undefined
+      if (exerciseId === null || exerciseId === undefined) {
+        throw new RequiredError(
+          'exerciseId',
+          'Required parameter exerciseId was null or undefined when calling runCodeForExercise.',
+        );
+      }
+      // verify required parameter 'runnerArguments' is not null or undefined
+      if (runnerArguments === null || runnerArguments === undefined) {
+        throw new RequiredError(
+          'runnerArguments',
+          'Required parameter runnerArguments was null or undefined when calling runCodeForExercise.',
+        );
+      }
+      const localVarPath = `/runner/{exerciseId}`.replace(
+        `{${'exerciseId'}}`,
+        encodeURIComponent(String(exerciseId)),
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'POST' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"RunnerArguments" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(runnerArguments || {}) : (runnerArguments || "");
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
+      const needsSerialization =
+        <any>'RunnerArguments' !== 'string' ||
+        localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization
+        ? JSON.stringify(runnerArguments || {})
+        : runnerArguments || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Creates a new user
-         * @param {User} user
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersAdd(user: User, options: any = {}): FetchArgs {
-            // verify required parameter 'user' is not null or undefined
-            if (user === null || user === undefined) {
-                throw new RequiredError('user','Required parameter user was null or undefined when calling usersAdd.');
-            }
-            const localVarPath = `/users`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Creates a new user
+     * @param {User} user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    usersAdd(user: User, options: any = {}): FetchArgs {
+      // verify required parameter 'user' is not null or undefined
+      if (user === null || user === undefined) {
+        throw new RequiredError(
+          'user',
+          'Required parameter user was null or undefined when calling usersAdd.',
+        );
+      }
+      const localVarPath = `/users`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'POST' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication authCookie required
+      // authentication authCookie required
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+      localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"User" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(user || {}) : (user || "");
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
+      const needsSerialization =
+        <any>'User' !== 'string' ||
+        localVarRequestOptions.headers['Content-Type'] === 'application/json';
+      localVarRequestOptions.body = needsSerialization
+        ? JSON.stringify(user || {})
+        : user || '';
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Gets the full list of users
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersBrowse(options: any = {}): FetchArgs {
-            const localVarPath = `/users`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Gets the full list of users
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    usersBrowse(options: any = {}): FetchArgs {
+      const localVarPath = `/users`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'GET' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication authCookie required
+      // authentication authCookie required
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
-         * @summary Gets the specified user
-         * @param {number} userId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersRead(userId: number, options: any = {}): FetchArgs {
-            // verify required parameter 'userId' is not null or undefined
-            if (userId === null || userId === undefined) {
-                throw new RequiredError('userId','Required parameter userId was null or undefined when calling usersRead.');
-            }
-            const localVarPath = `/users/{userId}`
-                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
-            const localVarUrlObj = url.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, baseOptions, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Gets the specified user
+     * @param {number} userId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    usersRead(userId: number, options: any = {}): FetchArgs {
+      // verify required parameter 'userId' is not null or undefined
+      if (userId === null || userId === undefined) {
+        throw new RequiredError(
+          'userId',
+          'Required parameter userId was null or undefined when calling usersRead.',
+        );
+      }
+      const localVarPath = `/users/{userId}`.replace(
+        `{${'userId'}}`,
+        encodeURIComponent(String(userId)),
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'GET' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication authCookie required
+      // authentication authCookie required
 
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
 
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+  };
 };
 
 /**
@@ -1438,456 +1958,710 @@ export const DefaultApiFetchParamCreator = function (configuration?: Configurati
  * @export
  */
 export const DefaultApiFp = function(configuration?: Configuration) {
-    return {
-        /**
-         *
-         * @summary Creates a new exercise
-         * @param {Exercise} exercise
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesAdd(exercise: Exercise, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Exercise> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).exercisesAdd(exercise, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
-         * @summary Gets the specified exercise
-         * @param {number} exerciseId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdGet(exerciseId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Exercise> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).exercisesExerciseIdGet(exerciseId, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
-         * @summary Gets the list of submissions for the specified exercise
-         * @param {number} exerciseId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdSubmissionsGet(exerciseId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<ExerciseSubmission>> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).exercisesExerciseIdSubmissionsGet(exerciseId, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
-         * @summary Submits the code as the current user's solution for the exercise
-         * @param {number} exerciseId
-         * @param {ExerciseSubmission} exerciseSubmission
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdSubmissionsPost(exerciseId: number, exerciseSubmission: ExerciseSubmission, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).exercisesExerciseIdSubmissionsPost(exerciseId, exerciseSubmission, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response;
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
-         * @summary Gets the list of submissions for the specified exercise
-         * @param {number} exerciseId
-         * @param {number} submissionId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdSubmissionsSubmissionIdGet(exerciseId: number, submissionId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ExerciseSubmission> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).exercisesExerciseIdSubmissionsSubmissionIdGet(exerciseId, submissionId, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
-         * @summary Gets the results of the exercise validation for this submission
-         * @param {number} exerciseId
-         * @param {number} submissionId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdSubmissionsSubmissionIdResultsGet(exerciseId: number, submissionId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<CodeValidationReport> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).exercisesExerciseIdSubmissionsSubmissionIdResultsGet(exerciseId, submissionId, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
-         * @summary Validate the code against the exercise's test suite
-         * @param {number} exerciseId
-         * @param {RunnerArguments} runnerArguments
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdTestPost(exerciseId: number, runnerArguments: RunnerArguments, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<CodeValidationReport> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).exercisesExerciseIdTestPost(exerciseId, runnerArguments, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
-         * @summary Gets the full list of exercises
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesIndex(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Exercise>> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).exercisesIndex(options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
-         * @summary Creates a new group
-         * @param {Group} group
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        groupsAdd(group: Group, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Group> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).groupsAdd(group, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
-         * @summary Gets the full list of groups
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        groupsBrowse(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Group>> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).groupsBrowse(options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
-         * @summary Edits an existing group
-         * @param {Group} group
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        groupsEdit(group: Group, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Group> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).groupsEdit(group, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
-         * @summary Runs provided code
-         * @param {number} exerciseId
-         * @param {RunnerArguments} runnerArguments
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        runCodeForExercise(exerciseId: number, runnerArguments: RunnerArguments, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).runCodeForExercise(exerciseId, runnerArguments, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response;
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
-         * @summary Creates a new user
-         * @param {User} user
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersAdd(user: User, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<User> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).usersAdd(user, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
-         * @summary Gets the full list of users
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersBrowse(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<User>> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).usersBrowse(options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
-         * @summary Gets the specified user
-         * @param {number} userId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersRead(userId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<User> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).usersRead(userId, options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-    }
+  return {
+    /**
+     *
+     * @summary Creates a new exercise
+     * @param {Exercise} exercise
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesAdd(
+      exercise: Exercise,
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Exercise> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).exercisesAdd(exercise, options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Gets the specified exercise
+     * @param {number} exerciseId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdGet(
+      exerciseId: number,
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Exercise> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).exercisesExerciseIdGet(exerciseId, options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Gets the list of submissions for the specified exercise
+     * @param {number} exerciseId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdSubmissionsGet(
+      exerciseId: number,
+      options?: any,
+    ): (
+      fetch?: FetchAPI,
+      basePath?: string,
+    ) => Promise<Array<ExerciseSubmission>> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).exercisesExerciseIdSubmissionsGet(exerciseId, options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Submits the code as the current user's solution for the exercise
+     * @param {number} exerciseId
+     * @param {ExerciseSubmission} exerciseSubmission
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdSubmissionsPost(
+      exerciseId: number,
+      exerciseSubmission: ExerciseSubmission,
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).exercisesExerciseIdSubmissionsPost(
+        exerciseId,
+        exerciseSubmission,
+        options,
+      );
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response;
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Gets the list of submissions for the specified exercise
+     * @param {number} exerciseId
+     * @param {number} submissionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdSubmissionsSubmissionIdGet(
+      exerciseId: number,
+      submissionId: number,
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<ExerciseSubmission> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).exercisesExerciseIdSubmissionsSubmissionIdGet(
+        exerciseId,
+        submissionId,
+        options,
+      );
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Gets the results of the exercise validation for this submission
+     * @param {number} exerciseId
+     * @param {number} submissionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdSubmissionsSubmissionIdResultsGet(
+      exerciseId: number,
+      submissionId: number,
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<CodeValidationReport> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).exercisesExerciseIdSubmissionsSubmissionIdResultsGet(
+        exerciseId,
+        submissionId,
+        options,
+      );
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Validate the code against the exercise's test suite
+     * @param {number} exerciseId
+     * @param {RunnerArguments} runnerArguments
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdTestPost(
+      exerciseId: number,
+      runnerArguments: RunnerArguments,
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<CodeValidationReport> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).exercisesExerciseIdTestPost(exerciseId, runnerArguments, options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Gets the full list of exercises
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesIndex(
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Exercise>> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).exercisesIndex(options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Creates a new group
+     * @param {Group} group
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    groupsAdd(
+      group: Group,
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Group> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).groupsAdd(group, options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Gets the full list of groups
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    groupsBrowse(
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Group>> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).groupsBrowse(options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Edits an existing group
+     * @param {Group} group
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    groupsEdit(
+      group: Group,
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Group> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).groupsEdit(group, options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Runs provided code
+     * @param {number} exerciseId
+     * @param {RunnerArguments} runnerArguments
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    runCodeForExercise(
+      exerciseId: number,
+      runnerArguments: RunnerArguments,
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).runCodeForExercise(exerciseId, runnerArguments, options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response;
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Creates a new user
+     * @param {User} user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    usersAdd(
+      user: User,
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<User> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).usersAdd(user, options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Gets the full list of users
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    usersBrowse(
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Array<User>> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).usersBrowse(options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Gets the specified user
+     * @param {number} userId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    usersRead(
+      userId: number,
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<User> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).usersRead(userId, options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+  };
 };
 
 /**
  * DefaultApi - factory interface
  * @export
  */
-export const DefaultApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
-    return {
-        /**
-         *
-         * @summary Creates a new exercise
-         * @param {Exercise} exercise
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesAdd(exercise: Exercise, options?: any) {
-            return DefaultApiFp(configuration).exercisesAdd(exercise, options)(fetch, basePath);
-        },
-        /**
-         *
-         * @summary Gets the specified exercise
-         * @param {number} exerciseId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdGet(exerciseId: number, options?: any) {
-            return DefaultApiFp(configuration).exercisesExerciseIdGet(exerciseId, options)(fetch, basePath);
-        },
-        /**
-         *
-         * @summary Gets the list of submissions for the specified exercise
-         * @param {number} exerciseId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdSubmissionsGet(exerciseId: number, options?: any) {
-            return DefaultApiFp(configuration).exercisesExerciseIdSubmissionsGet(exerciseId, options)(fetch, basePath);
-        },
-        /**
-         *
-         * @summary Submits the code as the current user's solution for the exercise
-         * @param {number} exerciseId
-         * @param {ExerciseSubmission} exerciseSubmission
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdSubmissionsPost(exerciseId: number, exerciseSubmission: ExerciseSubmission, options?: any) {
-            return DefaultApiFp(configuration).exercisesExerciseIdSubmissionsPost(exerciseId, exerciseSubmission, options)(fetch, basePath);
-        },
-        /**
-         *
-         * @summary Gets the list of submissions for the specified exercise
-         * @param {number} exerciseId
-         * @param {number} submissionId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdSubmissionsSubmissionIdGet(exerciseId: number, submissionId: number, options?: any) {
-            return DefaultApiFp(configuration).exercisesExerciseIdSubmissionsSubmissionIdGet(exerciseId, submissionId, options)(fetch, basePath);
-        },
-        /**
-         *
-         * @summary Gets the results of the exercise validation for this submission
-         * @param {number} exerciseId
-         * @param {number} submissionId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdSubmissionsSubmissionIdResultsGet(exerciseId: number, submissionId: number, options?: any) {
-            return DefaultApiFp(configuration).exercisesExerciseIdSubmissionsSubmissionIdResultsGet(exerciseId, submissionId, options)(fetch, basePath);
-        },
-        /**
-         *
-         * @summary Validate the code against the exercise's test suite
-         * @param {number} exerciseId
-         * @param {RunnerArguments} runnerArguments
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesExerciseIdTestPost(exerciseId: number, runnerArguments: RunnerArguments, options?: any) {
-            return DefaultApiFp(configuration).exercisesExerciseIdTestPost(exerciseId, runnerArguments, options)(fetch, basePath);
-        },
-        /**
-         *
-         * @summary Gets the full list of exercises
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exercisesIndex(options?: any) {
-            return DefaultApiFp(configuration).exercisesIndex(options)(fetch, basePath);
-        },
-        /**
-         *
-         * @summary Creates a new group
-         * @param {Group} group
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        groupsAdd(group: Group, options?: any) {
-            return DefaultApiFp(configuration).groupsAdd(group, options)(fetch, basePath);
-        },
-        /**
-         *
-         * @summary Gets the full list of groups
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        groupsBrowse(options?: any) {
-            return DefaultApiFp(configuration).groupsBrowse(options)(fetch, basePath);
-        },
-        /**
-         *
-         * @summary Edits an existing group
-         * @param {Group} group
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        groupsEdit(group: Group, options?: any) {
-            return DefaultApiFp(configuration).groupsEdit(group, options)(fetch, basePath);
-        },
-        /**
-         *
-         * @summary Runs provided code
-         * @param {number} exerciseId
-         * @param {RunnerArguments} runnerArguments
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        runCodeForExercise(exerciseId: number, runnerArguments: RunnerArguments, options?: any) {
-            return DefaultApiFp(configuration).runCodeForExercise(exerciseId, runnerArguments, options)(fetch, basePath);
-        },
-        /**
-         *
-         * @summary Creates a new user
-         * @param {User} user
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersAdd(user: User, options?: any) {
-            return DefaultApiFp(configuration).usersAdd(user, options)(fetch, basePath);
-        },
-        /**
-         *
-         * @summary Gets the full list of users
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersBrowse(options?: any) {
-            return DefaultApiFp(configuration).usersBrowse(options)(fetch, basePath);
-        },
-        /**
-         *
-         * @summary Gets the specified user
-         * @param {number} userId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersRead(userId: number, options?: any) {
-            return DefaultApiFp(configuration).usersRead(userId, options)(fetch, basePath);
-        },
-    };
+export const DefaultApiFactory = function(
+  configuration?: Configuration,
+  fetch?: FetchAPI,
+  basePath?: string,
+) {
+  return {
+    /**
+     *
+     * @summary Creates a new exercise
+     * @param {Exercise} exercise
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesAdd(exercise: Exercise, options?: any) {
+      return DefaultApiFp(configuration).exercisesAdd(exercise, options)(
+        fetch,
+        basePath,
+      );
+    },
+    /**
+     *
+     * @summary Gets the specified exercise
+     * @param {number} exerciseId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdGet(exerciseId: number, options?: any) {
+      return DefaultApiFp(configuration).exercisesExerciseIdGet(
+        exerciseId,
+        options,
+      )(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Gets the list of submissions for the specified exercise
+     * @param {number} exerciseId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdSubmissionsGet(exerciseId: number, options?: any) {
+      return DefaultApiFp(configuration).exercisesExerciseIdSubmissionsGet(
+        exerciseId,
+        options,
+      )(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Submits the code as the current user's solution for the exercise
+     * @param {number} exerciseId
+     * @param {ExerciseSubmission} exerciseSubmission
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdSubmissionsPost(
+      exerciseId: number,
+      exerciseSubmission: ExerciseSubmission,
+      options?: any,
+    ) {
+      return DefaultApiFp(configuration).exercisesExerciseIdSubmissionsPost(
+        exerciseId,
+        exerciseSubmission,
+        options,
+      )(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Gets the list of submissions for the specified exercise
+     * @param {number} exerciseId
+     * @param {number} submissionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdSubmissionsSubmissionIdGet(
+      exerciseId: number,
+      submissionId: number,
+      options?: any,
+    ) {
+      return DefaultApiFp(
+        configuration,
+      ).exercisesExerciseIdSubmissionsSubmissionIdGet(
+        exerciseId,
+        submissionId,
+        options,
+      )(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Gets the results of the exercise validation for this submission
+     * @param {number} exerciseId
+     * @param {number} submissionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdSubmissionsSubmissionIdResultsGet(
+      exerciseId: number,
+      submissionId: number,
+      options?: any,
+    ) {
+      return DefaultApiFp(
+        configuration,
+      ).exercisesExerciseIdSubmissionsSubmissionIdResultsGet(
+        exerciseId,
+        submissionId,
+        options,
+      )(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Validate the code against the exercise's test suite
+     * @param {number} exerciseId
+     * @param {RunnerArguments} runnerArguments
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdTestPost(
+      exerciseId: number,
+      runnerArguments: RunnerArguments,
+      options?: any,
+    ) {
+      return DefaultApiFp(configuration).exercisesExerciseIdTestPost(
+        exerciseId,
+        runnerArguments,
+        options,
+      )(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Gets the full list of exercises
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesIndex(options?: any) {
+      return DefaultApiFp(configuration).exercisesIndex(options)(
+        fetch,
+        basePath,
+      );
+    },
+    /**
+     *
+     * @summary Creates a new group
+     * @param {Group} group
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    groupsAdd(group: Group, options?: any) {
+      return DefaultApiFp(configuration).groupsAdd(group, options)(
+        fetch,
+        basePath,
+      );
+    },
+    /**
+     *
+     * @summary Gets the full list of groups
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    groupsBrowse(options?: any) {
+      return DefaultApiFp(configuration).groupsBrowse(options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Edits an existing group
+     * @param {Group} group
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    groupsEdit(group: Group, options?: any) {
+      return DefaultApiFp(configuration).groupsEdit(group, options)(
+        fetch,
+        basePath,
+      );
+    },
+    /**
+     *
+     * @summary Runs provided code
+     * @param {number} exerciseId
+     * @param {RunnerArguments} runnerArguments
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    runCodeForExercise(
+      exerciseId: number,
+      runnerArguments: RunnerArguments,
+      options?: any,
+    ) {
+      return DefaultApiFp(configuration).runCodeForExercise(
+        exerciseId,
+        runnerArguments,
+        options,
+      )(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Creates a new user
+     * @param {User} user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    usersAdd(user: User, options?: any) {
+      return DefaultApiFp(configuration).usersAdd(user, options)(
+        fetch,
+        basePath,
+      );
+    },
+    /**
+     *
+     * @summary Gets the full list of users
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    usersBrowse(options?: any) {
+      return DefaultApiFp(configuration).usersBrowse(options)(fetch, basePath);
+    },
+    /**
+     *
+     * @summary Gets the specified user
+     * @param {number} userId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    usersRead(userId: number, options?: any) {
+      return DefaultApiFp(configuration).usersRead(userId, options)(
+        fetch,
+        basePath,
+      );
+    },
+  };
 };
 
 /**
@@ -1896,158 +2670,180 @@ export const DefaultApiFactory = function (configuration?: Configuration, fetch?
  * @interface DefaultApi
  */
 export interface DefaultApiInterface {
-    /**
-     *
-     * @summary Creates a new exercise
-     * @param {Exercise} exercise
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    exercisesAdd(exercise: Exercise, options?: any): Promise<Exercise>;
+  /**
+   *
+   * @summary Creates a new exercise
+   * @param {Exercise} exercise
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  exercisesAdd(exercise: Exercise, options?: any): Promise<Exercise>;
 
-    /**
-     *
-     * @summary Gets the specified exercise
-     * @param {number} exerciseId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    exercisesExerciseIdGet(exerciseId: number, options?: any): Promise<Exercise>;
+  /**
+   *
+   * @summary Gets the specified exercise
+   * @param {number} exerciseId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  exercisesExerciseIdGet(exerciseId: number, options?: any): Promise<Exercise>;
 
-    /**
-     *
-     * @summary Gets the list of submissions for the specified exercise
-     * @param {number} exerciseId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    exercisesExerciseIdSubmissionsGet(exerciseId: number, options?: any): Promise<Array<ExerciseSubmission>>;
+  /**
+   *
+   * @summary Gets the list of submissions for the specified exercise
+   * @param {number} exerciseId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  exercisesExerciseIdSubmissionsGet(
+    exerciseId: number,
+    options?: any,
+  ): Promise<Array<ExerciseSubmission>>;
 
-    /**
-     *
-     * @summary Submits the code as the current user's solution for the exercise
-     * @param {number} exerciseId
-     * @param {ExerciseSubmission} exerciseSubmission
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    exercisesExerciseIdSubmissionsPost(exerciseId: number, exerciseSubmission: ExerciseSubmission, options?: any): Promise<{}>;
+  /**
+   *
+   * @summary Submits the code as the current user's solution for the exercise
+   * @param {number} exerciseId
+   * @param {ExerciseSubmission} exerciseSubmission
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  exercisesExerciseIdSubmissionsPost(
+    exerciseId: number,
+    exerciseSubmission: ExerciseSubmission,
+    options?: any,
+  ): Promise<{}>;
 
-    /**
-     *
-     * @summary Gets the list of submissions for the specified exercise
-     * @param {number} exerciseId
-     * @param {number} submissionId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    exercisesExerciseIdSubmissionsSubmissionIdGet(exerciseId: number, submissionId: number, options?: any): Promise<ExerciseSubmission>;
+  /**
+   *
+   * @summary Gets the list of submissions for the specified exercise
+   * @param {number} exerciseId
+   * @param {number} submissionId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  exercisesExerciseIdSubmissionsSubmissionIdGet(
+    exerciseId: number,
+    submissionId: number,
+    options?: any,
+  ): Promise<ExerciseSubmission>;
 
-    /**
-     *
-     * @summary Gets the results of the exercise validation for this submission
-     * @param {number} exerciseId
-     * @param {number} submissionId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    exercisesExerciseIdSubmissionsSubmissionIdResultsGet(exerciseId: number, submissionId: number, options?: any): Promise<CodeValidationReport>;
+  /**
+   *
+   * @summary Gets the results of the exercise validation for this submission
+   * @param {number} exerciseId
+   * @param {number} submissionId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  exercisesExerciseIdSubmissionsSubmissionIdResultsGet(
+    exerciseId: number,
+    submissionId: number,
+    options?: any,
+  ): Promise<CodeValidationReport>;
 
-    /**
-     *
-     * @summary Validate the code against the exercise's test suite
-     * @param {number} exerciseId
-     * @param {RunnerArguments} runnerArguments
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    exercisesExerciseIdTestPost(exerciseId: number, runnerArguments: RunnerArguments, options?: any): Promise<CodeValidationReport>;
+  /**
+   *
+   * @summary Validate the code against the exercise's test suite
+   * @param {number} exerciseId
+   * @param {RunnerArguments} runnerArguments
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  exercisesExerciseIdTestPost(
+    exerciseId: number,
+    runnerArguments: RunnerArguments,
+    options?: any,
+  ): Promise<CodeValidationReport>;
 
-    /**
-     *
-     * @summary Gets the full list of exercises
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    exercisesIndex(options?: any): Promise<Array<Exercise>>;
+  /**
+   *
+   * @summary Gets the full list of exercises
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  exercisesIndex(options?: any): Promise<Array<Exercise>>;
 
-    /**
-     *
-     * @summary Creates a new group
-     * @param {Group} group
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    groupsAdd(group: Group, options?: any): Promise<Group>;
+  /**
+   *
+   * @summary Creates a new group
+   * @param {Group} group
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  groupsAdd(group: Group, options?: any): Promise<Group>;
 
-    /**
-     *
-     * @summary Gets the full list of groups
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    groupsBrowse(options?: any): Promise<Array<Group>>;
+  /**
+   *
+   * @summary Gets the full list of groups
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  groupsBrowse(options?: any): Promise<Array<Group>>;
 
-    /**
-     *
-     * @summary Edits an existing group
-     * @param {Group} group
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    groupsEdit(group: Group, options?: any): Promise<Group>;
+  /**
+   *
+   * @summary Edits an existing group
+   * @param {Group} group
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  groupsEdit(group: Group, options?: any): Promise<Group>;
 
-    /**
-     *
-     * @summary Runs provided code
-     * @param {number} exerciseId
-     * @param {RunnerArguments} runnerArguments
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    runCodeForExercise(exerciseId: number, runnerArguments: RunnerArguments, options?: any): Promise<{}>;
+  /**
+   *
+   * @summary Runs provided code
+   * @param {number} exerciseId
+   * @param {RunnerArguments} runnerArguments
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  runCodeForExercise(
+    exerciseId: number,
+    runnerArguments: RunnerArguments,
+    options?: any,
+  ): Promise<{}>;
 
-    /**
-     *
-     * @summary Creates a new user
-     * @param {User} user
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    usersAdd(user: User, options?: any): Promise<User>;
+  /**
+   *
+   * @summary Creates a new user
+   * @param {User} user
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  usersAdd(user: User, options?: any): Promise<User>;
 
-    /**
-     *
-     * @summary Gets the full list of users
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    usersBrowse(options?: any): Promise<Array<User>>;
+  /**
+   *
+   * @summary Gets the full list of users
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  usersBrowse(options?: any): Promise<Array<User>>;
 
-    /**
-     *
-     * @summary Gets the specified user
-     * @param {number} userId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApiInterface
-     */
-    usersRead(userId: number, options?: any): Promise<User>;
-
+  /**
+   *
+   * @summary Gets the specified user
+   * @param {number} userId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  usersRead(userId: number, options?: any): Promise<User>;
 }
 
 /**
@@ -2057,187 +2853,259 @@ export interface DefaultApiInterface {
  * @extends {BaseAPI}
  */
 export class DefaultApi extends BaseAPI implements DefaultApiInterface {
-    /**
-     *
-     * @summary Creates a new exercise
-     * @param {Exercise} exercise
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public exercisesAdd(exercise: Exercise, options?: any) {
-        return DefaultApiFp(this.configuration).exercisesAdd(exercise, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Creates a new exercise
+   * @param {Exercise} exercise
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public exercisesAdd(exercise: Exercise, options?: any) {
+    return DefaultApiFp(this.configuration).exercisesAdd(exercise, options)(
+      this.fetch,
+      this.basePath,
+    );
+  }
 
-    /**
-     *
-     * @summary Gets the specified exercise
-     * @param {number} exerciseId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public exercisesExerciseIdGet(exerciseId: number, options?: any) {
-        return DefaultApiFp(this.configuration).exercisesExerciseIdGet(exerciseId, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Gets the specified exercise
+   * @param {number} exerciseId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public exercisesExerciseIdGet(exerciseId: number, options?: any) {
+    return DefaultApiFp(this.configuration).exercisesExerciseIdGet(
+      exerciseId,
+      options,
+    )(this.fetch, this.basePath);
+  }
 
-    /**
-     *
-     * @summary Gets the list of submissions for the specified exercise
-     * @param {number} exerciseId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public exercisesExerciseIdSubmissionsGet(exerciseId: number, options?: any) {
-        return DefaultApiFp(this.configuration).exercisesExerciseIdSubmissionsGet(exerciseId, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Gets the list of submissions for the specified exercise
+   * @param {number} exerciseId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public exercisesExerciseIdSubmissionsGet(exerciseId: number, options?: any) {
+    return DefaultApiFp(this.configuration).exercisesExerciseIdSubmissionsGet(
+      exerciseId,
+      options,
+    )(this.fetch, this.basePath);
+  }
 
-    /**
-     *
-     * @summary Submits the code as the current user's solution for the exercise
-     * @param {number} exerciseId
-     * @param {ExerciseSubmission} exerciseSubmission
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public exercisesExerciseIdSubmissionsPost(exerciseId: number, exerciseSubmission: ExerciseSubmission, options?: any) {
-        return DefaultApiFp(this.configuration).exercisesExerciseIdSubmissionsPost(exerciseId, exerciseSubmission, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Submits the code as the current user's solution for the exercise
+   * @param {number} exerciseId
+   * @param {ExerciseSubmission} exerciseSubmission
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public exercisesExerciseIdSubmissionsPost(
+    exerciseId: number,
+    exerciseSubmission: ExerciseSubmission,
+    options?: any,
+  ) {
+    return DefaultApiFp(this.configuration).exercisesExerciseIdSubmissionsPost(
+      exerciseId,
+      exerciseSubmission,
+      options,
+    )(this.fetch, this.basePath);
+  }
 
-    /**
-     *
-     * @summary Gets the list of submissions for the specified exercise
-     * @param {number} exerciseId
-     * @param {number} submissionId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public exercisesExerciseIdSubmissionsSubmissionIdGet(exerciseId: number, submissionId: number, options?: any) {
-        return DefaultApiFp(this.configuration).exercisesExerciseIdSubmissionsSubmissionIdGet(exerciseId, submissionId, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Gets the list of submissions for the specified exercise
+   * @param {number} exerciseId
+   * @param {number} submissionId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public exercisesExerciseIdSubmissionsSubmissionIdGet(
+    exerciseId: number,
+    submissionId: number,
+    options?: any,
+  ) {
+    return DefaultApiFp(
+      this.configuration,
+    ).exercisesExerciseIdSubmissionsSubmissionIdGet(
+      exerciseId,
+      submissionId,
+      options,
+    )(this.fetch, this.basePath);
+  }
 
-    /**
-     *
-     * @summary Gets the results of the exercise validation for this submission
-     * @param {number} exerciseId
-     * @param {number} submissionId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public exercisesExerciseIdSubmissionsSubmissionIdResultsGet(exerciseId: number, submissionId: number, options?: any) {
-        return DefaultApiFp(this.configuration).exercisesExerciseIdSubmissionsSubmissionIdResultsGet(exerciseId, submissionId, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Gets the results of the exercise validation for this submission
+   * @param {number} exerciseId
+   * @param {number} submissionId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public exercisesExerciseIdSubmissionsSubmissionIdResultsGet(
+    exerciseId: number,
+    submissionId: number,
+    options?: any,
+  ) {
+    return DefaultApiFp(
+      this.configuration,
+    ).exercisesExerciseIdSubmissionsSubmissionIdResultsGet(
+      exerciseId,
+      submissionId,
+      options,
+    )(this.fetch, this.basePath);
+  }
 
-    /**
-     *
-     * @summary Validate the code against the exercise's test suite
-     * @param {number} exerciseId
-     * @param {RunnerArguments} runnerArguments
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public exercisesExerciseIdTestPost(exerciseId: number, runnerArguments: RunnerArguments, options?: any) {
-        return DefaultApiFp(this.configuration).exercisesExerciseIdTestPost(exerciseId, runnerArguments, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Validate the code against the exercise's test suite
+   * @param {number} exerciseId
+   * @param {RunnerArguments} runnerArguments
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public exercisesExerciseIdTestPost(
+    exerciseId: number,
+    runnerArguments: RunnerArguments,
+    options?: any,
+  ) {
+    return DefaultApiFp(this.configuration).exercisesExerciseIdTestPost(
+      exerciseId,
+      runnerArguments,
+      options,
+    )(this.fetch, this.basePath);
+  }
 
-    /**
-     *
-     * @summary Gets the full list of exercises
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public exercisesIndex(options?: any) {
-        return DefaultApiFp(this.configuration).exercisesIndex(options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Gets the full list of exercises
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public exercisesIndex(options?: any) {
+    return DefaultApiFp(this.configuration).exercisesIndex(options)(
+      this.fetch,
+      this.basePath,
+    );
+  }
 
-    /**
-     *
-     * @summary Creates a new group
-     * @param {Group} group
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public groupsAdd(group: Group, options?: any) {
-        return DefaultApiFp(this.configuration).groupsAdd(group, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Creates a new group
+   * @param {Group} group
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public groupsAdd(group: Group, options?: any) {
+    return DefaultApiFp(this.configuration).groupsAdd(group, options)(
+      this.fetch,
+      this.basePath,
+    );
+  }
 
-    /**
-     *
-     * @summary Gets the full list of groups
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public groupsBrowse(options?: any) {
-        return DefaultApiFp(this.configuration).groupsBrowse(options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Gets the full list of groups
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public groupsBrowse(options?: any) {
+    return DefaultApiFp(this.configuration).groupsBrowse(options)(
+      this.fetch,
+      this.basePath,
+    );
+  }
 
-    /**
-     *
-     * @summary Edits an existing group
-     * @param {Group} group
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public groupsEdit(group: Group, options?: any) {
-        return DefaultApiFp(this.configuration).groupsEdit(group, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Edits an existing group
+   * @param {Group} group
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public groupsEdit(group: Group, options?: any) {
+    return DefaultApiFp(this.configuration).groupsEdit(group, options)(
+      this.fetch,
+      this.basePath,
+    );
+  }
 
-    /**
-     *
-     * @summary Runs provided code
-     * @param {number} exerciseId
-     * @param {RunnerArguments} runnerArguments
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public runCodeForExercise(exerciseId: number, runnerArguments: RunnerArguments, options?: any) {
-        return DefaultApiFp(this.configuration).runCodeForExercise(exerciseId, runnerArguments, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Runs provided code
+   * @param {number} exerciseId
+   * @param {RunnerArguments} runnerArguments
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public runCodeForExercise(
+    exerciseId: number,
+    runnerArguments: RunnerArguments,
+    options?: any,
+  ) {
+    return DefaultApiFp(this.configuration).runCodeForExercise(
+      exerciseId,
+      runnerArguments,
+      options,
+    )(this.fetch, this.basePath);
+  }
 
-    /**
-     *
-     * @summary Creates a new user
-     * @param {User} user
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public usersAdd(user: User, options?: any) {
-        return DefaultApiFp(this.configuration).usersAdd(user, options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Creates a new user
+   * @param {User} user
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public usersAdd(user: User, options?: any) {
+    return DefaultApiFp(this.configuration).usersAdd(user, options)(
+      this.fetch,
+      this.basePath,
+    );
+  }
 
-    /**
-     *
-     * @summary Gets the full list of users
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public usersBrowse(options?: any) {
-        return DefaultApiFp(this.configuration).usersBrowse(options)(this.fetch, this.basePath);
-    }
+  /**
+   *
+   * @summary Gets the full list of users
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public usersBrowse(options?: any) {
+    return DefaultApiFp(this.configuration).usersBrowse(options)(
+      this.fetch,
+      this.basePath,
+    );
+  }
 
-    /**
-     *
-     * @summary Gets the specified user
-     * @param {number} userId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public usersRead(userId: number, options?: any) {
-        return DefaultApiFp(this.configuration).usersRead(userId, options)(this.fetch, this.basePath);
-    }
-
+  /**
+   *
+   * @summary Gets the specified user
+   * @param {number} userId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public usersRead(userId: number, options?: any) {
+    return DefaultApiFp(this.configuration).usersRead(userId, options)(
+      this.fetch,
+      this.basePath,
+    );
+  }
 }
-

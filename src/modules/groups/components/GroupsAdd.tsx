@@ -20,7 +20,7 @@ export const GroupsAdd: React.SFC<GroupsAddProps> = (props) => {
       leftPanel={
         <GroupsAddFormik
           initialValues={{
-            class: 'LOG320',
+            course: 'LOG320',
             year: new Date().getFullYear(),
             semester: Semesters.FALL,
             groupNumber: 1,

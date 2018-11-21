@@ -8,7 +8,11 @@ import {
   RunnerArguments,
   User,
 } from '../../../__generated__/api';
-import { testExercises, testExerciseSubmissions } from '../../../test/data';
+import {
+  testExercises,
+  testExerciseSubmissions,
+  testGroups,
+} from '../../../test/data';
 import { Omit } from '../../../types/types';
 
 export class DefaultApiMock implements DefaultApiInterface {
@@ -82,12 +86,13 @@ export class DefaultApiMock implements DefaultApiInterface {
     return Promise.resolve(res);
   }
 
-  groupsAdd(group: Omit<Group, 'id'>, options?: any): Promise<Group> {
-    throw new Error("groupsAdd mock hasn't been implemented");
+  groupsBrowse(options?: any): Promise<Group[]> {
+    return Promise.resolve(Object.values(testGroups.items));
   }
 
-  groupsBrowse(options?: any): Promise<Group[]> {
-    throw new Error("groupsBrowse mock hasn't been implemented");
+  groupsAdd(group: Omit<Group, 'id'>, options?: any): Promise<Group> {
+    const res = testGroups.add(group);
+    return Promise.resolve(res);
   }
 
   usersAdd(user: User, options?: any): Promise<User> {
@@ -103,6 +108,7 @@ export class DefaultApiMock implements DefaultApiInterface {
   }
 
   groupsEdit(group: Partial<Group>, options?: any): Promise<Group> {
-    throw new Error("groupsEdit mock hasn't been implemented");
+    const res = testGroups.archive(group); // Just archive for the moment
+    return Promise.resolve(res);
   }
 }

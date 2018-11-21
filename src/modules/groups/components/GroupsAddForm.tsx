@@ -44,9 +44,9 @@ class GroupsAddForm extends React.PureComponent<FormProps> {
         >
           <InputGroup
             type="text"
-            name="class"
+            name="course"
             placeholder="Sigle du cours"
-            defaultValue={values._class}
+            defaultValue={values.course}
             onChange={handleChange}
             className={classNames({
               [Classes.INTENT_DANGER]:
@@ -130,7 +130,7 @@ interface GroupsAddFormikProps extends OnSubmitGroupsAdd, OnDrop {
 }
 
 const AddSchema = Yup.object().shape({
-  class: Yup.string().required('Requis'),
+  course: Yup.string().required('Requis'),
   groupNumber: Yup.number().required('Requis'),
   year: Yup.number()
     .min(new Date().getFullYear(), 'Impossible de voyager dans le temps')
