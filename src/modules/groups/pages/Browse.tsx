@@ -8,7 +8,7 @@ import { GroupsBrowse } from '../components/GroupsBrowse';
 import { withGroups, WithGroupsInjectedProps } from '../hocs/withGroups';
 
 interface BrowseProps extends WithGroupsInjectedProps {
-  onArchiveGroupClick(groupId: number, archived: boolean): void;
+  onArchiveGroupClick(id: number, archived: boolean): void;
 }
 
 interface BrowseState {
@@ -17,9 +17,10 @@ interface BrowseState {
   archivedGroups: Dictionary<Group>;
 }
 
-class Browse extends React.PureComponent<BrowseProps, BrowseState> {
-  private filterGroups = (archived: boolean) =>
-    pickBy(this.props.groups, (group) => group.archived === archived);
+class Browse extends React.Component<BrowseProps, BrowseState> {
+  private filterGroups = (archived: boolean) => {
+    return pickBy(this.props.groups, (group) => group.archived === archived);
+  };
 
   state = {
     selectedGroup: undefined,
@@ -27,12 +28,12 @@ class Browse extends React.PureComponent<BrowseProps, BrowseState> {
     archivedGroups: this.filterGroups(true),
   };
 
-  readonly handleClickSelectGroup = (groupId: number) => {
-    this.setState({ selectedGroup: this.props.groups[groupId] });
+  readonly handleClickSelectGroup = (id: number) => {
+    this.setState({ selectedGroup: this.props.groups[id] });
   };
 
-  readonly handleClickArchive = (groupId: number, archived: boolean) => {
-    this.props.onArchiveGroupClick(Number(groupId), archived);
+  readonly handleClickArchive = (id: number, archived: boolean) => {
+    this.props.onArchiveGroupClick(Number(id), archived);
     this.setState({
       currentGroups: this.filterGroups(false),
       archivedGroups: this.filterGroups(true),
@@ -54,8 +55,8 @@ class Browse extends React.PureComponent<BrowseProps, BrowseState> {
 }
 
 const mapDispatchToProps = {
-  onArchiveGroupClick: (groupId: number, archived: boolean) =>
-    groupsArchive.request({ groupId, archived }),
+  onArchiveGroupClick: (id: number, archived: boolean) =>
+    groupsArchive.request({ id, archived }),
 };
 
 export const GroupsBrowsePage = compose(

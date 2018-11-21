@@ -44,7 +44,7 @@
     "eject": "react-scripts-ts eject",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "lint": "tslint --fix --project .",
-    "generate-client": "openapi-generator generate -i ~/IdeaProjects/api-definition/code-crusade-openapi.yml -g typescript-fetch -o src/__generated__/api --additional-properties=\"supportsES6=true,withInterfaces=true\""
+    "generate-client": "openapi-generator generate -i ../api-definition/code-crusade-openapi.yml -g typescript-fetch -o src/__generated__/api --additional-properties=\"supportsES6=true,withInterfaces=true\""
   },
   "devDependencies": {
     "@harmowatch/openapi-generator-cli": "0.0.3-3.3.2",

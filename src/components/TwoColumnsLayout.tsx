@@ -28,6 +28,7 @@ const Right = styled.div`
 
 export const TwoColumnsLayout: React.SFC<Props> = (props) => {
   const { leftPanel, rightPanel, leftHeader, rightHeader } = props;
+
   return (
     <Container>
       <Left>

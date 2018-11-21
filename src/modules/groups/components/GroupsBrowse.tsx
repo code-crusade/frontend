@@ -21,8 +21,8 @@ interface GroupsBrowseProps extends WithGroupsInjectedProps {
   selectedGroup?: Group;
   currentGroups: Dictionary<Group>;
   archivedGroups: Dictionary<Group>;
-  onGroupClick(groupId: number): void;
-  onArchiveGroupClick(groupId: number, archive: boolean): void;
+  onGroupClick(id: number): void;
+  onArchiveGroupClick(id: number, archive: boolean): void;
 }
 
 export const GroupsBrowse: React.SFC<GroupsBrowseProps> = (props) => {

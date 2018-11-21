@@ -8,7 +8,7 @@ import { Group } from '../../../__generated__/api';
 
 interface GroupsReadProps {
   group?: Group;
-  onArchiveClick(groupId: number, archive: boolean): void;
+  onArchiveClick(id: number, archive: boolean): void;
 }
 
 const Buttons = styled.div`

@@ -12,7 +12,7 @@ const Table = styled(HTMLTable)`
 interface GroupsTableProps {
   readonly groups: Dictionary<Group>;
   archive?: boolean;
-  onGroupClick(groupId: number): void;
+  onGroupClick(id: number): void;
 }
 
 export const GroupsTable: React.SFC<GroupsTableProps> = (props) => {
@@ -46,7 +46,7 @@ export const GroupsTable: React.SFC<GroupsTableProps> = (props) => {
         {Object.values(groups).map((group, index) => (
           <tr onClick={() => handleGroupClick(group.id)} key={group.id}>
             <td>{group.groupNumber}</td>
-            <td>{group._class}</td>
+            <td>{group.course}</td>
             <td>
               {group.semester} {group.year}
             </td>
