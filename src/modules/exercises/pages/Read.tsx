@@ -2,6 +2,7 @@ import * as monacoEditor from 'monaco-editor';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { compose, Dispatch } from 'redux';
+import { RunnerState } from '..';
 import {
   ExerciseSubmission,
   RunnerArguments,
@@ -23,7 +24,7 @@ import {
   withExerciseSubmissions,
   WithExerciseSubmissionsInjectedProps,
 } from '../hocs/withExerciseSubmissions';
-import { getMostRecentSubmissionOfUser } from '../selectors';
+import { getMostRecentSubmissionOfUser, getRunner } from '../selectors';
 
 interface ReadState {
   code: string;
@@ -40,6 +41,7 @@ interface ReadProps extends InjectedProps {
   ) => void;
   testCode: (values: RunnerArguments) => void;
   mostRecentSubmission?: ExerciseSubmission;
+  runner: RunnerState;
 }
 
 export class Read extends React.Component<ReadProps, ReadState> {
@@ -152,6 +154,7 @@ export class Read extends React.Component<ReadProps, ReadState> {
         onValidateClick={this.handleValidateClick}
         selectedLanguage={this.state.selectedLanguage}
         onLanguageChange={this.handleLanguageChange}
+        runner={this.props.runner}
       />
     );
   }
@@ -169,6 +172,7 @@ const mapStateToProps = (
       state,
       ownProps.exercise.id,
     ),
+    runner: getRunner(state),
   };
 };
 

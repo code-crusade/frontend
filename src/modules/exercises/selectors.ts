@@ -55,3 +55,5 @@ export const getMostRecentSubmissionOfUser = createSelector(
       'date',
     ),
 );
+
+export const getRunner = (state: RootState) => state.runner;

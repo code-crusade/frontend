@@ -1,14 +1,17 @@
-import { Button, H1, H3, HTMLSelect } from '@blueprintjs/core';
+import { Button, H1, HTMLSelect, Tab, Tabs } from '@blueprintjs/core';
 import * as React from 'react';
 import MonacoEditor, {
   ChangeHandler,
   EditorDidMount,
 } from 'react-monaco-editor';
 import styled from 'styled-components';
+import { RunnerState } from '..';
 import { SupportedLanguages } from '../../../__generated__/api';
 import { Err404 } from '../../../components/Err404';
 import { Loading } from '../../../components/Loading';
 import { WithExerciseInjectedProps } from '../hocs/withExercise';
+import { InstructionsPanel } from './InstructionsPanel';
+import { OutputPanel } from './OutputPanel';
 
 export type EditorProps = {
   editorCode: string;
@@ -19,6 +22,7 @@ export type EditorProps = {
   onValidateClick: (event: React.MouseEvent<HTMLElement>) => void;
   selectedLanguage: SupportedLanguages;
   onLanguageChange: React.ChangeEventHandler<HTMLSelectElement>;
+  runner: RunnerState;
 };
 
 const Container = styled.div`
@@ -62,7 +66,18 @@ export const ExercisesRead: React.SFC<
     <Container>
       <ExerciseContainer>
         <H1>{props.exercise.title.fr}</H1>
-        <H3>{props.exercise.description.fr}</H3>
+        <Tabs id="ExerciseTab">
+          <Tab
+            id="Instructions"
+            title="Instructions"
+            panel={<InstructionsPanel exercise={props.exercise} />}
+          />
+          <Tab
+            id="Output"
+            title="Sortie"
+            panel={<OutputPanel runner={props.runner} />}
+          />
+        </Tabs>
         <Button onClick={props.onSubmit}>Soumettre</Button>
         <Button onClick={props.onValidateClick}>Valider tests</Button>
       </ExerciseContainer>
