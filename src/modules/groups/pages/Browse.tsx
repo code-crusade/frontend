@@ -1,31 +1,27 @@
-import { Dictionary, pickBy } from 'lodash';
+import { Dictionary } from 'lodash';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { RootState } from 'src/store/root-reducer';
 import { Group } from '../../../__generated__/api';
 import { groupsArchive } from '../actions';
 import { GroupsBrowse } from '../components/GroupsBrowse';
 import { withGroups, WithGroupsInjectedProps } from '../hocs/withGroups';
+import { getArchivedGroups, getCurrentGroups } from '../selectors';
 
 interface BrowseProps extends WithGroupsInjectedProps {
   onArchiveGroupClick(id: number, archived: boolean): void;
-}
-
-interface BrowseState {
-  selectedGroup?: Group;
   currentGroups: Dictionary<Group>;
   archivedGroups: Dictionary<Group>;
 }
 
-class Browse extends React.Component<BrowseProps, BrowseState> {
-  private filterGroups = (archived: boolean) => {
-    return pickBy(this.props.groups, (group) => group.archived === archived);
-  };
+interface BrowseState {
+  selectedGroup?: Group;
+}
 
+class Browse extends React.Component<BrowseProps, BrowseState> {
   state = {
     selectedGroup: undefined,
-    currentGroups: this.filterGroups(false),
-    archivedGroups: this.filterGroups(true),
   };
 
   readonly handleClickSelectGroup = (id: number) => {
@@ -34,10 +30,6 @@ class Browse extends React.Component<BrowseProps, BrowseState> {
 
   readonly handleClickArchive = (id: number, archived: boolean) => {
     this.props.onArchiveGroupClick(Number(id), archived);
-    this.setState({
-      currentGroups: this.filterGroups(false),
-      archivedGroups: this.filterGroups(true),
-    });
   };
 
   render() {
@@ -47,12 +39,15 @@ class Browse extends React.Component<BrowseProps, BrowseState> {
         onArchiveGroupClick={this.handleClickArchive}
         onGroupClick={this.handleClickSelectGroup}
         selectedGroup={this.state.selectedGroup}
-        currentGroups={this.state.currentGroups}
-        archivedGroups={this.state.archivedGroups}
       />
     );
   }
 }
+
+const mapStateToProps = (state: RootState) => ({
+  currentGroups: getCurrentGroups(state.groups),
+  archivedGroups: getArchivedGroups(state.groups),
+});
 
 const mapDispatchToProps = {
   onArchiveGroupClick: (id: number, archived: boolean) =>
@@ -62,7 +57,7 @@ const mapDispatchToProps = {
 export const GroupsBrowsePage = compose(
   withGroups,
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps,
   ),
 )(Browse);

@@ -108,7 +108,6 @@ export class DefaultApiMock implements DefaultApiInterface {
   }
 
   groupsEdit(group: Partial<Group>, options?: any): Promise<Group> {
-    console.log(group);
     const res = testGroups.archive(group); // Just archive for the moment
     return Promise.resolve(res);
   }
