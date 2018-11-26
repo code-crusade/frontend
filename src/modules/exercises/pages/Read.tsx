@@ -1,12 +1,14 @@
 import * as monacoEditor from 'monaco-editor';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, Dispatch } from 'redux';
+import { RunnerState } from '..';
 import {
   ExerciseSubmission,
+  RunnerArguments,
   SupportedLanguages,
 } from '../../../__generated__/api';
-import { generateCodeFromTemplate } from '../../../helpers';
+import { generateInitialCode, generateTests } from '../../../helpers';
 import IModelContentChangedEvent = monacoEditor.editor.IModelContentChangedEvent;
 import IStandaloneCodeEditor = monacoEditor.editor.IStandaloneCodeEditor;
 import { RootState } from '../../../store/root-reducer';
@@ -15,18 +17,19 @@ import {
   withLoggedInUser,
   WithLoggedInUserInjectedProps,
 } from '../../auth/hocs/withLoggedInUser';
-import { exerciseSubmissionsAdd } from '../actions';
+import { exercisesTestCode, exerciseSubmissionsAdd } from '../actions';
 import { ExercisesRead } from '../components/ExercisesRead';
 import { withExercise, WithExerciseInjectedProps } from '../hocs/withExercise';
 import {
   withExerciseSubmissions,
   WithExerciseSubmissionsInjectedProps,
 } from '../hocs/withExerciseSubmissions';
-import { getMostRecentSubmissionOfUser } from '../selectors';
+import { getMostRecentSubmissionOfUser, getRunner } from '../selectors';
 
 interface ReadState {
   code: string;
   selectedLanguage: SupportedLanguages;
+  sampleTestsCode: string;
 }
 
 type InjectedProps = WithLoggedInUserInjectedProps &
@@ -34,8 +37,12 @@ type InjectedProps = WithLoggedInUserInjectedProps &
   WithExerciseSubmissionsInjectedProps;
 
 interface ReadProps extends InjectedProps {
-  addSubmission: (values: Omit<ExerciseSubmission, 'id' | 'createdAt'>) => void;
+  addSubmission: (
+    values: Omit<ExerciseSubmission, 'id' | 'createdAt' | 'userId'>,
+  ) => void;
+  testCode: (values: RunnerArguments) => void;
   mostRecentSubmission?: ExerciseSubmission;
+  runner: RunnerState;
 }
 
 export class Read extends React.Component<ReadProps, ReadState> {
@@ -45,23 +52,23 @@ export class Read extends React.Component<ReadProps, ReadState> {
     super(props);
 
     let code = '';
-
+    let sampleTestsCode = '';
+    let selectedLanguage = SupportedLanguages.Javascript;
     if (props.mostRecentSubmission) {
       code = props.mostRecentSubmission.code;
+      selectedLanguage = props.mostRecentSubmission.language;
     } else if (props.exercise) {
-      code = generateCodeFromTemplate(
+      code = generateInitialCode(
         props.exercise.template,
         SupportedLanguages.Javascript,
       );
+      sampleTestsCode = generateTests(this.props.exercise, selectedLanguage);
     }
 
-    this.state = {
-      code,
-      selectedLanguage: SupportedLanguages.Javascript,
-    };
+    this.state = { code, selectedLanguage, sampleTestsCode };
   }
 
-  componentDidUpdate(prevProps: ReadProps) {
+  componentDidUpdate(prevProps: ReadProps, prevState: ReadState) {
     // Typical usage (don't forget to compare props):
     if (this.props.mostRecentSubmission && !prevProps.mostRecentSubmission) {
       this.setState({
@@ -69,11 +76,18 @@ export class Read extends React.Component<ReadProps, ReadState> {
         selectedLanguage: this.props.mostRecentSubmission.language,
       });
     }
-    if (this.props.exercise && !prevProps.exercise) {
+    if (
+      (this.props.exercise && !prevProps.exercise) ||
+      this.state.selectedLanguage !== prevState.selectedLanguage
+    ) {
       this.setState({
-        code: generateCodeFromTemplate(
+        code: generateInitialCode(
           this.props.exercise.template,
-          SupportedLanguages.Javascript,
+          this.state.selectedLanguage || SupportedLanguages.Javascript,
+        ),
+        sampleTestsCode: generateTests(
+          this.props.exercise,
+          this.state.selectedLanguage || SupportedLanguages.Javascript,
         ),
       });
     }
@@ -88,25 +102,32 @@ export class Read extends React.Component<ReadProps, ReadState> {
   };
 
   handleChange = (newValue: string, e: IModelContentChangedEvent) => {
-    console.log('handleChange', newValue, e);
     this.setState({ code: newValue });
   };
 
   handleLanguageChange = (event: React.FormEvent<HTMLSelectElement>) => {
     this.setState({
       selectedLanguage: event.currentTarget.value as SupportedLanguages,
-      code: generateCodeFromTemplate(this.props.exercise.template, event
+      code: generateInitialCode(this.props.exercise.template, event
         .currentTarget.value as SupportedLanguages),
+      sampleTestsCode: generateTests(this.props.exercise, event.currentTarget
+        .value as SupportedLanguages),
     });
   };
 
   handleSubmit = (event: React.MouseEvent<HTMLElement>) => {
     this.props.addSubmission({
-      code: this.state.code,
       exerciseId: this.props.exercise.id,
-      // userId: this.props.user.id,
-      userId: 1,
+      code: this.state.code,
       language: this.state.selectedLanguage,
+    });
+  };
+
+  handleValidateClick = (event: React.MouseEvent<HTMLElement>) => {
+    this.props.testCode({
+      code: this.state.code,
+      language: this.state.selectedLanguage,
+      fixture: 'test fixture',
     });
   };
 
@@ -139,9 +160,12 @@ export class Read extends React.Component<ReadProps, ReadState> {
         }}
         editorDidMount={this.editorDidMount}
         editorOnChange={this.handleChange}
-        onSubmit={this.handleSubmit}
+        onSubmit={this.handleValidateClick}
+        onValidateClick={this.handleValidateClick}
         selectedLanguage={this.state.selectedLanguage}
         onLanguageChange={this.handleLanguageChange}
+        runner={this.props.runner}
+        sampleTestsCode={this.state.sampleTestsCode}
       />
     );
   }
@@ -159,13 +183,24 @@ const mapStateToProps = (
       state,
       ownProps.exercise.id,
     ),
+    runner: getRunner(state),
   };
 };
 
-const mapDispatchToProps = {
+const mapDispatchToProps = (
+  dispatch: Dispatch,
+  ownProps: WithExerciseInjectedProps,
+) => ({
   addSubmission: (values: ExerciseSubmission) =>
-    exerciseSubmissionsAdd.request(values),
-};
+    dispatch(exerciseSubmissionsAdd.request(values)),
+  testCode: (values: RunnerArguments) =>
+    dispatch(
+      exercisesTestCode.request({
+        exerciseId: ownProps.exercise.id,
+        ...values,
+      }),
+    ),
+});
 
 export const ExercisesReadPage = compose(
   withLoggedInUser,

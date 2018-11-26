@@ -105,8 +105,8 @@ const resources: { [key: string]: Exercise } = {
       functionReturnValue: 2.6,
       functionReturnType: SupportedType.FLOAT,
       params: [
-        { name: 'nums1', type: SupportedType['INTARRAY'] },
-        { name: 'nums2', type: SupportedType['INTARRAY'] },
+        { name: 'nums1', type: SupportedType.INTARRAY },
+        { name: 'nums2', type: SupportedType.INTARRAY },
       ],
       appendedCode: Object.values(SupportedLanguages).reduce(
         (carry, lang) => ({ ...carry, [lang]: '' }),
@@ -124,11 +124,11 @@ const resources: { [key: string]: Exercise } = {
           {
             inputArguments: [
               {
-                type: SupportedType['INTARRAY'],
+                type: SupportedType.INTARRAY,
                 value: [1, 3],
               },
               {
-                type: SupportedType['INTARRAY'],
+                type: SupportedType.INTARRAY,
                 value: [2],
               },
             ],
@@ -140,11 +140,11 @@ const resources: { [key: string]: Exercise } = {
           {
             inputArguments: [
               {
-                type: SupportedType['INTARRAY'],
+                type: SupportedType.INTARRAY,
                 value: [1, 2],
               },
               {
-                type: SupportedType['INTARRAY'],
+                type: SupportedType.INTARRAY,
                 value: [3, 4],
               },
             ],

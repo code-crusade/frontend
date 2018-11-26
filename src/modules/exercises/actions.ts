@@ -1,5 +1,10 @@
 import { createAsyncAction } from 'typesafe-actions';
-import { Exercise, ExerciseSubmission } from '../../__generated__/api';
+import {
+  CodeValidationReport,
+  Exercise,
+  ExerciseSubmission,
+  RunnerArguments,
+} from '../../__generated__/api';
 import { Omit } from '../../types/types';
 
 export const exercisesBrowse = createAsyncAction(
@@ -43,3 +48,9 @@ export const exerciseSubmissionsAdd = createAsyncAction(
   'EXERCISE_SUBMISSIONS_ADD_SUCCESS',
   'EXERCISE_SUBMISSIONS_ADD_FAILURE',
 )<Omit<ExerciseSubmission, 'id'>, ExerciseSubmission, Error>();
+
+export const exercisesTestCode = createAsyncAction(
+  'EXERCISE_TEST_CODE_REQUEST',
+  'EXERCISE_TEST_CODE_SUCCESS',
+  'EXERCISE_TEST_CODE_FAILURE',
+)<RunnerArguments & { exerciseId: number }, CodeValidationReport, Error>();

@@ -1,4 +1,5 @@
 /* tslint:disable:no-identical-functions */
+import { pickBy, random, sumBy } from 'lodash';
 import {
   CodeValidationReport,
   DefaultApiInterface,
@@ -24,8 +25,13 @@ export class DefaultApiMock implements DefaultApiInterface {
     exerciseId: number,
     options?: any,
   ): Promise<ExerciseSubmission[]> {
-    throw new Error(
-      "exercisesExerciseIdSubmissionsGet mock hasn't been implemented",
+    return Promise.resolve(
+      Object.values(
+        pickBy(
+          testExerciseSubmissions.items,
+          (exerciseSubmission) => exerciseSubmission.exerciseId === exerciseId,
+        ),
+      ),
     );
   }
 
@@ -62,7 +68,41 @@ export class DefaultApiMock implements DefaultApiInterface {
     runnerArguments: RunnerArguments,
     options?: any,
   ): Promise<CodeValidationReport> {
-    throw new Error("exercisesExerciseIdTestPost mock hasn't been implemented");
+    const { template, sampleTestCases } = testExercises.items[exerciseId];
+    return Promise.resolve({
+      exerciseId,
+      exitCode: 1,
+      message: '',
+      result: {
+        assertions: {
+          passed: 0,
+          failed: sumBy(sampleTestCases, ({ assertions }) => assertions.length),
+        },
+        completed: false,
+        output: [
+          {
+            passed: false,
+            text: template.functionName,
+            items: sampleTestCases.map((testCase) => ({
+              text: testCase.it,
+              passed: false,
+              items: testCase.assertions.map((assertion) => ({
+                message: `Expected: '${
+                  assertion.expectedOutput.value
+                }', instead got: '2016-11-22'`,
+                passed: false,
+              })),
+            })),
+          },
+        ],
+      },
+      stderr:
+        "Unhandled rejection TestError: Expected: '2024-07-03', instead got: '2016-11-22'",
+      stdout: '\nTest log',
+      timedOut: Boolean(random(0, 1)),
+      token: '',
+      executionTime: random(100, 1500),
+    });
   }
 
   exercisesIndex(options?: any): Promise<Exercise[]> {

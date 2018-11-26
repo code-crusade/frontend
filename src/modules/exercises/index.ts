@@ -10,6 +10,11 @@ import {
   exerciseSubmissionsReducer,
   ExerciseSubmissionsState,
 } from './reducers/exerciseSubmissionsReducer';
+import {
+  RunnerAction,
+  runnerReducer,
+  RunnerState,
+} from './reducers/runnerReducer';
 import * as exercisesSelectors from './selectors';
 
 export {
@@ -22,4 +27,7 @@ export {
   exerciseSubmissionsReducer,
   ExerciseSubmissionsState,
   ExerciseSubmissionsAction,
+  RunnerAction,
+  runnerReducer,
+  RunnerState,
 };
