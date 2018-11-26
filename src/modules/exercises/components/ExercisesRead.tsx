@@ -1,4 +1,4 @@
-import { Button, H1, HTMLSelect, Tab, Tabs } from '@blueprintjs/core';
+import { Button, H1, H3, HTMLSelect, Tab, Tabs } from '@blueprintjs/core';
 import * as React from 'react';
 import MonacoEditor, {
   ChangeHandler,
@@ -23,21 +23,27 @@ export type EditorProps = {
   selectedLanguage: SupportedLanguages;
   onLanguageChange: React.ChangeEventHandler<HTMLSelectElement>;
   runner: RunnerState;
+  sampleTestsCode: string;
 };
 
 const Container = styled.div`
   display: grid;
   grid-row: 2 / end;
   grid-template-columns: 50% 50%;
-  grid-template-rows: 50px 25% 100px auto;
+  grid-template-rows: 1fr 1fr;
+  width: 99%;
 `;
 
 const EditorContainer = styled.div`
-  grid-column: 2 / end
-  grid-row: 2 / end
-  padding: 1em;
+  grid-column: 2 / end;
+  grid-row: 1 / 2;
   max-width: 99%;
-  max-height: 99%
+`;
+
+const SampleTestsContainer = styled.div`
+  grid-column: 2 / end;
+  grid-row: 2 / 3;
+  max-width: 99%;
 `;
 
 const ExerciseContainer = styled.div`
@@ -81,13 +87,14 @@ export const ExercisesRead: React.SFC<
         <Button onClick={props.onSubmit}>Soumettre</Button>
         <Button onClick={props.onValidateClick}>Valider tests</Button>
       </ExerciseContainer>
-      <HTMLSelect
-        large
-        options={languagesOptions}
-        value={props.selectedLanguage}
-        onChange={props.onLanguageChange}
-      />
       <EditorContainer>
+        <HTMLSelect
+          large
+          options={languagesOptions}
+          value={props.selectedLanguage}
+          onChange={props.onLanguageChange}
+        />
+        <H3>Solution</H3>
         <MonacoEditor
           language={props.selectedLanguage}
           theme="vs-dark"
@@ -97,6 +104,16 @@ export const ExercisesRead: React.SFC<
           editorDidMount={props.editorDidMount}
         />
       </EditorContainer>
+      <SampleTestsContainer>
+        <H3>Cas de tests d'example</H3>
+        <MonacoEditor
+          height="300"
+          language={props.selectedLanguage}
+          theme="vs-dark"
+          options={{ ...props.editorOptions, readOnly: true }}
+          value={props.sampleTestsCode}
+        />
+      </SampleTestsContainer>
     </Container>
   );
 };

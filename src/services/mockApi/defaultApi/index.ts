@@ -1,5 +1,5 @@
 /* tslint:disable:no-identical-functions */
-import { pickBy } from 'lodash';
+import { pickBy, random, sumBy } from 'lodash';
 import {
   CodeValidationReport,
   DefaultApiInterface,
@@ -68,38 +68,40 @@ export class DefaultApiMock implements DefaultApiInterface {
     runnerArguments: RunnerArguments,
     options?: any,
   ): Promise<CodeValidationReport> {
+    const { template, sampleTestCases } = testExercises.items[exerciseId];
     return Promise.resolve({
       exerciseId,
-      exitCode: 0,
+      exitCode: 1,
       message: '',
       result: {
-        assertions: { passed: 0, failed: 3 },
+        assertions: {
+          passed: 0,
+          failed: sumBy(sampleTestCases, ({ assertions }) => assertions.length),
+        },
         completed: false,
         output: [
           {
             passed: false,
-            text: testExercises.items[exerciseId].template.functionName,
-            items: testExercises.items[exerciseId].sampleTestCases.map(
-              (testCase) => ({
-                text: testCase.it,
+            text: template.functionName,
+            items: sampleTestCases.map((testCase) => ({
+              text: testCase.it,
+              passed: false,
+              items: testCase.assertions.map((assertion) => ({
+                message: `Expected: '${
+                  assertion.expectedOutput.value
+                }', instead got: '2016-11-22'`,
                 passed: false,
-                items: testCase.assertions.map((assertion) => ({
-                  message: `Expected: '${
-                    assertion.expectedOutput.value
-                  }', instead got: '2016-11-22'`,
-                  passed: false,
-                })),
-              }),
-            ),
+              })),
+            })),
           },
         ],
       },
       stderr:
         "Unhandled rejection TestError: Expected: '2024-07-03', instead got: '2016-11-22'",
       stdout: '\nTest log',
-      timedOut: false,
+      timedOut: Boolean(random(0, 1)),
       token: '',
-      executionTime: 500,
+      executionTime: random(100, 1500),
     });
   }
 

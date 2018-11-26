@@ -22,11 +22,11 @@ export const typeOptions = [
   { label: 'float', value: SupportedType.FLOAT },
   { label: 'int', value: SupportedType.INT },
   { label: 'string', value: SupportedType.STRING },
-  { label: 'boolean[]', value: SupportedType['BOOLEANARRAY'] },
+  { label: 'boolean[]', value: SupportedType.BOOLEANARRAY },
   { label: 'char[]', value: SupportedType['CHARARRAY'] },
-  { label: 'float[]', value: SupportedType['FLOATARRAY'] },
-  { label: 'int[]', value: SupportedType['INTARRAY'] },
-  { label: 'string[]', value: SupportedType['STRINGARRAY'] },
+  { label: 'float[]', value: SupportedType.FLOATARRAY },
+  { label: 'int[]', value: SupportedType.INTARRAY },
+  { label: 'string[]', value: SupportedType.STRINGARRAY },
 ];
 
 const Container = styled.div`

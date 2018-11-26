@@ -32,7 +32,7 @@ export class StudentsBrowse extends React.PureComponent<StudentsBrowseProps> {
               <th>Code d'accès</th>
               <th>Email</th>
               <th>Exercices réussis</th>
-              <th>Excercices terminés</th>
+              <th>Exercices terminés</th>
               <th />
             </tr>
           </thead>

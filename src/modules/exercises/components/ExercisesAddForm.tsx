@@ -5,10 +5,7 @@ import { Form, FormikProps } from 'formik';
 import * as React from 'react';
 import styled from 'styled-components';
 import { SupportedLanguages } from '../../../__generated__/api';
-import {
-  generateCodeFromTemplate,
-  generateTestsFromTestCases,
-} from '../../../helpers';
+import { codegen, generateInitialCode, generateTests } from '../../../helpers';
 import { DescriptionPanel } from './DescriptionPanel';
 import { EditorTabs } from './EditorTabs';
 import { FormValues } from './ExercisesAddFormik';
@@ -53,29 +50,15 @@ export class ExercisesAddForm extends React.Component<ExercisesAddFormProps> {
   render() {
     const { values, validateField, validateForm } = this.props;
     const generatedCode = {
-      python: generateCodeFromTemplate(
-        values.template,
-        SupportedLanguages.Python,
-      ),
-      java: generateCodeFromTemplate(values.template, SupportedLanguages.Java),
-      cpp: generateCodeFromTemplate(values.template, SupportedLanguages.Cpp),
-      javascript: generateCodeFromTemplate(
-        values.template,
-        SupportedLanguages.Javascript,
-      ),
+      ...Object.values(SupportedLanguages).reduce((carry, lang) => {
+        generateInitialCode(values.template, lang);
+      }, {}),
     };
 
     const generatedTests = {
-      python: generateTestsFromTestCases(
-        values as any,
-        SupportedLanguages.Python,
-      ),
-      java: generateTestsFromTestCases(values as any, SupportedLanguages.Java),
-      cpp: generateTestsFromTestCases(values as any, SupportedLanguages.Cpp),
-      javascript: generateTestsFromTestCases(
-        values as any,
-        SupportedLanguages.Javascript,
-      ),
+      ...Object.values(SupportedLanguages).reduce((carry, lang) => {
+        generateTests(values, lang);
+      }, {}),
     };
 
     return (

@@ -53,7 +53,7 @@ export const Navbar: React.SFC<AppNavbarProps> = (props) => (
           <Menu>
             <MenuItem
               icon={IconNames.ANNOTATION}
-              text="Excercices"
+              text="Exercices"
               onClick={props.onExercisesClick}
             />
             <MenuItem
@@ -67,7 +67,7 @@ export const Navbar: React.SFC<AppNavbarProps> = (props) => (
         <Button
           className={Classes.MINIMAL}
           icon={IconNames.ANNOTATION}
-          text="Excercices"
+          text="Exercices"
           rightIcon={IconNames.CARET_DOWN}
         />
       </Popover>
