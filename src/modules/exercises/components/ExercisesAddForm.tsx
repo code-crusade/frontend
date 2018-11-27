@@ -5,7 +5,7 @@ import { Form, FormikProps } from 'formik';
 import * as React from 'react';
 import styled from 'styled-components';
 import { SupportedLanguages } from '../../../__generated__/api';
-import { codegen, generateInitialCode, generateTests } from '../../../helpers';
+import { generateInitialCode, generateTests } from '../../../helpers';
 import { DescriptionPanel } from './DescriptionPanel';
 import { EditorTabs } from './EditorTabs';
 import { FormValues } from './ExercisesAddFormik';

@@ -115,7 +115,7 @@ export class Read extends React.Component<ReadProps, ReadState> {
     });
   };
 
-  handleSubmit = (event: React.MouseEvent<HTMLElement>) => {
+  handleSubmit = () => {
     this.props.addSubmission({
       exerciseId: this.props.exercise.id,
       code: this.state.code,
@@ -123,7 +123,7 @@ export class Read extends React.Component<ReadProps, ReadState> {
     });
   };
 
-  handleValidateClick = (event: React.MouseEvent<HTMLElement>) => {
+  handleValidateClick = () => {
     this.props.testCode({
       code: this.state.code,
       language: this.state.selectedLanguage,
