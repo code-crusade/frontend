@@ -26,6 +26,8 @@ REACT_APP_USE_TEST_DATA=true
 
 ### With Docker
 
+Make sure you are on the root of this folder (frontend) so when you do `ls` command, you see `Dockerfile`
+
 Build the container
 
 ```
