@@ -1,23 +1,42 @@
-import { Card, H4 } from '@blueprintjs/core';
+import { Button, Callout, Divider } from '@blueprintjs/core';
 import * as React from 'react';
 import styled from 'styled-components';
-import { LoginFormik, OnSubmitLogin } from './LoginForm';
-
-export type LoginProps = OnSubmitLogin;
 
 const Container = styled.div`
-  display: grid;
-  align-self: center;
-  min-width: 25%;
+  max-width: 50%;
 `;
 
-export const Login: React.SFC<LoginProps> = (props) => {
+export const Login: React.SFC = (props) => {
   return (
     <Container>
-      <H4>Se connecter</H4>
-      <Card elevation={1}>
-        <LoginFormik initialValues={{}} onSubmit={props.onSubmit} />
-      </Card>
+      <h1>Connexion</h1>
+      <Callout
+        intent="primary"
+        title="Connectez-vous avec votre compte Google de l'ÉTS"
+      >
+        <p>
+          Afin d'utiliser ce service, vous devez respectez ces <u>deux</u>{' '}
+          conditions:
+          <ul>
+            <li>
+              Être inscrit au cours <strong>LOG320</strong> (Structures de
+              données et algorithmes) enseigné par Patrick Cardinal
+            </li>
+            <li>
+              Avoir un compte Google de l'ÉTS (se termine par{' '}
+              <strong>@etsmtl.net</strong>)
+            </li>
+          </ul>
+          Vous allez être redirigé(e) vers la page de connexion de Google.{' '}
+          <br />
+          Note: Seule votre <strong>adresse courriel</strong> sera récupérée
+          afin de valider que vous êtes bien inscrit au cours.
+        </p>
+      </Callout>
+      <Divider />
+      <Button intent="success" large>
+        Se connecter
+      </Button>
     </Container>
   );
 };

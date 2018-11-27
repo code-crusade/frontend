@@ -50,15 +50,17 @@ export class ExercisesAddForm extends React.Component<ExercisesAddFormProps> {
   render() {
     const { values, validateField, validateForm } = this.props;
     const generatedCode = {
-      ...Object.values(SupportedLanguages).reduce((carry, lang) => {
-        generateInitialCode(values.template, lang);
-      }, {}),
+      ...Object.values(SupportedLanguages).reduce(
+        (carry, lang) => generateInitialCode(values.template, lang),
+        {},
+      ),
     };
 
     const generatedTests = {
-      ...Object.values(SupportedLanguages).reduce((carry, lang) => {
-        generateTests(values, lang);
-      }, {}),
+      ...Object.values(SupportedLanguages).reduce(
+        (carry, lang) => generateTests(values as any, lang), // FIXME: Property 'id' is missing
+        {},
+      ),
     };
 
     return (
