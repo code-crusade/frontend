@@ -58,7 +58,7 @@ export class ExercisesAddForm extends React.Component<ExercisesAddFormProps> {
 
     const generatedTests = {
       ...Object.values(SupportedLanguages).reduce(
-        (carry, lang) => generateTests(values as any, lang), // FIXME: Property 'id' is missing
+        (carry, lang) => generateTests(values, lang),
         {},
       ),
     };
