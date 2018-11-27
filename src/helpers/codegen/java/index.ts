@@ -5,6 +5,7 @@ import {
   SupportedType,
   Template,
 } from '../../../__generated__/api';
+import { Omit } from '../../../types/types';
 
 export const generateEntryPoint = (template: Template) => {
   const paramsAsString = template.params.reduce((carry, param, i) => {
@@ -49,14 +50,14 @@ const formatType = (type: SupportedType) => {
   }
 };
 
-export const generateTests = (exercise: Exercise) => {
+export const generateTests = (exercise: Omit<Exercise, 'id'>) => {
   const { template, sampleTestCases } = exercise;
 
   // https://github.com/Codewars/codewars-runner-cli/blob/master/frameworks/java/src/main/java/ExampleTest.java
   let code = '';
 
   code += 'import static org.junit.Assert.assertEquals;\n';
-  code += 'import org.junit.Test;;\n';
+  code += 'import org.junit.Test;\n';
   code += 'import org.junit.runners.JUnit4;\n';
   code += 'import static org.junit.Assert.assertEquals;\n\n';
 

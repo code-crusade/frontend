@@ -5,6 +5,7 @@ import {
   SupportedType,
   Template,
 } from '../../../__generated__/api';
+import { Omit } from '../../../types/types';
 
 export const generateEntryPoint = (template: Template) => {
   const paramsAsString = template.params.reduce((carry, param, i) => {
@@ -22,7 +23,7 @@ export const generateEntryPoint = (template: Template) => {
   return code;
 };
 
-export const generateTests = (exercise: Exercise) => {
+export const generateTests = (exercise: Omit<Exercise, 'id'>) => {
   const { template, sampleTestCases } = exercise;
   let code = '';
 

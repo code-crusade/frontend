@@ -9,6 +9,7 @@ import {
   RunnerArguments,
   User,
 } from '../../../__generated__/api';
+import { sleep } from '../../../helpers';
 import {
   testExercises,
   testExerciseSubmissions,
@@ -63,11 +64,12 @@ export class DefaultApiMock implements DefaultApiInterface {
     );
   }
 
-  exercisesExerciseIdTestPost(
+  async exercisesExerciseIdTestPost(
     exerciseId: number,
     runnerArguments: RunnerArguments,
     options?: any,
   ): Promise<CodeValidationReport> {
+    await sleep(1000);
     const { template, sampleTestCases } = testExercises.items[exerciseId];
     return Promise.resolve({
       exerciseId,

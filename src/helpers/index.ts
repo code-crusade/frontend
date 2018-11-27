@@ -1,6 +1,7 @@
 import { ajax } from 'rxjs/ajax';
 import { Exercise, SupportedLanguages, Template } from '../__generated__/api';
 import { URL_API } from '../config';
+import { Omit } from '../types/types';
 import * as codegen from './codegen';
 
 export enum Method {
@@ -43,8 +44,12 @@ export const generateInitialCode = (
 };
 
 export const generateTests = (
-  exercise: Exercise,
+  exercise: Omit<Exercise, 'id'>,
   targetLang: SupportedLanguages,
 ) => {
   return codegen[targetLang].generateTests(exercise);
+};
+
+export const sleep = (milliseconds: number) => {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };

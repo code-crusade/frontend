@@ -9,6 +9,7 @@ type OutputPanelProps = { runner: RunnerState };
 const Row = styled.div`
   display: flex;
   margin-bottom: 1em;
+  flex-wrap: wrap;
 `;
 
 const MarginLeft = styled.div`
@@ -87,8 +88,8 @@ export const OutputPanel: React.SFC<OutputPanelProps> = (props) => {
                 >
                   <code>{`█ ${assertionResult.text}`}</code>
                 </MarginBottomText>
-                {assertionResult.items.map((assertion) => (
-                  <MarginLeftWithFlex>
+                {assertionResult.items.map((assertion, k) => (
+                  <MarginLeftWithFlex key={k}>
                     {
                       <StyledIcon
                         color={assertion.passed ? Colors.GREEN3 : Colors.RED3}
