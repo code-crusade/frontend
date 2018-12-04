@@ -51,14 +51,20 @@ export class ExercisesAddForm extends React.Component<ExercisesAddFormProps> {
     const { values, validateField, validateForm } = this.props;
     const generatedCode = {
       ...Object.values(SupportedLanguages).reduce(
-        (carry, lang) => generateInitialCode(values.template, lang),
+        (carry, lang) => ({
+          ...carry,
+          [lang]: generateInitialCode(values.template, lang),
+        }),
         {},
       ),
     };
 
     const generatedTests = {
       ...Object.values(SupportedLanguages).reduce(
-        (carry, lang) => generateTests(values, lang),
+        (carry, lang) => ({
+          ...carry,
+          [lang]: generateTests(values, lang),
+        }),
         {},
       ),
     };
