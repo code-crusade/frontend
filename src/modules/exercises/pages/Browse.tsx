@@ -1,11 +1,18 @@
 import * as React from 'react';
+import { compose } from 'redux';
+import {
+  withLoggedInUser,
+  WithLoggedInUserInjectedProps,
+} from '../../auth/hocs/withLoggedInUser';
 import { ExercisesBrowse } from '../components/ExercisesBrowse';
 import {
   withExercises,
   WithExercisesInjectedProps,
 } from '../hocs/withExercises';
 
-export class Browse extends React.Component<WithExercisesInjectedProps> {
+export class Browse extends React.Component<
+  WithExercisesInjectedProps & WithLoggedInUserInjectedProps
+> {
   render() {
     const { exercises, loading, error } = this.props;
 
@@ -15,4 +22,7 @@ export class Browse extends React.Component<WithExercisesInjectedProps> {
   }
 }
 
-export const ExercisesBrowsePage = withExercises(Browse);
+export const ExercisesBrowsePage = compose(
+  withLoggedInUser,
+  withExercises,
+)(Browse);

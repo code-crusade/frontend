@@ -111,14 +111,6 @@ export class DefaultApiMock implements DefaultApiInterface {
     return Promise.resolve(Object.values(testExercises.items));
   }
 
-  runCodeForExercise(
-    exerciseId: number,
-    runnerArguments: RunnerArguments,
-    options?: any,
-  ): Promise<{}> {
-    return Promise.resolve({});
-  }
-
   exercisesAdd(
     exercise: Omit<Exercise, 'id'>,
     options?: any,
@@ -152,5 +144,12 @@ export class DefaultApiMock implements DefaultApiInterface {
   groupsEdit(group: Partial<Group>, options?: any): Promise<Group> {
     const res = testGroups.archive(group); // Just archive for the moment
     return Promise.resolve(res);
+  }
+
+  userReportsRead(
+    userId: number,
+    options?: any,
+  ): Promise<CodeValidationReport[]> {
+    throw new Error("userReportsRead mock hasn't been implemented");
   }
 }

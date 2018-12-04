@@ -56,7 +56,8 @@ export class Read extends React.Component<ReadProps, ReadState> {
     let selectedLanguage = SupportedLanguages.Javascript;
     if (props.mostRecentSubmission) {
       code = props.mostRecentSubmission.code;
-      selectedLanguage = props.mostRecentSubmission.language;
+      selectedLanguage = props.mostRecentSubmission
+        .language as SupportedLanguages;
     } else if (props.exercise) {
       code = generateInitialCode(
         props.exercise.template,
@@ -73,7 +74,8 @@ export class Read extends React.Component<ReadProps, ReadState> {
     if (this.props.mostRecentSubmission && !prevProps.mostRecentSubmission) {
       this.setState({
         code: this.props.mostRecentSubmission.code,
-        selectedLanguage: this.props.mostRecentSubmission.language,
+        selectedLanguage: this.props.mostRecentSubmission
+          .language as SupportedLanguages,
       });
     }
     if (

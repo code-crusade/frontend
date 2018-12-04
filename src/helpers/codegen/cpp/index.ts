@@ -24,7 +24,7 @@ export const generateEntryPoint = (template: Template) => {
     template.functionName,
   )}(${paramsAsString})\n`;
   code += `{\n`;
-  code += `    return ${template.functionReturnValue.toString()};\n`;
+  code += `    // Votre code ici\n`;
   code += `}\n`;
 
   return code;
@@ -47,7 +47,7 @@ const formatType = (type: SupportedType) => {
   }
 };
 
-export const generateTests = (exercise: Omit<Exercise, 'id'>) => {
+export const generateTests = (exercise: Omit<Exercise, 'id' | 'fixtures'>) => {
   const { template, sampleTestCases } = exercise;
 
   // Using igloo framework (https://github.com/joakimkarlsson/igloo)
@@ -59,23 +59,35 @@ export const generateTests = (exercise: Omit<Exercise, 'id'>) => {
   code += `Describe(${snakeCase(exercise.title.fr)})\n{\n`;
   sampleTestCases.forEach((testCase) => {
     code += `\tIt(${snakeCase(testCase.it)})\n\t{\n`;
-    testCase.assertions.forEach((assertion) => {
+    // Initialize vectors if test case has arrays
+    testCase.assertions.forEach((assertion, i) => {
+      code += assertion.inputArguments.reduce((carry, arg, j) => {
+        if (arg.type.includes('ARRAY')) {
+          return `${carry}\t\t${formatType(arg.type)} arg_${i}${j} = {${
+            arg.value
+          }};\n`;
+        }
+        return carry;
+      }, '');
+      if (assertion.expectedOutput.type.includes('ARRAY')) {
+        code += `\t\t${formatType(
+          assertion.expectedOutput.type,
+        )} res${i} = {${assertion.expectedOutput.value.toString()}};\n`;
+      }
       code += `\t\tAssert::That(${template.functionName}(`;
-      code += assertion.inputArguments.reduce(
-        (carry, inputArgument, i, arr) => {
-          if (!inputArgument.value) {
-            return carry;
-          }
-          return (
-            carry +
-            formatArg(inputArgument) +
-            (arr.length - 1 === i ? '' : ', ')
-          );
-        },
-        '',
-      );
+      code += assertion.inputArguments.reduce((carry, arg, j, arr) => {
+        if (!arg.value) {
+          return carry;
+        }
+        return (
+          carry +
+          (formatArg(arg) || `arg_${i}${j}`) +
+          (j === arr.length - 1 ? '' : ', ')
+        );
+      }, '');
       code += `), ${getAssertionFn(assertion.expectedOutput)}`;
-      code += `${formatArg(assertion.expectedOutput)}));\n`;
+      const res = `res${i}`;
+      code += `${formatArg(assertion.expectedOutput) || res}));\n`;
     });
     code += '\t};\n';
   });
@@ -98,11 +110,12 @@ const formatArg = (arg: Argument) => {
   switch (arg.type) {
     case SupportedType.STRING:
       return `"${arg.value}"`;
-    case SupportedType.STRINGARRAY:
-      return JSON.parse(`[${arg.value}]`);
     case SupportedType.INTARRAY:
     case SupportedType.FLOATARRAY:
-      return `[${arg.value}]`;
+    case SupportedType.BOOLEANARRAY:
+    case SupportedType.CHARARRAY:
+    case SupportedType.STRINGARRAY:
+      return null;
     default:
       return arg.value;
   }

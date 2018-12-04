@@ -13,7 +13,7 @@ import { ExercisesAddFormik } from './ExercisesAddFormik';
 
 export type ExercisesReadProps = {
   onSubmit: (
-    values: Omit<Exercise, 'id'>,
+    values: Omit<Exercise, 'id' | 'fixtures'>,
     props: FormikProps<Partial<Exercise>>,
   ) => void;
   loading: boolean;
@@ -43,7 +43,6 @@ export const ExercisesAdd: React.SFC<ExercisesReadProps> = (props) => {
           className: '',
           functionName: '',
           functionReturnType: SupportedType.STRING,
-          functionReturnValue: '',
           params: [{ name: '', type: SupportedType.INT }],
           prependedCode: Object.values(SupportedLanguages).reduce(
             (carry, lang) => ({ ...carry, [lang]: '' }),

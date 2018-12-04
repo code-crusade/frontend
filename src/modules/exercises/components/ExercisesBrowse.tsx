@@ -34,8 +34,8 @@ export const ExercisesBrowse: React.SFC<WithExercisesInjectedProps> = (
       <HTMLTable>
         <thead>
           <tr>
+            <th>#</th>
             <th>Titre</th>
-            <th>Description</th>
             <th>Difficulté</th>
             <RightAlignedTh>
               <Link to={`/exercises/add`}>
@@ -47,8 +47,8 @@ export const ExercisesBrowse: React.SFC<WithExercisesInjectedProps> = (
         <tbody>
           {Object.keys(props.exercises).map((key, index) => (
             <tr key={key}>
+              <td>{props.exercises[key].id}</td>
               <td>{props.exercises[key].title.fr}</td>
-              <td>{props.exercises[key].description.fr}</td>
               <td>
                 {(() => {
                   switch (props.exercises[key].difficulty) {

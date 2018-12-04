@@ -7,10 +7,8 @@ import styled from 'styled-components';
 import { Exercise, SupportedType } from '../../../__generated__/api';
 import { JustifyRightMargin } from '../../../components/styled';
 import { EditorTabs } from './EditorTabs';
-import { ClassNameField } from './forms/template/ClassNameField';
 import { FunctionNameField } from './forms/template/FunctionNameField';
 import { FunctionReturnTypeField } from './forms/template/FunctionReturnTypeField';
-import { FunctionReturnValueField } from './forms/template/FunctionReturnValueField';
 import { ParametersField } from './forms/template/ParametersField';
 import { TestCasesPanel } from './TestCasesPanel';
 
@@ -38,9 +36,7 @@ export class TemplatePanel extends React.Component<TemplatePanelProps> {
     return (
       <Container>
         <FunctionNameField name="template.functionName" />
-        <ClassNameField name="template.className" />
         <FunctionReturnTypeField name="template.functionReturnType" />
-        <FunctionReturnValueField name="template.functionReturnValue" />
         <ParametersField name="template.params" />
         <H5>Code additionnel</H5>
         <Tabs id={1} renderActiveTabPanelOnly>

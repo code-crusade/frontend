@@ -33,7 +33,7 @@ type InjectedProps = WithLoggedInUserInjectedProps &
   WithExerciseSubmissionsInjectedProps;
 
 interface AddProps extends InjectedProps {
-  addExercise: (values: Omit<Exercise, 'id'>) => void;
+  addExercise: (values: Omit<Exercise, 'id' | 'fixtures'>) => void;
   mostRecentSubmission?: ExerciseSubmission;
   history: typeof push;
 }
@@ -44,7 +44,7 @@ export class Add extends React.Component<AddProps, AddState> {
   };
 
   handleSubmit = (
-    values: Omit<Exercise, 'id'>,
+    values: Omit<Exercise, 'id' | 'fixtures'>,
     props: FormikProps<Partial<Exercise>>,
   ) => {
     this.props.addExercise({ ...values });

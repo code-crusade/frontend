@@ -350,16 +350,48 @@ export interface Exercise {
   template: Template;
   /**
    *
-   * @type {Array<string>}
+   * @type {ExerciseFixtures}
    * @memberof Exercise
    */
-  supportedLanguages?: Array<string>;
+  fixtures: ExerciseFixtures;
   /**
    *
    * @type {Array<TestCase>}
    * @memberof Exercise
    */
   sampleTestCases: Array<TestCase>;
+}
+
+/**
+ *
+ * @export
+ * @interface ExerciseFixtures
+ */
+export interface ExerciseFixtures {
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ExerciseFixtures
+   */
+  cpp?: Array<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ExerciseFixtures
+   */
+  python?: Array<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ExerciseFixtures
+   */
+  java?: Array<string>;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ExerciseFixtures
+   */
+  javascript?: Array<string>;
 }
 
 /**
@@ -394,10 +426,10 @@ export interface ExerciseSubmission {
   code: string;
   /**
    *
-   * @type {any}
+   * @type {string}
    * @memberof ExerciseSubmission
    */
-  language: any;
+  language: string;
   /**
    *
    * @type {Date}
@@ -670,12 +702,6 @@ export interface Template {
    */
   params: Array<Parameter>;
   /**
-   * Type encompassing any value type
-   * @type {any}
-   * @memberof Template
-   */
-  functionReturnValue: any;
-  /**
    *
    * @type {SupportedType}
    * @memberof Template
@@ -780,298 +806,6 @@ export interface User {
 }
 
 /**
- * AuthApi - fetch parameter creator
- * @export
- */
-export const AuthApiFetchParamCreator = function(
-  configuration?: Configuration,
-) {
-  return {
-    /**
-     *
-     * @summary Provides a session cookie given a valid CAS Service ticket
-     * @param {string} ticket
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    authCasloginGet(ticket: string, options: any = {}): FetchArgs {
-      // verify required parameter 'ticket' is not null or undefined
-      if (ticket === null || ticket === undefined) {
-        throw new RequiredError(
-          'ticket',
-          'Required parameter ticket was null or undefined when calling authCasloginGet.',
-        );
-      }
-      const localVarPath = `/auth/caslogin`;
-      const localVarUrlObj = url.parse(localVarPath, true);
-      let baseOptions;
-      if (configuration) {
-        baseOptions = configuration.baseOptions;
-      }
-      const localVarRequestOptions = Object.assign(
-        { method: 'GET' },
-        baseOptions,
-        options,
-      );
-      const localVarHeaderParameter = {} as any;
-      const localVarQueryParameter = {} as any;
-
-      if (ticket !== undefined) {
-        localVarQueryParameter['ticket'] = ticket;
-      }
-
-      localVarUrlObj.query = Object.assign(
-        {},
-        localVarUrlObj.query,
-        localVarQueryParameter,
-        options.query,
-      );
-      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-      delete localVarUrlObj.search;
-      localVarRequestOptions.headers = Object.assign(
-        {},
-        localVarHeaderParameter,
-        options.headers,
-      );
-
-      return {
-        url: url.format(localVarUrlObj),
-        options: localVarRequestOptions,
-      };
-    },
-    /**
-     *
-     * @summary Provides a session cookie given a username and password
-     * @param {Credentials} credentials
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    authLoginPost(credentials: Credentials, options: any = {}): FetchArgs {
-      // verify required parameter 'credentials' is not null or undefined
-      if (credentials === null || credentials === undefined) {
-        throw new RequiredError(
-          'credentials',
-          'Required parameter credentials was null or undefined when calling authLoginPost.',
-        );
-      }
-      const localVarPath = `/auth/login`;
-      const localVarUrlObj = url.parse(localVarPath, true);
-      let baseOptions;
-      if (configuration) {
-        baseOptions = configuration.baseOptions;
-      }
-      const localVarRequestOptions = Object.assign(
-        { method: 'POST' },
-        baseOptions,
-        options,
-      );
-      const localVarHeaderParameter = {} as any;
-      const localVarQueryParameter = {} as any;
-
-      localVarHeaderParameter['Content-Type'] = 'application/json';
-
-      localVarUrlObj.query = Object.assign(
-        {},
-        localVarUrlObj.query,
-        localVarQueryParameter,
-        options.query,
-      );
-      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-      delete localVarUrlObj.search;
-      localVarRequestOptions.headers = Object.assign(
-        {},
-        localVarHeaderParameter,
-        options.headers,
-      );
-      const needsSerialization =
-        <any>'Credentials' !== 'string' ||
-        localVarRequestOptions.headers['Content-Type'] === 'application/json';
-      localVarRequestOptions.body = needsSerialization
-        ? JSON.stringify(credentials || {})
-        : credentials || '';
-
-      return {
-        url: url.format(localVarUrlObj),
-        options: localVarRequestOptions,
-      };
-    },
-  };
-};
-
-/**
- * AuthApi - functional programming interface
- * @export
- */
-export const AuthApiFp = function(configuration?: Configuration) {
-  return {
-    /**
-     *
-     * @summary Provides a session cookie given a valid CAS Service ticket
-     * @param {string} ticket
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    authCasloginGet(
-      ticket: string,
-      options?: any,
-    ): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
-      const localVarFetchArgs = AuthApiFetchParamCreator(
-        configuration,
-      ).authCasloginGet(ticket, options);
-      return (
-        fetch: FetchAPI = portableFetch,
-        basePath: string = BASE_PATH,
-      ) => {
-        return fetch(
-          basePath + localVarFetchArgs.url,
-          localVarFetchArgs.options,
-        ).then((response) => {
-          if (response.status >= 200 && response.status < 300) {
-            return response;
-          } else {
-            throw response;
-          }
-        });
-      };
-    },
-    /**
-     *
-     * @summary Provides a session cookie given a username and password
-     * @param {Credentials} credentials
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    authLoginPost(
-      credentials: Credentials,
-      options?: any,
-    ): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
-      const localVarFetchArgs = AuthApiFetchParamCreator(
-        configuration,
-      ).authLoginPost(credentials, options);
-      return (
-        fetch: FetchAPI = portableFetch,
-        basePath: string = BASE_PATH,
-      ) => {
-        return fetch(
-          basePath + localVarFetchArgs.url,
-          localVarFetchArgs.options,
-        ).then((response) => {
-          if (response.status >= 200 && response.status < 300) {
-            return response;
-          } else {
-            throw response;
-          }
-        });
-      };
-    },
-  };
-};
-
-/**
- * AuthApi - factory interface
- * @export
- */
-export const AuthApiFactory = function(
-  configuration?: Configuration,
-  fetch?: FetchAPI,
-  basePath?: string,
-) {
-  return {
-    /**
-     *
-     * @summary Provides a session cookie given a valid CAS Service ticket
-     * @param {string} ticket
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    authCasloginGet(ticket: string, options?: any) {
-      return AuthApiFp(configuration).authCasloginGet(ticket, options)(
-        fetch,
-        basePath,
-      );
-    },
-    /**
-     *
-     * @summary Provides a session cookie given a username and password
-     * @param {Credentials} credentials
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    authLoginPost(credentials: Credentials, options?: any) {
-      return AuthApiFp(configuration).authLoginPost(credentials, options)(
-        fetch,
-        basePath,
-      );
-    },
-  };
-};
-
-/**
- * AuthApi - interface
- * @export
- * @interface AuthApi
- */
-export interface AuthApiInterface {
-  /**
-   *
-   * @summary Provides a session cookie given a valid CAS Service ticket
-   * @param {string} ticket
-   * @param {*} [options] Override http request option.
-   * @throws {RequiredError}
-   * @memberof AuthApiInterface
-   */
-  authCasloginGet(ticket: string, options?: any): Promise<{}>;
-
-  /**
-   *
-   * @summary Provides a session cookie given a username and password
-   * @param {Credentials} credentials
-   * @param {*} [options] Override http request option.
-   * @throws {RequiredError}
-   * @memberof AuthApiInterface
-   */
-  authLoginPost(credentials: Credentials, options?: any): Promise<{}>;
-}
-
-/**
- * AuthApi - object-oriented interface
- * @export
- * @class AuthApi
- * @extends {BaseAPI}
- */
-export class AuthApi extends BaseAPI implements AuthApiInterface {
-  /**
-   *
-   * @summary Provides a session cookie given a valid CAS Service ticket
-   * @param {string} ticket
-   * @param {*} [options] Override http request option.
-   * @throws {RequiredError}
-   * @memberof AuthApi
-   */
-  public authCasloginGet(ticket: string, options?: any) {
-    return AuthApiFp(this.configuration).authCasloginGet(ticket, options)(
-      this.fetch,
-      this.basePath,
-    );
-  }
-
-  /**
-   *
-   * @summary Provides a session cookie given a username and password
-   * @param {Credentials} credentials
-   * @param {*} [options] Override http request option.
-   * @throws {RequiredError}
-   * @memberof AuthApi
-   */
-  public authLoginPost(credentials: Credentials, options?: any) {
-    return AuthApiFp(this.configuration).authLoginPost(credentials, options)(
-      this.fetch,
-      this.basePath,
-    );
-  }
-}
-
-/**
  * DefaultApi - fetch parameter creator
  * @export
  */
@@ -1108,7 +842,13 @@ export const DefaultApiFetchParamCreator = function(
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      // authentication authCookie required
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
 
       localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -1169,7 +909,13 @@ export const DefaultApiFetchParamCreator = function(
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      // authentication authCookie required
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
 
       localVarUrlObj.query = Object.assign(
         {},
@@ -1225,7 +971,13 @@ export const DefaultApiFetchParamCreator = function(
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      // authentication authCookie required
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
 
       localVarUrlObj.query = Object.assign(
         {},
@@ -1290,7 +1042,13 @@ export const DefaultApiFetchParamCreator = function(
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      // authentication authCookie required
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
 
       localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -1365,7 +1123,13 @@ export const DefaultApiFetchParamCreator = function(
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      // authentication authCookie required
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
 
       localVarUrlObj.query = Object.assign(
         {},
@@ -1432,7 +1196,13 @@ export const DefaultApiFetchParamCreator = function(
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      // authentication authCookie required
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
 
       localVarUrlObj.query = Object.assign(
         {},
@@ -1455,7 +1225,7 @@ export const DefaultApiFetchParamCreator = function(
     },
     /**
      *
-     * @summary Validate the code against the exercise's test suite
+     * @summary Validate the code against the user-provided test suite
      * @param {number} exerciseId
      * @param {RunnerArguments} runnerArguments
      * @param {*} [options] Override http request option.
@@ -1497,7 +1267,13 @@ export const DefaultApiFetchParamCreator = function(
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      // authentication authCookie required
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
 
       localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -1547,7 +1323,13 @@ export const DefaultApiFetchParamCreator = function(
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      // authentication authCookie required
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
 
       localVarUrlObj.query = Object.assign(
         {},
@@ -1597,7 +1379,13 @@ export const DefaultApiFetchParamCreator = function(
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      // authentication authCookie required
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
 
       localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -1647,7 +1435,13 @@ export const DefaultApiFetchParamCreator = function(
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      // authentication authCookie required
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
 
       localVarUrlObj.query = Object.assign(
         {},
@@ -1697,7 +1491,13 @@ export const DefaultApiFetchParamCreator = function(
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      // authentication authCookie required
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
 
       localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -1728,34 +1528,22 @@ export const DefaultApiFetchParamCreator = function(
     },
     /**
      *
-     * @summary Runs provided code
-     * @param {number} exerciseId
-     * @param {RunnerArguments} runnerArguments
+     * @summary Gets the specified user's reports
+     * @param {number} userId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    runCodeForExercise(
-      exerciseId: number,
-      runnerArguments: RunnerArguments,
-      options: any = {},
-    ): FetchArgs {
-      // verify required parameter 'exerciseId' is not null or undefined
-      if (exerciseId === null || exerciseId === undefined) {
+    userReportsRead(userId: number, options: any = {}): FetchArgs {
+      // verify required parameter 'userId' is not null or undefined
+      if (userId === null || userId === undefined) {
         throw new RequiredError(
-          'exerciseId',
-          'Required parameter exerciseId was null or undefined when calling runCodeForExercise.',
+          'userId',
+          'Required parameter userId was null or undefined when calling userReportsRead.',
         );
       }
-      // verify required parameter 'runnerArguments' is not null or undefined
-      if (runnerArguments === null || runnerArguments === undefined) {
-        throw new RequiredError(
-          'runnerArguments',
-          'Required parameter runnerArguments was null or undefined when calling runCodeForExercise.',
-        );
-      }
-      const localVarPath = `/runner/{exerciseId}`.replace(
-        `{${'exerciseId'}}`,
-        encodeURIComponent(String(exerciseId)),
+      const localVarPath = `/users/{userId}/reports`.replace(
+        `{${'userId'}}`,
+        encodeURIComponent(String(userId)),
       );
       const localVarUrlObj = url.parse(localVarPath, true);
       let baseOptions;
@@ -1763,14 +1551,20 @@ export const DefaultApiFetchParamCreator = function(
         baseOptions = configuration.baseOptions;
       }
       const localVarRequestOptions = Object.assign(
-        { method: 'POST' },
+        { method: 'GET' },
         baseOptions,
         options,
       );
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      localVarHeaderParameter['Content-Type'] = 'application/json';
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
 
       localVarUrlObj.query = Object.assign(
         {},
@@ -1785,12 +1579,6 @@ export const DefaultApiFetchParamCreator = function(
         localVarHeaderParameter,
         options.headers,
       );
-      const needsSerialization =
-        <any>'RunnerArguments' !== 'string' ||
-        localVarRequestOptions.headers['Content-Type'] === 'application/json';
-      localVarRequestOptions.body = needsSerialization
-        ? JSON.stringify(runnerArguments || {})
-        : runnerArguments || '';
 
       return {
         url: url.format(localVarUrlObj),
@@ -1826,7 +1614,13 @@ export const DefaultApiFetchParamCreator = function(
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      // authentication authCookie required
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
 
       localVarHeaderParameter['Content-Type'] = 'application/json';
 
@@ -1876,7 +1670,13 @@ export const DefaultApiFetchParamCreator = function(
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      // authentication authCookie required
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
 
       localVarUrlObj.query = Object.assign(
         {},
@@ -1929,7 +1729,13 @@ export const DefaultApiFetchParamCreator = function(
       const localVarHeaderParameter = {} as any;
       const localVarQueryParameter = {} as any;
 
-      // authentication authCookie required
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
 
       localVarUrlObj.query = Object.assign(
         {},
@@ -2162,7 +1968,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     },
     /**
      *
-     * @summary Validate the code against the exercise's test suite
+     * @summary Validate the code against the user-provided test suite
      * @param {number} exerciseId
      * @param {RunnerArguments} runnerArguments
      * @param {*} [options] Override http request option.
@@ -2310,20 +2116,21 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     },
     /**
      *
-     * @summary Runs provided code
-     * @param {number} exerciseId
-     * @param {RunnerArguments} runnerArguments
+     * @summary Gets the specified user's reports
+     * @param {number} userId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    runCodeForExercise(
-      exerciseId: number,
-      runnerArguments: RunnerArguments,
+    userReportsRead(
+      userId: number,
       options?: any,
-    ): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+    ): (
+      fetch?: FetchAPI,
+      basePath?: string,
+    ) => Promise<Array<CodeValidationReport>> {
       const localVarFetchArgs = DefaultApiFetchParamCreator(
         configuration,
-      ).runCodeForExercise(exerciseId, runnerArguments, options);
+      ).userReportsRead(userId, options);
       return (
         fetch: FetchAPI = portableFetch,
         basePath: string = BASE_PATH,
@@ -2333,7 +2140,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
           localVarFetchArgs.options,
         ).then((response) => {
           if (response.status >= 200 && response.status < 300) {
-            return response;
+            return response.json();
           } else {
             throw response;
           }
@@ -2543,7 +2350,7 @@ export const DefaultApiFactory = function(
     },
     /**
      *
-     * @summary Validate the code against the exercise's test suite
+     * @summary Validate the code against the user-provided test suite
      * @param {number} exerciseId
      * @param {RunnerArguments} runnerArguments
      * @param {*} [options] Override http request option.
@@ -2609,22 +2416,16 @@ export const DefaultApiFactory = function(
     },
     /**
      *
-     * @summary Runs provided code
-     * @param {number} exerciseId
-     * @param {RunnerArguments} runnerArguments
+     * @summary Gets the specified user's reports
+     * @param {number} userId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    runCodeForExercise(
-      exerciseId: number,
-      runnerArguments: RunnerArguments,
-      options?: any,
-    ) {
-      return DefaultApiFp(configuration).runCodeForExercise(
-        exerciseId,
-        runnerArguments,
-        options,
-      )(fetch, basePath);
+    userReportsRead(userId: number, options?: any) {
+      return DefaultApiFp(configuration).userReportsRead(userId, options)(
+        fetch,
+        basePath,
+      );
     },
     /**
      *
@@ -2750,7 +2551,7 @@ export interface DefaultApiInterface {
 
   /**
    *
-   * @summary Validate the code against the exercise's test suite
+   * @summary Validate the code against the user-provided test suite
    * @param {number} exerciseId
    * @param {RunnerArguments} runnerArguments
    * @param {*} [options] Override http request option.
@@ -2803,18 +2604,16 @@ export interface DefaultApiInterface {
 
   /**
    *
-   * @summary Runs provided code
-   * @param {number} exerciseId
-   * @param {RunnerArguments} runnerArguments
+   * @summary Gets the specified user's reports
+   * @param {number} userId
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof DefaultApiInterface
    */
-  runCodeForExercise(
-    exerciseId: number,
-    runnerArguments: RunnerArguments,
+  userReportsRead(
+    userId: number,
     options?: any,
-  ): Promise<{}>;
+  ): Promise<Array<CodeValidationReport>>;
 
   /**
    *
@@ -2967,7 +2766,7 @@ export class DefaultApi extends BaseAPI implements DefaultApiInterface {
 
   /**
    *
-   * @summary Validate the code against the exercise's test suite
+   * @summary Validate the code against the user-provided test suite
    * @param {number} exerciseId
    * @param {RunnerArguments} runnerArguments
    * @param {*} [options] Override http request option.
@@ -3046,23 +2845,17 @@ export class DefaultApi extends BaseAPI implements DefaultApiInterface {
 
   /**
    *
-   * @summary Runs provided code
-   * @param {number} exerciseId
-   * @param {RunnerArguments} runnerArguments
+   * @summary Gets the specified user's reports
+   * @param {number} userId
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof DefaultApi
    */
-  public runCodeForExercise(
-    exerciseId: number,
-    runnerArguments: RunnerArguments,
-    options?: any,
-  ) {
-    return DefaultApiFp(this.configuration).runCodeForExercise(
-      exerciseId,
-      runnerArguments,
-      options,
-    )(this.fetch, this.basePath);
+  public userReportsRead(userId: number, options?: any) {
+    return DefaultApiFp(this.configuration).userReportsRead(userId, options)(
+      this.fetch,
+      this.basePath,
+    );
   }
 
   /**

@@ -21,7 +21,7 @@ import { omitProps } from '../../../hocs/omitProps';
 export type AppNavbarProps = {
   onHomeClick(): void;
   onExercisesClick(): void;
-  onNewExceriseClick(): void;
+  onNewExerciseClick(): void;
   onGroupsClick(): void;
   onNewGroupClick(): void;
   onLoginClick(): void;
@@ -59,7 +59,7 @@ export const Navbar: React.SFC<AppNavbarProps> = (props) => (
             <MenuItem
               icon={IconNames.ADD}
               text="Nouveau"
-              onClick={props.onNewExceriseClick}
+              onClick={props.onNewExerciseClick}
             />
           </Menu>
         }
@@ -144,7 +144,7 @@ export const AppNavbar = compose<any, any>(
     onExercisesClick: () => {
       ownerProps.history.push('/exercises');
     },
-    onNewExceriseClick: () => {
+    onNewExerciseClick: () => {
       ownerProps.history.push('/exercises/add');
     },
     onGroupsClick: () => {

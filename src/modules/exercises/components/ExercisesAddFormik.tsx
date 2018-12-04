@@ -5,7 +5,7 @@ import { Exercise } from '../../../__generated__/api';
 import { Omit } from '../../../types/types';
 import { ExercisesAddForm } from './ExercisesAddForm';
 
-export type FormValues = Omit<Exercise, 'id'>;
+export type FormValues = Omit<Exercise, 'id' | 'fixtures'>;
 
 export type ExercisesAddFormikProps = {
   onSubmit: (values: FormValues, props: FormikProps<FormValues>) => void;
@@ -31,7 +31,6 @@ export const ExercisesAddFormik: React.SFC<ExercisesAddFormikProps> = (
         template: Yup.object().shape({
           functionName: Yup.string().required('Requis'),
           className: Yup.string(),
-          functionReturnValue: Yup.string().required('Requis'),
           params: Yup.array(
             Yup.object().shape({
               name: Yup.string().required('Requis'),

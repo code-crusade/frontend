@@ -20,12 +20,11 @@ export const generateEntryPoint = (template: Template) => {
   }, '');
 
   let code = '';
-  code += `public class ${template.className ||
-    upperFirst(template.functionName)} {\n`;
+  code += `public class ${upperFirst(template.functionName)} {\n`;
   code += `    public static ${formatType(template.functionReturnType)} ${
     template.functionName
   }(${paramsAsString}) {\n`;
-  code += `        return ${template.functionReturnValue.toString()};\n`;
+  code += `        // Votre code ici\n`;
   code += `    }\n`;
   code += `}\n`;
 
@@ -50,7 +49,7 @@ const formatType = (type: SupportedType) => {
   }
 };
 
-export const generateTests = (exercise: Omit<Exercise, 'id'>) => {
+export const generateTests = (exercise: Omit<Exercise, 'id' | 'fixtures'>) => {
   const { template, sampleTestCases } = exercise;
 
   // https://github.com/Codewars/codewars-runner-cli/blob/master/frameworks/java/src/main/java/ExampleTest.java
@@ -58,8 +57,7 @@ export const generateTests = (exercise: Omit<Exercise, 'id'>) => {
 
   code += 'import static org.junit.Assert.assertEquals;\n';
   code += 'import org.junit.Test;\n';
-  code += 'import org.junit.runners.JUnit4;\n';
-  code += 'import static org.junit.Assert.assertEquals;\n\n';
+  code += 'import org.junit.runners.JUnit4;\n\n';
 
   code += `public class ${upperFirst(camelCase(exercise.title.fr))} {\n`;
   sampleTestCases.forEach((testCase) => {

@@ -29,11 +29,9 @@ export const generateInitialCode = (
   template: Template,
   targetLang: SupportedLanguages,
 ) => {
+  console.log(template);
   if (!template.functionName) {
     return 'Error: Function name is missing';
-  }
-  if (!template.functionReturnValue) {
-    return 'Error: Function return value is missing';
   }
 
   const code = codegen[targetLang].generateEntryPoint(template);
@@ -44,7 +42,7 @@ export const generateInitialCode = (
 };
 
 export const generateTests = (
-  exercise: Omit<Exercise, 'id'>,
+  exercise: Omit<Exercise, 'id' | 'fixtures'>,
   targetLang: SupportedLanguages,
 ) => {
   return codegen[targetLang].generateTests(exercise);

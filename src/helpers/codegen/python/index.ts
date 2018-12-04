@@ -17,12 +17,12 @@ export const generateEntryPoint = (template: Template) => {
 
   let code = '';
   code += `def ${template.functionName}(${paramsAsString}):\n`;
-  code += `    return ${template.functionReturnValue.toString()}\n`;
+  code += `    # Votre code ici\n`;
 
   return code;
 };
 
-export const generateTests = (exercise: Omit<Exercise, 'id'>) => {
+export const generateTests = (exercise: Omit<Exercise, 'id' | 'fixtures'>) => {
   const { template, sampleTestCases } = exercise;
 
   let code = '';
