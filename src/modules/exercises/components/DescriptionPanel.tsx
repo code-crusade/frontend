@@ -94,7 +94,9 @@ export class DescriptionPanel extends React.Component<DescriptionPanelProps> {
             render={({ form }: FieldProps) => (
               <Button
                 disabled={Boolean(
-                  !form.dirty || form.errors.description || form.errors.title,
+                  (!form.dirty && !form.values.id) ||
+                    form.errors.description ||
+                    form.errors.title,
                 )}
                 onClick={this.openTemplatePanel}
               >

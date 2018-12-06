@@ -72,6 +72,11 @@ export const ExercisesBrowse: React.SFC<WithExercisesInjectedProps> = (
                   />
                 </Link>
               </td>
+              <td>
+                <Link to={`/exercises/${key}/edit`}>
+                  <Button icon="edit" minimal />
+                </Link>
+              </td>
             </tr>
           ))}
         </tbody>

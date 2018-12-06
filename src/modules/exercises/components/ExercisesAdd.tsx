@@ -18,6 +18,7 @@ export type ExercisesReadProps = {
   ) => void;
   loading: boolean;
   error: Error;
+  exercise?: Exercise;
 };
 
 export const ExercisesAdd: React.SFC<ExercisesReadProps> = (props) => {
@@ -27,44 +28,47 @@ export const ExercisesAdd: React.SFC<ExercisesReadProps> = (props) => {
   if (props.error) {
     return <Err404 />;
   }
-  return (
-    <ExercisesAddFormik
-      initialValues={{
-        title: {
-          fr: '',
-          en: '',
-        },
-        description: {
-          fr: '',
-          en: '',
-        },
-        difficulty: Difficulties.EASY,
-        template: {
-          className: '',
-          functionName: '',
-          functionReturnType: SupportedType.STRING,
-          params: [{ name: '', type: SupportedType.INT }],
-          prependedCode: Object.values(SupportedLanguages).reduce(
-            (carry, lang) => ({ ...carry, [lang]: '' }),
-            {},
-          ),
-          appendedCode: Object.values(SupportedLanguages).reduce(
-            (carry, lang) => ({ ...carry, [lang]: '' }),
-            {},
-          ),
-        },
-        sampleTestCases: [
+
+  const initialValues = props.exercise || {
+    title: {
+      fr: '',
+      en: '',
+    },
+    description: {
+      fr: '',
+      en: '',
+    },
+    difficulty: Difficulties.EASY,
+    template: {
+      className: '',
+      functionName: '',
+      functionReturnType: SupportedType.STRING,
+      params: [{ name: '', type: SupportedType.INT }],
+      prependedCode: Object.values(SupportedLanguages).reduce(
+        (carry, lang) => ({ ...carry, [lang]: '' }),
+        {},
+      ),
+      appendedCode: Object.values(SupportedLanguages).reduce(
+        (carry, lang) => ({ ...carry, [lang]: '' }),
+        {},
+      ),
+    },
+    sampleTestCases: [
+      {
+        it: '',
+        assertions: [
           {
-            it: '',
-            assertions: [
-              {
-                inputArguments: [{ type: SupportedType.INT, value: '' }],
-                expectedOutput: { type: SupportedType.STRING, value: '' },
-              },
-            ],
+            inputArguments: [{ type: SupportedType.INT, value: '' }],
+            expectedOutput: { type: SupportedType.STRING, value: '' },
           },
         ],
-      }}
+      },
+    ],
+  };
+
+  return (
+    <ExercisesAddFormik
+      initialValues={initialValues}
       onSubmit={props.onSubmit}
     />
   );

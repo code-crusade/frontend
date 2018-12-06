@@ -19,6 +19,12 @@ export const exercisesRead = createAsyncAction(
   'EXERCISES_READ_FAILURE',
 )<number, Exercise, Error>();
 
+export const exercisesEdit = createAsyncAction(
+  'EXERCISES_EDIT_REQUEST',
+  'EXERCISES_EDIT_SUCCESS',
+  'EXERCISES_EDIT_FAILURE',
+)<Exercise, Exercise, Error>();
+
 export const exercisesAdd = createAsyncAction(
   'EXERCISES_ADD_REQUEST',
   'EXERCISES_ADD_SUCCESS',

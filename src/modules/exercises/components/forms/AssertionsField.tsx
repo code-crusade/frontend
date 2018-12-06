@@ -31,7 +31,6 @@ export const AssertionsField: React.SFC<AssertionsFieldProps> = (props) => {
     <FieldArray
       name={name}
       render={({ insert, remove, form: { values } }) => {
-        console.log(values, name);
         const newAssertion = {
           inputArguments: values.template.params.map(
             (param: { type: SupportedType; value: any }) => ({

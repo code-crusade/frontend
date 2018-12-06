@@ -65,7 +65,9 @@ export class TemplatePanel extends React.Component<TemplatePanelProps> {
           <Field
             render={({ form }: FieldProps) => (
               <Button
-                disabled={Boolean(!form.dirty || form.errors.template)}
+                disabled={Boolean(
+                  (!form.dirty && !form.values.id) || form.errors.template,
+                )}
                 onClick={this.openTestCasesPanel}
               >
                 Suivant

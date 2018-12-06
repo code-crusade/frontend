@@ -29,7 +29,6 @@ export const generateInitialCode = (
   template: Template,
   targetLang: SupportedLanguages,
 ) => {
-  console.log(template);
   if (!template.functionName) {
     return 'Error: Function name is missing';
   }
