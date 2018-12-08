@@ -100,7 +100,7 @@ const formatArg = (arg: Argument) => {
     case SupportedType.STRING:
       return `"${arg.value}"`;
     case SupportedType.STRINGARRAY:
-      return JSON.parse(`[${arg.value}]`);
+    case SupportedType.CHARARRAY:
     case SupportedType.INTARRAY:
     case SupportedType.FLOATARRAY:
       return `[${arg.value}]`;

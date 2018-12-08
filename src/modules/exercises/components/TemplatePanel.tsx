@@ -1,5 +1,3 @@
-/* tslint:disable:no-duplicate-string */
-
 import { Button, H5, IPanelProps, Tab, Tabs } from '@blueprintjs/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
@@ -21,7 +19,7 @@ export const typeOptions = [
   { label: 'int', value: SupportedType.INT },
   { label: 'string', value: SupportedType.STRING },
   { label: 'boolean[]', value: SupportedType.BOOLEANARRAY },
-  { label: 'char[]', value: SupportedType['CHARARRAY'] },
+  { label: 'char[]', value: SupportedType.CHARARRAY },
   { label: 'float[]', value: SupportedType.FLOATARRAY },
   { label: 'int[]', value: SupportedType.INTARRAY },
   { label: 'string[]', value: SupportedType.STRINGARRAY },

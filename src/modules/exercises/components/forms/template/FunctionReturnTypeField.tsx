@@ -1,11 +1,7 @@
 import { FormGroup, HTMLSelect } from '@blueprintjs/core';
 import { Field, FieldProps, FormikProps } from 'formik';
 import * as React from 'react';
-import {
-  Argument,
-  Assertion,
-  TestCase,
-} from '../../../../../__generated__/api';
+import { Assertion, TestCase } from '../../../../../__generated__/api';
 import { FormValues } from '../../ExercisesAddFormik';
 import { typeOptions } from '../../TemplatePanel';
 
@@ -29,7 +25,7 @@ export const FunctionReturnTypeField: React.SFC<
             onChange={(e: React.ChangeEvent<any>) => {
               field.onChange(e);
 
-              updateTestCasesReturnType(form, field.value);
+              updateTestCasesReturnType(form, e.target.value);
             }}
           />
         </FormGroup>
@@ -45,12 +41,10 @@ const updateTestCasesReturnType = (
 ) => {
   form.values.sampleTestCases.forEach((testCase: TestCase, i: number) => {
     testCase.assertions.forEach((assertion: Assertion, j: number) => {
-      assertion.inputArguments.forEach((inputArgument: Argument, k: number) => {
-        form.setFieldValue(
-          `sampleTestCases[${i}].assertions[${j}].inputArguments[${k}]`,
-          { ...inputArgument, type: newValue },
-        );
-      });
+      form.setFieldValue(
+        `sampleTestCases[${i}].assertions[${j}].expectedOutput.type`,
+        newValue,
+      );
     });
   });
 };

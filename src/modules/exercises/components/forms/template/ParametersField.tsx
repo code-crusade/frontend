@@ -118,7 +118,7 @@ const insertArgumentInTestCases = (
             ...array.slice(0, insertionIndex),
             {
               type: SupportedType.INT,
-              name: '',
+              value: '',
             },
             ...array.slice(insertionIndex),
           ],

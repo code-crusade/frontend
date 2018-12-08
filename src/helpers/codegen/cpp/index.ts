@@ -42,6 +42,8 @@ const formatType = (type: SupportedType) => {
       return 'std::vector<float>';
     case SupportedType.STRINGARRAY:
       return 'std::vector<std::string>';
+    case SupportedType.CHARARRAY:
+      return 'std::vector<char>';
     default:
       return type.toLowerCase();
   }

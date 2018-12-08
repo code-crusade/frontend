@@ -74,10 +74,9 @@ const formatArg = (arg: Argument) => {
   switch (arg.type) {
     case SupportedType.STRING:
       return `'${arg.value}'`;
+    case SupportedType.CHARARRAY:
+    case SupportedType.BOOLEANARRAY:
     case SupportedType.STRINGARRAY:
-      return JSON.parse(`[${arg.value}]`).map((s: string) =>
-        s.replace('"', "'"),
-      );
     case SupportedType.INTARRAY:
     case SupportedType.FLOATARRAY:
       return `[${arg.value}]`;
