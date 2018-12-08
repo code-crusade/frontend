@@ -63,6 +63,7 @@ export class DescriptionPanel extends React.Component<DescriptionPanelProps> {
             <FormGroup
               label="Description"
               intent={Intent.DANGER}
+              labelInfo="(Markdown et HTML supporté)"
               helperText={
                 get(touched, 'description.fr') && get(errors, 'description.fr')
               }

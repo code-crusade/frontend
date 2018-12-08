@@ -9,7 +9,12 @@ import { IconNames } from '@blueprintjs/icons';
 import { Field, FieldArray, FieldProps } from 'formik';
 import * as React from 'react';
 import styled from 'styled-components';
-import { Argument, Assertion, TestCase } from '../../../../__generated__/api';
+import {
+  Argument,
+  Assertion,
+  SupportedType,
+  TestCase,
+} from '../../../../__generated__/api';
 import { JustifyRight } from '../../../../components/styled';
 import { FormValues } from '../ExercisesAddFormik';
 
@@ -23,6 +28,19 @@ export interface AssertionsFieldProps {
   testCase: TestCase;
   name: string;
 }
+
+const typeLabels = {
+  [SupportedType.INT]: 'int',
+  [SupportedType.FLOAT]: 'float',
+  [SupportedType.STRING]: 'string',
+  [SupportedType.BOOLEAN]: 'boolean',
+  [SupportedType.CHAR]: 'char',
+  [SupportedType.INTARRAY]: 'int[]',
+  [SupportedType.FLOATARRAY]: 'float[]',
+  [SupportedType.STRINGARRAY]: 'string[]',
+  [SupportedType.BOOLEANARRAY]: 'boolean[]',
+  [SupportedType.CHARARRAY]: 'char[]',
+};
 
 export const AssertionsField: React.SFC<AssertionsFieldProps> = (props) => {
   const { testCase, name } = props;
@@ -62,7 +80,7 @@ export const AssertionsField: React.SFC<AssertionsFieldProps> = (props) => {
                                 rightElement={
                                   <Tag minimal>
                                     {`${values.template.params[j].name}: ${
-                                      inputArgument.type
+                                      typeLabels[inputArgument.type]
                                     }`}
                                   </Tag>
                                 }
