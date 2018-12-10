@@ -22,7 +22,9 @@ export interface ParametersFieldProps {
   name: string;
 }
 
-export const ParametersField: React.SFC<ParametersFieldProps> = (props) => {
+export const ParametersField: React.FunctionComponent<ParametersFieldProps> = (
+  props,
+) => {
   const { name } = props;
 
   return (

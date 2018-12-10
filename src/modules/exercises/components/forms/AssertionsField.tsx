@@ -42,7 +42,9 @@ const typeLabels = {
   [SupportedType.CHARARRAY]: 'char[]',
 };
 
-export const AssertionsField: React.SFC<AssertionsFieldProps> = (props) => {
+export const AssertionsField: React.FunctionComponent<AssertionsFieldProps> = (
+  props,
+) => {
   const { testCase, name } = props;
 
   return (
@@ -101,7 +103,7 @@ export const AssertionsField: React.SFC<AssertionsFieldProps> = (props) => {
                             small
                             rightElement={
                               <Tag minimal={true}>
-                                {values.template.functionReturnType}
+                                {typeLabels[values.template.functionReturnType]}
                               </Tag>
                             }
                             {...field}

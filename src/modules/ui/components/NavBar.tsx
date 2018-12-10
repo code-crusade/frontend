@@ -16,7 +16,7 @@ import { History } from 'history';
 import * as React from 'react';
 import { compose, withProps } from 'recompose';
 import styled from 'styled-components';
-import { omitProps } from '../../../hocs/omitProps';
+import { omitProps } from '../../../helpers/hocs/omitProps';
 
 export type AppNavbarProps = {
   onHomeClick(): void;
@@ -35,7 +35,7 @@ const StyledNavbar = styled(BluePrintNavBar)`
   grid-column: 1
 `;
 
-export const Navbar: React.SFC<AppNavbarProps> = (props) => (
+export const Navbar: React.FunctionComponent<AppNavbarProps> = (props) => (
   <StyledNavbar className="bp3-dark">
     <NavbarGroup align={Alignment.LEFT}>
       <NavbarHeading>Code Crusade</NavbarHeading>

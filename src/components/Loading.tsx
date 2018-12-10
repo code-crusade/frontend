@@ -9,7 +9,7 @@ const Container = styled.div`
   text-align: center;
 `;
 
-export const Loading: React.SFC<{}> = () => (
+export const Loading: React.FunctionComponent<{}> = () => (
   <Container>
     <Spinner />
   </Container>

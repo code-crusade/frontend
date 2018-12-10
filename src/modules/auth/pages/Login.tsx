@@ -4,19 +4,15 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { history } from 'src/services';
 import { WithHistory } from 'src/types/types';
-import { Credentials } from '../../../__generated__/api';
 import { authLogIn } from '../actions';
 import { Login as LoginComponent } from '../components/Login';
 
 interface LoginProps extends WithHistory {
-  login(credentials: Credentials): void;
+  login(credentials: any): void;
 }
 
 export class Login extends React.PureComponent<LoginProps> {
-  readonly handleSubmit = (
-    credentials: Credentials,
-    props: FormikProps<Credentials>,
-  ) => {
+  readonly handleSubmit = (credentials: any, props: FormikProps<any>) => {
     this.props.login(credentials);
     // Redirect
     history.push('/');
@@ -32,7 +28,7 @@ export class Login extends React.PureComponent<LoginProps> {
 }
 
 const mapDispatchToProps = {
-  login: (credentials: Credentials) => authLogIn.request(credentials),
+  login: (credentials: any) => authLogIn.request(credentials),
   push,
 };
 

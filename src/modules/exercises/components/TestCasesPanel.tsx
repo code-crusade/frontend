@@ -12,7 +12,7 @@ const Container = styled.div`
   padding: 1em;
 `;
 
-export const TestCasesPanel: React.SFC<TestCasesPanelProps> = (
+export const TestCasesPanel: React.FunctionComponent<TestCasesPanelProps> = (
   props: TestCasesPanelProps,
 ) => {
   const { isSubmitting } = props;

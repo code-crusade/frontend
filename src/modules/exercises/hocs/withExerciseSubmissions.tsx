@@ -47,7 +47,7 @@ export const withExerciseSubmissions = <
       const { browseExerciseSubmissions, ...props } = this
         .props as WithExerciseSubmissionsInjectedProps & SubstractedProps;
 
-      return <WrappedComponent {...props} />;
+      return <WrappedComponent {...props as any} />;
     }
   }
 

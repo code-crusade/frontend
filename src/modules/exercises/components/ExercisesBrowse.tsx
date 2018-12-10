@@ -18,9 +18,9 @@ const RightAlignedTh = styled.th`
   justify-content: right;
 `;
 
-export const ExercisesBrowse: React.SFC<WithExercisesInjectedProps> = (
-  props,
-) => {
+export const ExercisesBrowse: React.FunctionComponent<
+  WithExercisesInjectedProps
+> = (props) => {
   if (props.loading) {
     return <Loading />;
   }

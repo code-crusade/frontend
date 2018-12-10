@@ -5,8 +5,10 @@ import {
   DefaultApiInterface,
   Exercise,
   ExerciseSubmission,
+  Fixture,
   Group,
   RunnerArguments,
+  Student,
   User,
 } from '../../../__generated__/api';
 import { sleep } from '../../../helpers';
@@ -151,5 +153,22 @@ export class DefaultApiMock implements DefaultApiInterface {
     options?: any,
   ): Promise<CodeValidationReport[]> {
     throw new Error("userReportsRead mock hasn't been implemented");
+  }
+
+  exercisesExerciseIdFixturesGet(
+    exerciseId: number,
+    options?: any,
+  ): Promise<Fixture[]> {
+    throw new Error(
+      "exercisesExerciseIdFixturesGet mock hasn't been implemented",
+    );
+  }
+
+  googleLoginGet(options?: any): Promise<{}> {
+    throw new Error("googleLoginGet mock hasn't been implemented");
+  }
+
+  studentsRead(userId: number, options?: any): Promise<Student[]> {
+    throw new Error("studentsRead mock hasn't been implemented");
   }
 }

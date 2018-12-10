@@ -16,7 +16,7 @@ Object.keys(ids).forEach((key) => {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
-    password: faker.internet.password(),
+    accessCode: faker.internet.password(),
   };
 });
 

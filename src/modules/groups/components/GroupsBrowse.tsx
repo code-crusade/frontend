@@ -25,7 +25,9 @@ interface GroupsBrowseProps extends WithGroupsInjectedProps {
   onArchiveGroupClick(id: number, archive: boolean): void;
 }
 
-export const GroupsBrowse: React.SFC<GroupsBrowseProps> = (props) => {
+export const GroupsBrowse: React.FunctionComponent<GroupsBrowseProps> = (
+  props,
+) => {
   const {
     error,
     loading,

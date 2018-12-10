@@ -42,7 +42,7 @@ export const withExercise = <WrappedProps extends WithExerciseInjectedProps>(
       const { readExercise, history, ...props } = this
         .props as WithExerciseInjectedProps & SubstractedProps;
 
-      return <WrappedComponent {...props} />;
+      return <WrappedComponent {...props as any} />;
     }
   }
 

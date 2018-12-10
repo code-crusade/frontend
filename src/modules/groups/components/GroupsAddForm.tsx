@@ -7,7 +7,7 @@ import {
   InputGroup,
 } from '@blueprintjs/core';
 import * as classNames from 'classnames';
-import { Form, Formik, FormikProps, FormikValues } from 'formik';
+import { Form, Formik, FormikProps } from 'formik';
 import { get } from 'lodash';
 import * as React from 'react';
 import { Omit } from 'react-redux';
@@ -122,11 +122,13 @@ class GroupsAddForm extends React.PureComponent<FormProps> {
 
 // Setup Formik
 export type OnSubmitGroupsAdd = {
-  onSubmit(values: Omit<Group, 'id'>, props: FormikProps<Partial<Group>>): void;
+  onSubmit(values: FormValues, props: FormikProps<FormValues>): void;
 };
 
+export type FormValues = Omit<Group, 'id'>;
+
 interface GroupsAddFormikProps extends OnSubmitGroupsAdd, OnDrop {
-  initialValues: FormikValues;
+  initialValues: FormValues;
 }
 
 const AddSchema = Yup.object().shape({
@@ -138,7 +140,9 @@ const AddSchema = Yup.object().shape({
     .required('Requis'),
 });
 
-export const GroupsAddFormik: React.SFC<GroupsAddFormikProps> = (props) => {
+export const GroupsAddFormik: React.FunctionComponent<GroupsAddFormikProps> = (
+  props,
+) => {
   return (
     <Formik
       initialValues={props.initialValues}

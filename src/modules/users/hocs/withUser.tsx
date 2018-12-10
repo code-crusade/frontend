@@ -38,7 +38,7 @@ export const withUser = <WrappedProps extends WithUserInjectedProps>(
       const { readUser, history, ...props } = this
         .props as WithUserInjectedProps & SubstractedProps;
 
-      return <WrappedComponent {...props} />;
+      return <WrappedComponent {...props as any} />;
     }
   }
 

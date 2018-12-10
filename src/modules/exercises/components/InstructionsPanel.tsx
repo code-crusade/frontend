@@ -5,7 +5,9 @@ import { Exercise } from '../../../__generated__/api';
 
 type InstructionsPanelProps = { exercise: Exercise };
 
-export const InstructionsPanel: React.SFC<InstructionsPanelProps> = (props) => {
+export const InstructionsPanel: React.FunctionComponent<
+  InstructionsPanelProps
+> = (props) => {
   return (
     <ReactMarkdown escapeHtml={false} source={props.exercise.description.fr} />
   );

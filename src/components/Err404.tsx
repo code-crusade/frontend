@@ -10,7 +10,7 @@ const Container = styled.div`
   text-align: center;
 `;
 
-export const Err404: React.SFC<{}> = () => (
+export const Err404: React.FunctionComponent<{}> = () => (
   <Container>
     <NonIdealState
       title="Resource Not Found"

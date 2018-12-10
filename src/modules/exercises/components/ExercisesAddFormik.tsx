@@ -12,9 +12,9 @@ export type ExercisesAddFormikProps = {
   initialValues: FormValues;
 };
 
-export const ExercisesAddFormik: React.SFC<ExercisesAddFormikProps> = (
-  props,
-) => {
+export const ExercisesAddFormik: React.FunctionComponent<
+  ExercisesAddFormikProps
+> = (props) => {
   return (
     <Formik<FormValues>
       validationSchema={Yup.object().shape({

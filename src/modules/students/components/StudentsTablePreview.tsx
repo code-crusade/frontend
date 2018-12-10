@@ -13,7 +13,9 @@ interface StudentsTableProps {
 }
 
 /** Generate HTML Table from javascript object */
-export const StudentsTable: React.SFC<StudentsTableProps> = (props) => {
+export const StudentsTable: React.FunctionComponent<StudentsTableProps> = (
+  props,
+) => {
   const { students } = props;
 
   return isEmpty(students) ? (

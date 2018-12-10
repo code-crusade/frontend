@@ -282,26 +282,6 @@ export interface CodeValidationReportResultAssertions {
 }
 
 /**
- *
- * @export
- * @interface Credentials
- */
-export interface Credentials {
-  /**
-   *
-   * @type {string}
-   * @memberof Credentials
-   */
-  username: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Credentials
-   */
-  password: string;
-}
-
-/**
  * Exercise difficulty range
  * @export
  * @enum {string}
@@ -350,48 +330,16 @@ export interface Exercise {
   template: Template;
   /**
    *
-   * @type {ExerciseFixtures}
+   * @type {Fixture}
    * @memberof Exercise
    */
-  fixtures: ExerciseFixtures;
+  fixtures: Fixture;
   /**
    *
    * @type {Array<TestCase>}
    * @memberof Exercise
    */
   sampleTestCases: Array<TestCase>;
-}
-
-/**
- *
- * @export
- * @interface ExerciseFixtures
- */
-export interface ExerciseFixtures {
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof ExerciseFixtures
-   */
-  cpp?: Array<string>;
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof ExerciseFixtures
-   */
-  python?: Array<string>;
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof ExerciseFixtures
-   */
-  java?: Array<string>;
-  /**
-   *
-   * @type {Array<string>}
-   * @memberof ExerciseFixtures
-   */
-  javascript?: Array<string>;
 }
 
 /**
@@ -436,6 +384,38 @@ export interface ExerciseSubmission {
    * @memberof ExerciseSubmission
    */
   createdAt?: Date;
+}
+
+/**
+ *
+ * @export
+ * @interface Fixture
+ */
+export interface Fixture {
+  /**
+   *
+   * @type {string}
+   * @memberof Fixture
+   */
+  cpp?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Fixture
+   */
+  python?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Fixture
+   */
+  java?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Fixture
+   */
+  javascript?: string;
 }
 
 /**
@@ -614,13 +594,19 @@ export interface Student {
    * @type {number}
    * @memberof Student
    */
-  accessCode: number;
+  id: number;
   /**
    *
-   * @type {number}
+   * @type {string}
    * @memberof Student
    */
-  firstName: number;
+  accessCode: string;
+  /**
+   *
+   * @type {string}
+   * @memberof Student
+   */
+  firstName: string;
   /**
    *
    * @type {string}
@@ -638,13 +624,19 @@ export interface Student {
    * @type {number}
    * @memberof Student
    */
-  totalExercisesSuccessed?: number;
+  totalExercisesSuccessed: number;
   /**
    *
    * @type {number}
    * @memberof Student
    */
-  totalExercisesDone?: number;
+  totalExercisesDone: number;
+  /**
+   *
+   * @type {Array<ExerciseSubmission>}
+   * @memberof Student
+   */
+  excersises?: Array<ExerciseSubmission>;
 }
 
 /**
@@ -683,12 +675,6 @@ export enum SupportedType {
  * @interface Template
  */
 export interface Template {
-  /**
-   *
-   * @type {string}
-   * @memberof Template
-   */
-  className?: string;
   /**
    *
    * @type {string}
@@ -784,6 +770,12 @@ export interface User {
    * @type {string}
    * @memberof User
    */
+  accessCode: string;
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
   firstName: string;
   /**
    *
@@ -797,12 +789,6 @@ export interface User {
    * @memberof User
    */
   email: string;
-  /**
-   *
-   * @type {string}
-   * @memberof User
-   */
-  password: string;
 }
 
 /**
@@ -871,6 +857,68 @@ export const DefaultApiFetchParamCreator = function(
       localVarRequestOptions.body = needsSerialization
         ? JSON.stringify(exercise || {})
         : exercise || '';
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Gets all fixtures for an exercise
+     * @param {number} exerciseId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdFixturesGet(
+      exerciseId: number,
+      options: any = {},
+    ): FetchArgs {
+      // verify required parameter 'exerciseId' is not null or undefined
+      if (exerciseId === null || exerciseId === undefined) {
+        throw new RequiredError(
+          'exerciseId',
+          'Required parameter exerciseId was null or undefined when calling exercisesExerciseIdFixturesGet.',
+        );
+      }
+      const localVarPath = `/exercises/{exerciseId}/fixtures`.replace(
+        `{${'exerciseId'}}`,
+        encodeURIComponent(String(exerciseId)),
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'GET' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
+
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
 
       return {
         url: url.format(localVarUrlObj),
@@ -1352,6 +1400,54 @@ export const DefaultApiFetchParamCreator = function(
     },
     /**
      *
+     * @summary Redirects to the google login page according to the Authorization Code grant type flow.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    googleLoginGet(options: any = {}): FetchArgs {
+      const localVarPath = `/google-login`;
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'GET' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
+
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
      * @summary Creates a new group
      * @param {Group} group
      * @param {*} [options] Override http request option.
@@ -1520,6 +1616,65 @@ export const DefaultApiFetchParamCreator = function(
       localVarRequestOptions.body = needsSerialization
         ? JSON.stringify(group || {})
         : group || '';
+
+      return {
+        url: url.format(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     *
+     * @summary Gets user details including his submited excersises
+     * @param {number} userId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    studentsRead(userId: number, options: any = {}): FetchArgs {
+      // verify required parameter 'userId' is not null or undefined
+      if (userId === null || userId === undefined) {
+        throw new RequiredError(
+          'userId',
+          'Required parameter userId was null or undefined when calling studentsRead.',
+        );
+      }
+      const localVarPath = `/students/{userId}`.replace(
+        `{${'userId'}}`,
+        encodeURIComponent(String(userId)),
+      );
+      const localVarUrlObj = url.parse(localVarPath, true);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+      const localVarRequestOptions = Object.assign(
+        { method: 'GET' },
+        baseOptions,
+        options,
+      );
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      // authentication bearerAuth required
+      // http basic authentication required
+      if (configuration && (configuration.username || configuration.password)) {
+        localVarHeaderParameter['Authorization'] =
+          'Basic ' +
+          btoa(configuration.username + ':' + configuration.password);
+      }
+
+      localVarUrlObj.query = Object.assign(
+        {},
+        localVarUrlObj.query,
+        localVarQueryParameter,
+        options.query,
+      );
+      // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+      delete localVarUrlObj.search;
+      localVarRequestOptions.headers = Object.assign(
+        {},
+        localVarHeaderParameter,
+        options.headers,
+      );
 
       return {
         url: url.format(localVarUrlObj),
@@ -1797,6 +1952,36 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     },
     /**
      *
+     * @summary Gets all fixtures for an exercise
+     * @param {number} exerciseId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdFixturesGet(
+      exerciseId: number,
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Fixture>> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).exercisesExerciseIdFixturesGet(exerciseId, options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
      * @summary Gets the specified exercise
      * @param {number} exerciseId
      * @param {*} [options] Override http request option.
@@ -2028,6 +2213,34 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     },
     /**
      *
+     * @summary Redirects to the google login page according to the Authorization Code grant type flow.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    googleLoginGet(
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Response> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).googleLoginGet(options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response;
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
      * @summary Creates a new group
      * @param {Group} group
      * @param {*} [options] Override http request option.
@@ -2098,6 +2311,36 @@ export const DefaultApiFp = function(configuration?: Configuration) {
       const localVarFetchArgs = DefaultApiFetchParamCreator(
         configuration,
       ).groupsEdit(group, options);
+      return (
+        fetch: FetchAPI = portableFetch,
+        basePath: string = BASE_PATH,
+      ) => {
+        return fetch(
+          basePath + localVarFetchArgs.url,
+          localVarFetchArgs.options,
+        ).then((response) => {
+          if (response.status >= 200 && response.status < 300) {
+            return response.json();
+          } else {
+            throw response;
+          }
+        });
+      };
+    },
+    /**
+     *
+     * @summary Gets user details including his submited excersises
+     * @param {number} userId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    studentsRead(
+      userId: number,
+      options?: any,
+    ): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Student>> {
+      const localVarFetchArgs = DefaultApiFetchParamCreator(
+        configuration,
+      ).studentsRead(userId, options);
       return (
         fetch: FetchAPI = portableFetch,
         basePath: string = BASE_PATH,
@@ -2263,6 +2506,19 @@ export const DefaultApiFactory = function(
     },
     /**
      *
+     * @summary Gets all fixtures for an exercise
+     * @param {number} exerciseId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    exercisesExerciseIdFixturesGet(exerciseId: number, options?: any) {
+      return DefaultApiFp(configuration).exercisesExerciseIdFixturesGet(
+        exerciseId,
+        options,
+      )(fetch, basePath);
+    },
+    /**
+     *
      * @summary Gets the specified exercise
      * @param {number} exerciseId
      * @param {*} [options] Override http request option.
@@ -2381,6 +2637,18 @@ export const DefaultApiFactory = function(
     },
     /**
      *
+     * @summary Redirects to the google login page according to the Authorization Code grant type flow.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    googleLoginGet(options?: any) {
+      return DefaultApiFp(configuration).googleLoginGet(options)(
+        fetch,
+        basePath,
+      );
+    },
+    /**
+     *
      * @summary Creates a new group
      * @param {Group} group
      * @param {*} [options] Override http request option.
@@ -2410,6 +2678,19 @@ export const DefaultApiFactory = function(
      */
     groupsEdit(group: Group, options?: any) {
       return DefaultApiFp(configuration).groupsEdit(group, options)(
+        fetch,
+        basePath,
+      );
+    },
+    /**
+     *
+     * @summary Gets user details including his submited excersises
+     * @param {number} userId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    studentsRead(userId: number, options?: any) {
+      return DefaultApiFp(configuration).studentsRead(userId, options)(
         fetch,
         basePath,
       );
@@ -2480,6 +2761,19 @@ export interface DefaultApiInterface {
    * @memberof DefaultApiInterface
    */
   exercisesAdd(exercise: Exercise, options?: any): Promise<Exercise>;
+
+  /**
+   *
+   * @summary Gets all fixtures for an exercise
+   * @param {number} exerciseId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  exercisesExerciseIdFixturesGet(
+    exerciseId: number,
+    options?: any,
+  ): Promise<Array<Fixture>>;
 
   /**
    *
@@ -2575,6 +2869,15 @@ export interface DefaultApiInterface {
 
   /**
    *
+   * @summary Redirects to the google login page according to the Authorization Code grant type flow.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  googleLoginGet(options?: any): Promise<{}>;
+
+  /**
+   *
    * @summary Creates a new group
    * @param {Group} group
    * @param {*} [options] Override http request option.
@@ -2601,6 +2904,16 @@ export interface DefaultApiInterface {
    * @memberof DefaultApiInterface
    */
   groupsEdit(group: Group, options?: any): Promise<Group>;
+
+  /**
+   *
+   * @summary Gets user details including his submited excersises
+   * @param {number} userId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApiInterface
+   */
+  studentsRead(userId: number, options?: any): Promise<Array<Student>>;
 
   /**
    *
@@ -2665,6 +2978,21 @@ export class DefaultApi extends BaseAPI implements DefaultApiInterface {
       this.fetch,
       this.basePath,
     );
+  }
+
+  /**
+   *
+   * @summary Gets all fixtures for an exercise
+   * @param {number} exerciseId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public exercisesExerciseIdFixturesGet(exerciseId: number, options?: any) {
+    return DefaultApiFp(this.configuration).exercisesExerciseIdFixturesGet(
+      exerciseId,
+      options,
+    )(this.fetch, this.basePath);
   }
 
   /**
@@ -2801,6 +3129,20 @@ export class DefaultApi extends BaseAPI implements DefaultApiInterface {
 
   /**
    *
+   * @summary Redirects to the google login page according to the Authorization Code grant type flow.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public googleLoginGet(options?: any) {
+    return DefaultApiFp(this.configuration).googleLoginGet(options)(
+      this.fetch,
+      this.basePath,
+    );
+  }
+
+  /**
+   *
    * @summary Creates a new group
    * @param {Group} group
    * @param {*} [options] Override http request option.
@@ -2838,6 +3180,21 @@ export class DefaultApi extends BaseAPI implements DefaultApiInterface {
    */
   public groupsEdit(group: Group, options?: any) {
     return DefaultApiFp(this.configuration).groupsEdit(group, options)(
+      this.fetch,
+      this.basePath,
+    );
+  }
+
+  /**
+   *
+   * @summary Gets user details including his submited excersises
+   * @param {number} userId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DefaultApi
+   */
+  public studentsRead(userId: number, options?: any) {
+    return DefaultApiFp(this.configuration).studentsRead(userId, options)(
       this.fetch,
       this.basePath,
     );

@@ -21,7 +21,9 @@ export type ExercisesReadProps = {
   exercise?: Exercise;
 };
 
-export const ExercisesAdd: React.SFC<ExercisesReadProps> = (props) => {
+export const ExercisesAdd: React.FunctionComponent<ExercisesReadProps> = (
+  props,
+) => {
   if (props.loading) {
     return <Loading />;
   }

@@ -12,7 +12,7 @@ export interface GroupsAddProps extends OnSubmitGroupsAdd, OnDrop {
   students: Student[];
 }
 
-export const GroupsAdd: React.SFC<GroupsAddProps> = (props) => {
+export const GroupsAdd: React.FunctionComponent<GroupsAddProps> = (props) => {
   const { students } = props;
   return (
     <TwoColumnsLayout
@@ -24,6 +24,8 @@ export const GroupsAdd: React.SFC<GroupsAddProps> = (props) => {
             year: new Date().getFullYear(),
             semester: Semesters.FALL,
             groupNumber: 1,
+            students: [],
+            archived: false,
           }}
           {...props}
         />

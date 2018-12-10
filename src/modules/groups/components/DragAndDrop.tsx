@@ -27,9 +27,9 @@ interface DragAndDrop extends DropzoneProps {
   formats: string[];
 }
 
-export const DragAndDrop: React.SFC<DragAndDrop> = (props) => {
+export const DragAndDrop: React.FunctionComponent<DragAndDrop> = (props) => {
   return (
-    <StyledDropZone activeStyle={activeStyle} {...props}>
+    <StyledDropZone activeStyle={activeStyle} {...props as any}>
       <Centered>{props.text}</Centered>
       <Centered>
         {props.formats &&

@@ -26,7 +26,7 @@ const Right = styled.div`
   padding-left: 20px;
 `;
 
-export const TwoColumnsLayout: React.SFC<Props> = (props) => {
+export const TwoColumnsLayout: React.FunctionComponent<Props> = (props) => {
   const { leftPanel, rightPanel, leftHeader, rightHeader } = props;
 
   return (

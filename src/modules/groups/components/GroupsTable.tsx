@@ -15,7 +15,9 @@ interface GroupsTableProps {
   onGroupClick(id: number): void;
 }
 
-export const GroupsTable: React.SFC<GroupsTableProps> = (props) => {
+export const GroupsTable: React.FunctionComponent<GroupsTableProps> = (
+  props,
+) => {
   const { groups, onGroupClick, archive } = props;
 
   const handleGroupClick = (id: number) => onGroupClick(id);

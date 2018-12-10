@@ -37,7 +37,9 @@ const SpacedText = styled(ColoredText)`
   margin-right: 2em;
 `;
 
-export const OutputPanel: React.SFC<OutputPanelProps> = (props) => {
+export const OutputPanel: React.FunctionComponent<OutputPanelProps> = (
+  props,
+) => {
   if (props.runner.loading) {
     return <Loading />;
   }
@@ -57,10 +59,7 @@ export const OutputPanel: React.SFC<OutputPanelProps> = (props) => {
   return (
     <Card>
       <Row>
-        <SpacedText>
-          Time: {executionTime}
-          ms
-        </SpacedText>
+        <SpacedText color={undefined}>{`Time: ${executionTime}ms`}</SpacedText>
         <SpacedText
           color={result.assertions.passed ? Colors.GREEN3 : undefined}
         >

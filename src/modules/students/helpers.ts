@@ -10,6 +10,9 @@ export function convertToStudents(content: object[]): Student[] {
       lastName: row[1],
       accessCode: row[2],
       email: row[3],
+      totalExercisesDone: 0,
+      totalExercisesSuccessed: 0,
+      id: i,
     });
   });
   return students;

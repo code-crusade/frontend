@@ -37,7 +37,7 @@ export const withGroups = <WrappedProps extends WithGroupsInjectedProps>(
       const { browseGroups, ...props } = this.props as WithGroupsInjectedProps &
         SubstractedProps;
 
-      return <WrappedComponent {...props} />;
+      return <WrappedComponent {...props as any} />;
     }
   }
 

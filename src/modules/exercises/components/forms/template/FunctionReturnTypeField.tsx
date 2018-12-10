@@ -9,7 +9,7 @@ export interface FunctionReturnTypeFieldProps {
   name: string;
 }
 
-export const FunctionReturnTypeField: React.SFC<
+export const FunctionReturnTypeField: React.FunctionComponent<
   FunctionReturnTypeFieldProps
 > = (props) => {
   const { name } = props;

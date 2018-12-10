@@ -21,7 +21,7 @@ const Spacy = styled.div`
   margin: 25px 0;
 `;
 
-export const GroupsRead: React.SFC<GroupsReadProps> = (props) => {
+export const GroupsRead: React.FunctionComponent<GroupsReadProps> = (props) => {
   if (isEmpty(props.group)) {
     return (
       <React.Fragment>

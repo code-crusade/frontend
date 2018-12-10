@@ -23,7 +23,7 @@ type EditorTabsProps = {
   name?: string;
 };
 
-export const EditorTabs: React.SFC<EditorTabsProps> = (props) => (
+export const EditorTabs: React.FunctionComponent<EditorTabsProps> = (props) => (
   <Tabs id="CodePreview" renderActiveTabPanelOnly>
     {Object.values(SupportedLanguages).map((lang) => (
       <Tab

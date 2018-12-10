@@ -20,7 +20,9 @@ export interface TestCasesFieldProps {
   name: string;
 }
 
-export const TestCasesField: React.SFC<TestCasesFieldProps> = (props) => {
+export const TestCasesField: React.FunctionComponent<TestCasesFieldProps> = (
+  props,
+) => {
   const { name } = props;
 
   return (

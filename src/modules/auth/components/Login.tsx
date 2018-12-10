@@ -6,7 +6,7 @@ const Container = styled.div`
   max-width: 50%;
 `;
 
-export const Login: React.SFC = (props) => {
+export const Login: React.FunctionComponent = (props) => {
   return (
     <Container>
       <h1>Connexion</h1>

@@ -8,7 +8,9 @@ export interface FunctionNameFieldProps {
   name: string;
 }
 
-export const FunctionNameField: React.SFC<FunctionNameFieldProps> = (props) => {
+export const FunctionNameField: React.FunctionComponent<
+  FunctionNameFieldProps
+> = (props) => {
   const { name } = props;
 
   return (
